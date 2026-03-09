@@ -1,0 +1,168 @@
+Factor Update, January 17, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Long two units of Osaka Dow futures • Long two units CENX stock (split into partials)
+• Long two units of Dax futures • Short one unit of NY Cocoa futures
+• Long one unit of long Gold and short NZD futures • Long two units of Russell futures
+• Short one unit of 10-Yr. Note futures
+Markets under consideration for New Initial Positions (NIPs)
+• U.S. Dollar Index futures or EuroFX futures • NY Coffee futures
+• AUD/NZD spot or futures
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 116 as
+of Jan 16
+Greetings, Factor Members. The factor service is going to take a detour this week. And perhaps, a permanent detour effective
+with this edition. It really is time for me to find a slower pace. And part of finding a slower pace is finding a way to
+communicate with you that is easier and less time consuming for me.
+That means that the Factor Update this week will be a rambling narrative, with charts, rather than a more organized
+presentation with underlined titles and charts for a trade all on the same page. I would appreciate your feedback via the
+Factor member’s private X feed.
+So here goes. I am creating this Update on the fly – kind of like I run the Factor Members private X feed. First, I will cover
+those markets in which I carried a position home on Friday. Then I will post charts of other markets with appropriate
+comments. I am not planning to delve deeper into tactical stuff. That is an area of trading every trader needs to work out for
+themselves or they will never gain traction with an edge. Just make sure that you keep your losses contained.
+I may not show you all the charts I looked at for each market. You may need to dig those up for yourself. Sorry.
+Here are the key foundational building blocks of my approach.
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+1
+
+CENX-stock
+• Factor is long 2 units of CENX
+• Not willing to leave it all on the table in case of a reversal I split one of the tranches into two partials with advanced
+stops on one of the partials
+• This was a monster base
+• An initial target at 43.50 has been met
+• Never count your chickens before they hatch
+• Lots could go wrong with this trade – so do not chase it
+DAX futures
+• A 7-month rectangle is displayed on both the daily chart
+• Factor is long a two-unit long position
+• Some of Factor’s biggest profits and most reliable trades come from tight rectangular congestion zones in the
+context of a strong trend
+• A 3DTSR was technically triggered this week but the market is not yet at 70% to the target
+• But I will use Friday’s low as a new pivot
+2
+
+Osaka Dow futures
+• Factor is long two units based on the completion of the inverted continuation H&S on daily chart
+• The neckline was retested on Wednesday – and now the market has moved into ATHs
+• Wednesday’s low is now a good basing point for protective stops
+• I am moving stops on one unit on Sunday – not sure to where yet
+3
+
+Russell futures
+• The Russell is now leading the charge
+• Factor is long two units of M2K futures
+• I like necklines that slant in the direction of breakouts
+• Never count your chickens until …. – especially in the dreaded Russell
+Cocoa futures
+• Factor is short one unit
+• The pattern was a textbook H&S failure
+• The signal came when the right shoulder low was violated by the decline through the Jan7 OOL movement low
+• Softs are notorious for sharp snap-back rallies. Sometimes these snap-backs become complete popcorn trades
+4
+
+Gold futures denominated in NZD futures
+• I put out a member X post on this week, noting that I preferred long Gold against NZD over Gold denominated in USD
+• I was not willing to chase the breakout and noted that I would buy a retrace back to the original adjusted ATR
+breakout level
+• The buy alert happened on Friday
+• The pattern is a running wedge
+• There is no singular contract for this pair, so I wait for an alert and enter market orders
+• Factor is long a single unit of the pair (long Gold denominated in NZD)
+• Through a prime brokerage arrangement, I can execute a trade like this based on a USD value rather with a specific
+number of contracts. Prime brokers charge a premium for executing trades this way, but the convenience is worth
+it
+• Penetration of Friday’s low is my exit point
+• I would be willing to add long GC vs. USD
+5
+
+Treasury futures
+• I have been jerked around in my thinking on the Ts for the past year – thinking one way then another. Yet, in the past
+year I have not lost money net trading the Ts, yet have been positioned for the moves that did not occur
+• The short side of the Ultra Notes were my focus until Friday. I had orders in place to short the Ultras
+• Then the regular 10-Yr T broke down first, so I called an audible mid-trading day
+• The Ts remain in a massive multi-year congestion that remains unresolved, so I am using daily charts for trades
+• The pattern is a rectangle top that was severely retested via a symmetrical triangle
+• Factor is NOW short a unit
+Bitcoin spot
+• I was long a unit this past week – stopped out on Friday
+• My rule is to NOT take losing trades home for the weekend
+• Friday’s candle was quite constructive
+• I am not sure If I will be interested in this trade next week
+• Short-term there is a Hikkake buy signal set up with Thursday’s inside day and then a foot shot on Friday
+• I should not have been interested in this to begin with – just not a long enough pattern and without clarity on the
+weekly graph
+6
+
+AUD/NZD spot or futures
+• I have been looking at this chart develop for years
+• Massive rectangle
+• There was a breakout in December
+• I will buy a small position next week, risking to the 1.1405 pivot (which means below the pivot always)
+• This is basically risking to the Last Month Rule
+• I would just hate to see a pattern like this work without trying it
+• The last time the monthly ADX turned up from a low level was during the decline in 2013, not that ADX is ever magic
+USDX futures
+• I am open to the idea of a H&S bottom in the USD, a trade that runs counter to conventional opinion
+• Because there is so much overhead resistance on the long-term chart (not shown) I am only game for one unit
+7
+
+New York Coffee futures
+• A magnificent long-term set up could be developing – or maybe not
+• The long-term chart displays a multi-decade rectangle
+• This rectangle was resolved to the upside and a retest is occurring
+• The retest on the weekly chart displays a possible continuation inverted H&S
+• This is an exciting possibility but will be difficult to execute for many traders
+• Maybe the daily chart will give us a measured risk opportunity
+8
+
+EuroFX futures
+• Ditto USDX
+Silver
+• Candidly, while a huge correction could occur, I just do not see any weakness in this market – YET
+• I tried the long side this past week. I should have given my trade back to break even. Oh well!
+9
+
+For the video version of this Factor Update Video click here: I will try to do one and if I get to it I will email out the link. I might
+wait until Monday.
+Just a reminder about ATR breakout levels.
+To determine an entry stop order I undergo the following
+process:
+1. Identify the breakout level (e.g., a right shoulder
+high of a H&S bottom)
+2. Determine the length of the pattern (in weeks)
+3. Find the 30-day ATR of the latest day within the
+pattern
+4. Multiply the 30-day ATR by the appropriate % of
+the weekly length of the pattern (e.g., the adjusted
+ATR for a 13-week H&S bottom would be 45% of
+the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern) the
+adjusted 30-day ATR to the breakout level. This
+becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make profits – I hate giving
+money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay bills. The possibility of 50%
+drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on maximizing ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan for the to make the same
+$$ over and over and over again. It is far easier to build the value of an account in incrememts over time by holding onto to gains. It is
+easy to make money trading – the challenge is to keep what you make.
+###
+10

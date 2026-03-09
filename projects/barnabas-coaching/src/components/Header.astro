@@ -1,0 +1,112 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-8 h-8 rounded flex items-center justify-center flex-shrink-0" style="background:#0E1F3D">
+          <span class="font-serif font-bold text-lg" style="color:#C08B3A">B</span>
+        </div>
+        <div>
+          <span class="font-serif font-bold text-slate-900 text-base leading-tight block">Barnabas Coaching</span>
+          <span class="text-xs text-gray-500 leading-tight block hidden sm:block">AI Strategy · Seattle</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-6">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class={`text-sm font-medium transition-colors ${
+              isActive(link.href)
+                ? 'text-amber-700'
+                : 'text-gray-600 hover:text-slate-900'
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+        <a
+          href="/contact"
+          class="ml-2 px-4 py-2 rounded text-sm font-semibold text-white transition-colors"
+          style="background:#0E1F3D"
+          onmouseover="this.style.background='#1a3358'"
+          onmouseout="this.style.background='#0E1F3D'"
+        >
+          Book a Call
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="menu-toggle"
+        class="md:hidden p-2 rounded text-gray-600 hover:text-slate-900 hover:bg-gray-100"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+      >
+        <svg id="icon-open" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="icon-close" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-100 py-4 space-y-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class={`block px-2 py-2 text-sm font-medium rounded transition-colors ${
+            isActive(link.href)
+              ? 'text-amber-700 bg-amber-50'
+              : 'text-gray-700 hover:bg-gray-50 hover:text-slate-900'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+      <div class="pt-2">
+        <a
+          href="/contact"
+          class="block text-center px-4 py-2 rounded text-sm font-semibold text-white"
+          style="background:#0E1F3D"
+        >
+          Book a Call
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden', isOpen);
+    iconOpen?.classList.toggle('hidden', !isOpen);
+    iconClose?.classList.toggle('hidden', isOpen);
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>

@@ -1,0 +1,265 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Aaron Williams',
+  jobTitle: 'AI Strategy Coach',
+  url: 'https://barnabascoaching.com/about',
+  worksFor: {
+    '@type': 'LocalBusiness',
+    name: 'Barnabas Coaching',
+    url: 'https://barnabascoaching.com',
+  },
+  alumniOf: [
+    { '@type': 'Organization', name: 'Microsoft' },
+    { '@type': 'Organization', name: 'Accenture' },
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Seattle',
+    addressRegion: 'WA',
+    addressCountry: 'US',
+  },
+  description:
+    'Aaron Williams is an AI strategy coach for Seattle businesses with a 25+ year career at the front of major technology shifts: early internet voice infrastructure, Microsoft, Accenture, and 16 years of senior advisory work in Seattle.',
+};
+---
+
+<Layout
+  title="About Aaron Williams"
+  description="Aaron Williams has spent 25 years at the front of major technology shifts: from building early internet voice infrastructure in the 1990s to Technical Program Manager at Microsoft to founding Barnabas Coaching."
+  schema={personSchema}
+>
+  <!-- Header -->
+  <section style="background:#0E1F3D" class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#C08B3A">About</p>
+      <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5 max-w-2xl">
+        Aaron Williams
+      </h1>
+      <p class="text-lg max-w-xl leading-relaxed" style="color:#8fa6c4">
+        AI Strategy Coach · Seattle, WA
+      </p>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <!-- Main narrative -->
+      <div class="lg:col-span-2 space-y-8">
+        <div class="prose prose-lg prose-slate max-w-none">
+
+          <h2 class="font-serif text-2xl font-bold text-slate-900">He saw the wave before it had a name.</h2>
+
+          <p class="text-gray-700 leading-relaxed">
+            Aaron Williams started coding at 16. By the late 1990s, he was writing routing code for real-time internet voice systems at a time when most people were still tethered to long-distance phone plans and the idea of routing calls over the internet was considered fringe, if not faintly ridiculous.
+          </p>
+
+          <p class="text-gray-700 leading-relaxed">
+            Skype launched four years later. The wave had a name.
+          </p>
+
+          <p class="text-gray-700 leading-relaxed">
+            In 2004, Aaron joined Microsoft at 24 as a Technical Program Manager on MSN Messenger (later Windows Live Messenger). This wasn't a side project. MSN Messenger was one of the most widely used products Microsoft
+            had ever shipped, carrying hundreds of millions of conversations a day. Aaron was there for the engineering,
+            the scale, and the complicated, fascinating work of making something feel effortless for ordinary people
+            while running on infrastructure that could buckle at any point.
+          </p>
+
+          <p class="text-gray-700 leading-relaxed">
+            From there, he moved to Accenture as a management consultant, where he built training programs
+            for Microsoft consultants, translating technical complexity into learning that actually landed for
+            practitioners in the field. It sharpened a skill he'd carry forward: making hard things legible to people
+            who don't live and breathe them.
+          </p>
+
+          <h2 class="font-serif text-2xl font-bold text-slate-900 pt-4">A decade of high-trust advisory work.</h2>
+
+          <p class="text-gray-700 leading-relaxed">
+            After Accenture, Aaron served for 8 years as the trusted technology advisor to a prominent Seattle-area executive (under NDA). He was the person that someone with
+            everything on the line called when technology decisions mattered. That kind of trust isn't given. It's earned,
+            slowly, by being right when it counts and honest when it's uncomfortable.
+          </p>
+
+          <h2 class="font-serif text-2xl font-bold text-slate-900 pt-4">8 years in the biotech trenches.</h2>
+
+          <p class="text-gray-700 leading-relaxed">
+            Then he went independent. Aaron has spent the last 8 years running a boutique IT consulting company
+            in Seattle, focused primarily on the biotech industry. Biotechs are demanding clients: high stakes, fast-moving, deeply technical, operating under regulatory pressure that leaves no margin for error.
+            It is not the kind of work you can phone in.
+          </p>
+
+          <h2 class="font-serif text-2xl font-bold text-slate-900 pt-4">Then he started building with AI directly.</h2>
+
+          <p class="text-gray-700 leading-relaxed">
+            Over the past few years, Aaron has used AI tools as a core part of his own development and client work,
+            treating them as genuine accelerants rather than novelties. The results were concrete and measurable.
+          </p>
+
+          <p class="text-gray-700 leading-relaxed">
+            The people building with AI were getting results that would have taken years otherwise. The people waiting
+            to understand it perfectly were falling behind.
+          </p>
+
+          <h2 class="font-serif text-2xl font-bold text-slate-900 pt-4">Why Barnabas Coaching.</h2>
+
+          <p class="text-gray-700 leading-relaxed">
+            The pattern Aaron has seen more than once — in early internet voice infrastructure in the '90s, in algorithmic trading systems, in Microsoft-scale consumer products, and now in AI — is the same: a technology that seems complicated and uncertain at first, followed by a rapid shift in which early movers establish durable advantages and late movers spend years catching up. The window for early-mover advantage isn't open forever.
+          </p>
+
+          <p class="text-gray-700 leading-relaxed">
+            Barnabas Coaching exists because most Seattle business owners are smart, capable people who don't have
+            time to become AI experts, and shouldn't have to. What they need is a trusted advisor who can tell them
+            what's real, what's worth betting on, and what to do first. Someone who has been in the weeds, has built
+            things, has made the wrong calls and learned from them, and can translate all of that into a plan that
+            fits their specific business.
+          </p>
+
+          <p class="text-gray-700 leading-relaxed">
+            That's the job Aaron is here to do.
+          </p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-1 space-y-6">
+        <!-- Career timeline -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6 sticky top-20">
+          <h3 class="font-semibold text-slate-900 text-sm uppercase tracking-wide mb-5">Career markers</h3>
+          <div class="space-y-5">
+            {[
+              {
+                era: 'Started coding at 16',
+                detail: 'Before it was cool. Before anyone was hiring.',
+              },
+              {
+                era: 'Late 1990s',
+                detail: 'Building internet voice infrastructure. Years before Skype.',
+              },
+              {
+                era: '2004',
+                detail: 'Technical Program Manager, MSN Messenger / Windows Live Messenger at Microsoft. Joined at 24.',
+              },
+              {
+                era: '2000s–2010s',
+                detail: 'Management Consultant, Accenture. Built training solutions for Microsoft consultants.',
+              },
+              {
+                era: '8 Years',
+                detail: 'Trusted technology advisor to a prominent Seattle-area executive. NDA.',
+              },
+              {
+                era: 'Last 8 Years',
+                detail: 'Boutique biotech IT consulting in Seattle. Owner-operated.',
+              },
+              {
+                era: 'AI builder',
+                detail: 'Applied AI tools directly to real product and client work. Concrete results.',
+              },
+              {
+                era: 'Now',
+                detail: 'Barnabas Coaching: AI strategy for Seattle SMBs.',
+              },
+            ].map((item) => (
+              <div class="flex gap-3">
+                <div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:#C08B3A"></div>
+                <div>
+                  <p class="text-xs font-semibold text-amber-700 mb-0.5">{item.era}</p>
+                  <p class="text-sm text-gray-600">{item.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-6 pt-6 border-t border-gray-100">
+            <a
+              href="/contact"
+              class="block text-center px-4 py-2.5 rounded text-sm font-semibold text-white transition-colors"
+              style="background:#0E1F3D"
+              onmouseover="this.style.background='#1a3358'"
+              onmouseout="this.style.background='#0E1F3D'"
+            >
+              Work with Aaron →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="border-t border-gray-100" style="background:#f8f6f2">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div class="max-w-2xl mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#C08B3A">The Team</p>
+        <h2 class="font-serif text-3xl font-bold text-slate-900 mb-4">20+ years working together.</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Barnabas Coaching is intentionally small. When you engage with us, you work with the principals directly — no junior consultants, no account managers, no work handed off to someone who wasn't in the room. Aaron, Michelle, and Chris have worked together for over two decades, all at Microsoft at the same time from three different angles. That shared history means no ramp time, no broken hand-offs, and a team that already knows how to operate under pressure. White glove, by design.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Aaron -->
+        <div class="bg-white rounded-lg border border-gray-200 p-7">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold mb-5" style="background:#0E1F3D">AW</div>
+          <h3 class="font-serif text-xl font-bold text-slate-900 mb-1">Aaron Williams</h3>
+          <p class="text-xs font-semibold uppercase tracking-wide mb-4" style="color:#C08B3A">Founder & AI Strategy Coach</p>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            25+ years at the leading edge of technology. Built early internet voice infrastructure in the late '90s, then joined Microsoft at 24 as a Technical Program Manager on MSN Messenger. After Accenture and 8 years of senior advisory work, he founded Merkle & Bloom and now Barnabas Coaching.
+          </p>
+        </div>
+
+        <!-- Michelle -->
+        <div class="bg-white rounded-lg border border-gray-200 p-7">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold mb-5" style="background:#0E1F3D">MW</div>
+          <h3 class="font-serif text-xl font-bold text-slate-900 mb-1">Michelle W.</h3>
+          <p class="text-xs font-semibold uppercase tracking-wide mb-4" style="color:#C08B3A">Senior Analyst & Director of Operations</p>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            Michelle served on the Microsoft Legal team before becoming the founding Director of the Program
+            Management Office at one of Washington's fastest-growing consulting firms, where she led 8 PMs
+            while carrying 20 hours a week of her own billable work. She's been Merkle & Bloom's senior project
+            manager and systems analyst for 5 years.
+          </p>
+        </div>
+
+        <!-- Chris -->
+        <div class="bg-white rounded-lg border border-gray-200 p-7">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold mb-5" style="background:#0E1F3D">CB</div>
+          <h3 class="font-serif text-xl font-bold text-slate-900 mb-1">Chris B.</h3>
+          <p class="text-xs font-semibold uppercase tracking-wide mb-4" style="color:#C08B3A">Principal Microsoft 365 & AI Integration Consultant</p>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            Chris and Aaron go back to an early internet communications startup in the late '90s. He followed a parallel path
+            through Microsoft, where he was a Technical Program Manager for InfoPath and later SharePoint.
+            He now runs his own Microsoft consulting practice, specializing in M365 and Copilot integration
+            for business clients.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="bg-white border-t border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+      <h2 class="font-serif text-3xl font-bold text-slate-900 mb-4">
+        Ready to get to work?
+      </h2>
+      <p class="text-gray-600 mb-8 max-w-lg mx-auto text-lg">
+        Book a free discovery call and spend 30 minutes with Aaron. He'll ask the right questions
+        and give you a straight answer about what AI can do for your business.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block px-8 py-4 rounded text-base font-semibold text-white transition-colors"
+        style="background:#0E1F3D"
+        onmouseover="this.style.background='#1a3358'"
+        onmouseout="this.style.background='#0E1F3D'"
+      >
+        Book a Discovery Call
+      </a>
+    </div>
+  </section>
+</Layout>

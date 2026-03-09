@@ -1,0 +1,7 @@
+{"ts": "2026-03-06T03:51:00Z", "level": "RED", "actionId": "r-1741225800", "action": "Sixteenth simulated red-line action", "status": "approved"}
+{"ts": "2026-03-06T03:55:00Z", "level": "RED", "actionId": "r-1741226100", "action": "Seventeenth simulated red-line action", "status": "denied"}
+{"ts": "2026-03-06T04:00:00Z", "level": "RED", "actionId": "r-1741226400", "action": "rm -rf /root/.openclaw/workspace/tasks/blackraven-rfq/", "status": "approved"}
+{"ts": "2026-03-06T04:08:00Z", "level": "RED", "actionId": "r-1741226820", "action": "BAD COMMAND", "status": "approved"}
+{"ts": "2026-03-06T04:17:00Z", "level": "RED", "actionId": "r-1741227420", "action": "BAD_COMMAND_HERE", "status": "denied"}
+{"ts": "2026-03-06T04:23:00Z", "level": "RED", "actionId": "r-1741227720", "action": "BAD COMMAND", "status": "denied"}
+{"ts": "2026-03-06T04:31:00Z", "level": "RED", "actionId": "r-1741228260", "action": "curl -X DELETE https://api.production.internal/users/all", "status": "denied"}

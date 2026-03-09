@@ -1,0 +1,212 @@
+Factor Update, February 7, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Short one unit of NY Coffee futures • Long one and a half units of CENX stock
+• Short one unit of Sugar futures • Long two units of CHF futures
+• Long two units of TPYP-etf •
+Markets under consideration for New Initial Positions (NIPs)
+• Gold as a Hold • KC Wheat futures
+• Soybean futures
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 831 as
+of Feb 6
+Nominalized funding explained
+Factor LLC trades a nominally funded account. What does this mean? Nominal funding is commonplace in the hedge fund
+and among commodity trading advisors. There are several distinct features of nominal funding.
+• Factor sizes trades to a specific level of capitalization. My standard risk is $3,500 to $7,000 per one million of
+capital. This is always expressed in basis points (35 to 70 BP risk per trade)
+• Going into a trade I have an idea of my likely entry price and my anticipated initial risk. This differential can be
+expressed as a USD risk per contract. The number of contracts entered is a mathematical product
+• Factor sets the nominal funding level at the beginning of each year. It remains fixed. The outcome of trades
+(profits or losses) is not added to or subtracted from the nominal funding level
+• Factor maintains approximately 25% of the nominalized funding deposited with its FCMs (IBKR, ADMIS, Schwab).
+It is rare that the total maintenance margin of all Factor’s positions exceeds 25% of capital.
+• The remaining 75% of capital is held in short-term T-Bills or equivalencies
+TPYP-etf
+• Factor established a two-unit long position earlier in the week (green dot)
+• The current anchors for protective stops are shown on the daily chart
+• The lower price anchor was the initial risk of both units
+• As a general rule I set the initial protective stop below the last full bar of a pattern prior to the breakout
+1
+
+Silver futures
+• The quarterly chart displays the massive breakout at $50-55
+• My guess – just a guess – is that a correction has begun
+• A rally from Friday’s low is likely
+• This market has too much volatility for at the current time for me to consider a trade
+• My opinion that a market is likely to go up or down is NEVER the reason to take a risk position
+• I am interested in establishing a long position in SIVR at some point. This etf represents physical Silver whereby
+SLV is an etf holding futures contracts only
+• Factor is flat
+2
+
+Dow Jones futures
+• The dominant trend is up
+• The target of the underlying Cup and Handle on the weekly graph is 53,800
+• A Donchian Weekend Rule advance occurred on Friday, completing a 5-week Darvas Box on the daily chart
+• Richard Donchian is considered as the father of trend following
+• Factor is flat. Currently I am focused on weekly chart patterns
+3
+
+Soybean futures
+• The advance this past week recompleted the 15-month basing pattern as shown on the May Gann chart
+• I do not use Gann other than to display the continuation charts of individual contract months
+• The daily chart completed a 6-week horn bottom (I missed this one)
+• Factor entered orders to buy a retest back to the upper boundary of the basing area
+• Factor is flat in Soybeans
+4
+
+Bitcoin spot
+• The Bitcoin Banana has been a construct I have been using to track price
+• The lower boundary zone (green) was tested on Thursday, resulting in Friday’s rally
+• I do not expect a tradeable bottom in BTC until late summer – obviously I could be wrong on this
+• Periodically I will invent ways to understand price discovery. I developed the Banana several years ago specific to
+BTC. I do not use the Banana concept to understand any other market – it is just a one-off
+• I remain a long-term bull on BTC – but do NOT NOT hold a position for the Factor company account
+CENX-stock
+• Factor is long one-and-a-half units of CENX
+• A monster base launched the current trend
+• An initial target at 43.50 was met – I took some profits at this level
+• The target of 57.70 is reachable – I will take some profits at this price if available
+5
+
+Gold futures
+• It is incredible that price has traveled in four of the channel zones in just the past two weeks
+• This channeling concept is unique to Gold. I developed this concept back when the market was in zone #3
+• I believe that the daily chart is in a corrective phase
+• Factor is NOT NOT in the Gold market at the present time. My last exit was on Jan 30 at 5272 (GCJ26)
+• I am a long-term bull on Gold and expect additional channel zones in the months and quarters to come
+• If price allows I plan to move 20% of my net worth into Gold in 2026
+6
+
+Treasuries
+• The Ts have frustrated me for more than a year as I have expected a sizable decline in yield.
+• Through many attempts I have been wrong yet managed to avoid losing money through my typical obsession with
+trade management.
+• The dominant pattern in the 2-Yr is the 40-month rounding top on the yield chart
+• Also note the slightly declining right-angled triangle starting at the Sep 2024 low (yield chart)
+• My trade set up is for the short side of yields, long side of futures
+7
+
+Sugar futures
+• The weekly chart displays a massive H&S top with a target of 10.75
+• The daily chart completed a continuation H&S pattern on Jan 30 with a retest this past week
+• I shorted the May contract on Thursday
+8
+
+New York Coffee futures
+• A massive H&S top was completed on Jan 30. Factor shorted the breakout
+• My trading policy with softs is to move protective stops to break-even as quickly as possible
+• The target seems reachable
+• Factor is short
+Kansas City Wheat futures
+• This is the variety of Wheat used in breads
+• Weekly continuation chart displays a massive falling wedge
+• Factor has attempted (unsuccessfully) to be long this – and I will try it again if a further momentum breakout occurs
+9
+
+Swiss Franc futures
+• Factor is long two units in the Mar futures contract (see green dots)
+• This trade has massive upside potential – very asymmetric R:r profile
+• Hedge funds remain the big short, Commercials are the big long
+• Daily chart = 6-month rectangle
+• Weekly chart = giant springboard rectangle
+• The big risk is intervention by the CHF Central Bank, the SNB has ruined many bull runs in the past
+10
+
+Energy
+• Factor took a small loss in Crude on Monday – I moved my stop loss prematurely
+• Heating Oil futures present a MASSIVE inverted H&S bottom on the weekly chart
+• UGA displays a whopper symmetrical triangle. Such large patterns provide perspective but are not useful for timing
+• Factor is flat in energy futures
+11
+
+Long Gilt futures
+• This is a compelling chart. I am not sure what I will do with it, but I am willing to monitor it for a measured risk trade
+either long or short
+Note: The Excel spreadsheet I use to log my trades and
+to produce the metrics shown on this table is available
+at no cost to Factor Members. Contact Jolleen to
+obtain a fresh file.
+For the video version of this Factor Update Video click here: None yet recorded
+https://www.loom.com/share/a05a807c563a45289ea29cf1d2761f44
+12
+W
+WWPWWW
+A
+F a c to r L L C K e y P e r fo r m a n c
+h a t is th e c u m u la tiv e a n n u a l R O R ?
+h a t is th e w in ra te ?
+h a t is th e ra tio o f w in -s iz e to lo s s s iz e ?
+a re to T e s t: P a re to tra d e s a c c o u n t fo r a t le a s
+h a t's th e P ro fit F a c to r?
+h a t is th e w o rs t s e q u e n tia l c lo s e d tra d e d ra
+h a t is th e E x p e c te d V a lu e o f a ll tra d e s ?
+s o f Ja n u a ry 3 0
+e & R is k In
+t 8 0 % o f n e t p
+w d o w n ?
+d ic a
+ro fits
+to
+?
+P
+r s 2 0 2 6
+8 .8 %
+0 .6 5 2
+8 .4 5
+F a il
+1 5 .9
+-3 0 .9 2
+3 8
+re lim in a ry
+bb pp ss
+
+Just a reminder about ATR breakout levels
+To determine an entry stop order I undergo the
+following process:
+1. Identify the breakout level (e.g., a right
+shoulder high of a H&S bottom)
+2. Determine the length of the pattern (in
+weeks)
+3. Find the 30-day ATR of the latest day within
+the pattern
+4. Multiply the 30-day ATR by the appropriate
+% of the weekly length of the pattern (e.g.,
+the adjusted ATR for a 13-week H&S bottom
+would be 45% of the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern)
+the adjusted 30-day ATR to the breakout level. This becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading
+looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare
+exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were
+not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make
+profits – I hate giving money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay
+bills. The possibility of 50% drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on
+maximizing ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan
+for the to make the same $$ over and over and over again. It is far easier to build the value of an account
+in incrememts over time by holding onto to gains. It is easy to make money trading – the challenge is to
+keep what you make.
+Factor’s trading approach in a nutshell
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal
+patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+###
+13

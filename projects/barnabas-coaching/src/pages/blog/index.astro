@@ -1,0 +1,185 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Barnabas Coaching Blog',
+  description:
+    'Essays on AI, business strategy, and what Seattle businesses should actually be paying attention to. Written by Aaron Williams.',
+  url: 'https://barnabascoaching.com/blog',
+  author: {
+    '@type': 'Person',
+    name: 'Aaron Williams',
+    url: 'https://barnabascoaching.com/about',
+  },
+};
+
+// Future: import posts from content collection here
+// import { getCollection } from 'astro:content';
+// const posts = await getCollection('blog');
+---
+
+<Layout
+  title="Blog"
+  description="Essays on AI strategy, business operations, and what Seattle businesses should actually be paying attention to. Written by Aaron Williams of Barnabas Coaching."
+  schema={blogSchema}
+>
+  <!-- Header -->
+  <section style="background:#0E1F3D" class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#C08B3A">Writing</p>
+      <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5 max-w-2xl">
+        Essays on AI and what it actually means for your business
+      </h1>
+      <p class="text-lg max-w-xl leading-relaxed" style="color:#8fa6c4">
+        No hype cycles, no vendor talking points. Just honest writing from someone who's been
+        building and advising at the edge of technology for 25 years.
+      </p>
+    </div>
+  </section>
+
+  <!-- Coming soon state -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="max-w-2xl">
+      <!-- Topics preview -->
+      <div class="mb-12">
+        <h2 class="font-serif text-2xl font-bold text-slate-900 mb-6">Coming soon</h2>
+        <p class="text-gray-600 leading-relaxed mb-8">
+          The first essays are being written now. Topics Aaron plans to cover:
+        </p>
+        <div class="space-y-4">
+          {[
+            {
+              title: 'The AI audit mistake most owners make before they even start',
+              desc: "Why asking 'what AI tools should I use?' is the wrong first question. And what to ask instead.",
+            },
+            {
+              title: 'VoIP in 1999 and AI in 2024: What history can tell you about adoption curves',
+              desc: "Aaron's firsthand perspective on what the early days of a transformative technology actually look like, and what it means for where we are now.",
+            },
+            {
+              title: 'The honest answer to "is AI worth it for my business?"',
+              desc: 'A decision framework for owner-operated SMBs who want a clear-eyed answer, not a pitch.',
+            },
+            {
+              title: 'What I learned building a real product with AI tools',
+              desc: "What worked, what broke, and what it taught me about AI-assisted development in practice.",
+            },
+            {
+              title: 'The three AI implementations every service business should consider first',
+              desc: "The 3 applications that pay back their cost fastest and build the internal muscle for more, even if they're not the flashiest.",
+            },
+          ].map((post) => (
+            <div class="bg-white rounded-lg border border-gray-200 p-6 opacity-75">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 mt-1">
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded text-amber-700" style="background:#fef3e2">
+                    Upcoming
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 text-sm mb-1">{post.title}</h3>
+                  <p class="text-sm text-gray-500">{post.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Email signup -->
+      <div class="rounded-lg p-8 border" style="background:#0E1F3D; border-color:#1a3358">
+        <h3 class="font-serif text-xl font-bold text-white mb-2">Get notified when we publish</h3>
+        <p class="text-sm mb-6" style="color:#8fa6c4">
+          No newsletters. No weekly digests. Just a note when something worth reading goes up.
+        </p>
+        <form
+          name="blog-notify"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="flex flex-col sm:flex-row gap-3"
+        >
+          <input type="hidden" name="form-name" value="blog-notify" />
+          <input type="hidden" name="bot-field" />
+          <input
+            type="email"
+            name="email"
+            placeholder="you@yourcompany.com"
+            required
+            class="flex-1 px-4 py-2.5 rounded text-sm text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded text-sm font-semibold text-white transition-colors flex-shrink-0"
+            style="background:#C08B3A"
+            onmouseover="this.style.background='#D4A254'"
+            onmouseout="this.style.background='#C08B3A'"
+          >
+            Notify Me
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sidebar context -->
+  <section class="bg-white border-t border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-1">
+          <h3 class="font-serif text-xl font-bold text-slate-900 mb-3">About the author</h3>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">
+            Aaron Williams is the founder of Barnabas Coaching and an AI strategy advisor for
+            Seattle-area businesses. He has 25 years of experience at the leading edge of
+            technology: early VoIP, Microsoft, biotech IT consulting, and AI-assisted
+            app development.
+          </p>
+          <a
+            href="/about"
+            class="text-sm font-semibold transition-colors"
+            style="color:#0E1F3D"
+            onmouseover="this.style.color='#C08B3A'"
+            onmouseout="this.style.color='#0E1F3D'"
+          >
+            Read Aaron's full story →
+          </a>
+        </div>
+        <div class="md:col-span-1">
+          <h3 class="font-serif text-xl font-bold text-slate-900 mb-3">What we write about</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            {[
+              'AI strategy for small businesses',
+              'Workflow automation that actually works',
+              'Tool and vendor evaluations',
+              'Implementation lessons from the field',
+              'Technology adoption patterns',
+              'Seattle business scene',
+            ].map((topic) => (
+              <li class="flex gap-2">
+                <span style="color:#C08B3A">·</span>
+                {topic}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="md:col-span-1">
+          <h3 class="font-serif text-xl font-bold text-slate-900 mb-3">Ready to talk strategy?</h3>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">
+            The blog is a free resource. If you want to go deeper, the discovery call is free too.
+          </p>
+          <a
+            href="/contact"
+            class="inline-block px-5 py-2.5 rounded text-sm font-semibold text-white transition-colors"
+            style="background:#0E1F3D"
+            onmouseover="this.style.background='#1a3358'"
+            onmouseout="this.style.background='#0E1F3D'"
+          >
+            Book a Discovery Call
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

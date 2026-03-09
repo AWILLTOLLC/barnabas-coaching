@@ -1,0 +1,23 @@
+{
+  "vantage-test4": {
+    "updatedAt": 1772845863743,
+    "deliveryContext": {
+      "channel": "vantage",
+      "to": "test4",
+      "accountId": "test4"
+    },
+    "lastChannel": "vantage",
+    "lastTo": "test4",
+    "lastAccountId": "test4",
+    "sessionId": "4df15921-0759-4802-8c39-9fdefdf424a7",
+    "origin": {
+      "label": "Operator",
+      "provider": "vantage",
+      "surface": "vantage",
+      "chatType": "direct",
+      "from": "operator",
+      "to": "test4",
+      "accountId": "test4"
+    }
+  }
+}

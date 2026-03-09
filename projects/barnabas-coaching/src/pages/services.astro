@@ -1,0 +1,316 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const serviceSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'AI Audit',
+    serviceType: 'AI Strategy Assessment',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Barnabas Coaching',
+      url: 'https://barnabascoaching.com',
+    },
+    areaServed: { '@type': 'City', name: 'Seattle' },
+    description: 'A one-time workflow assessment and written report with prioritized AI recommendations for Seattle small businesses.',
+    offers: {
+      '@type': 'Offer',
+      price: '2500',
+      priceCurrency: 'USD',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'AI Coaching Retainer',
+    serviceType: 'AI Strategy Coaching',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Barnabas Coaching',
+      url: 'https://barnabascoaching.com',
+    },
+    areaServed: { '@type': 'City', name: 'Seattle' },
+    description: 'Monthly AI strategy coaching retainer with two calls per month and async support for Seattle business owners.',
+    offers: {
+      '@type': 'Offer',
+      price: '1500',
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: '1500',
+        priceCurrency: 'USD',
+        unitCode: 'MON',
+      },
+    },
+  },
+];
+---
+
+<Layout
+  title="Services"
+  description="Two ways to work with Barnabas Coaching: a one-time AI Audit ($2,500) or an ongoing Coaching Retainer ($1,500/month). Clear scope, real deliverables, no consultantspeak."
+  schema={serviceSchemas}
+>
+  <!-- Page Header -->
+  <section style="background:#0E1F3D" class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#C08B3A">What We Offer</p>
+      <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5 max-w-2xl">
+        Clear scope. Real deliverables. No consultantspeak.
+      </h1>
+      <p class="text-lg max-w-2xl leading-relaxed" style="color:#8fa6c4">
+        Most owners already know they need to be doing something with AI. The hard part is figuring out
+        what, where, and in what order. That's what Barnabas Coaching is for.
+      </p>
+    </div>
+  </section>
+
+  <!-- AI Audit -->
+  <section id="audit" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#C08B3A">One-Time Engagement</p>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">AI Audit</h2>
+        <div class="flex items-baseline gap-2 mb-6">
+          <span class="text-4xl font-bold text-slate-900">$2,500</span>
+          <span class="text-gray-500">one-time</span>
+        </div>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          You've heard a lot about what AI can do. But what can it actually do for <em>your</em> business,
+          in your specific workflows, with your team and budget? That's the question the AI Audit answers.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Over approximately 30 days, Aaron maps your existing operations, identifies where AI can create
+          real returns, and delivers a written report you can act on immediately, or hand to your team.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-8">
+          The report isn't a generic AI overview. It's specific to your business: the tools, the vendors,
+          the workflows, and the sequence that makes sense for where you are right now.
+        </p>
+        <a
+          href="/contact"
+          class="inline-block px-6 py-3 rounded text-sm font-semibold text-white transition-colors"
+          style="background:#0E1F3D"
+          onmouseover="this.style.background='#1a3358'"
+          onmouseout="this.style.background='#0E1F3D'"
+        >
+          Get Started →
+        </a>
+      </div>
+
+      <div class="space-y-6">
+        <!-- What's included -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 class="font-semibold text-slate-900 mb-4">What's included</h3>
+          <ul class="space-y-3">
+            {[
+              {
+                title: 'Intake interview',
+                desc: 'A structured 90-minute conversation about your business, your team, your current tools, and your biggest operational pain points.',
+              },
+              {
+                title: 'Workflow mapping',
+                desc: 'Aaron documents your core processes to identify where time is being lost and where AI can compress or eliminate manual work.',
+              },
+              {
+                title: 'Written assessment report',
+                desc: 'A clear, jargon-free document covering findings, opportunities, and risks. Written for an owner, not a CTO.',
+              },
+              {
+                title: 'Prioritized recommendations',
+                desc: 'Not a list of every possible AI application. A ranked action plan based on effort, impact, and your actual priorities.',
+              },
+              {
+                title: 'Tool & vendor guidance',
+                desc: 'Specific recommendations on what to use, with context on tradeoffs, costs, and implementation complexity.',
+              },
+              {
+                title: 'Debrief call',
+                desc: 'A final 60-minute call to walk through the report, answer questions, and discuss next steps.',
+              },
+            ].map((item) => (
+              <li class="flex gap-3">
+                <span class="text-amber-600 flex-shrink-0 mt-0.5">✓</span>
+                <div>
+                  <span class="font-medium text-slate-900 text-sm">{item.title}:</span>{' '}
+                  <span class="text-sm text-gray-600">{item.desc}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Who it's for -->
+        <div class="rounded-lg border border-amber-100 p-6" style="background:#fffbf5">
+          <h3 class="font-semibold text-slate-900 mb-3">Who this is for</h3>
+          <ul class="space-y-2">
+            {[
+              'Owner-operated businesses with 5–100 employees',
+              'You know AI is important but not sure where to start',
+              'You want an objective view, with no vendor pitch attached',
+              "You've tried a few tools but haven't seen traction",
+              'You want a concrete plan you can actually execute',
+            ].map((item) => (
+              <li class="flex gap-3 items-start text-sm text-gray-700">
+                <span class="text-amber-600 flex-shrink-0">→</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <hr class="border-gray-200" />
+  </div>
+
+  <!-- Coaching Retainer -->
+  <section id="retainer" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#C08B3A">Ongoing Support</p>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Coaching Retainer</h2>
+        <div class="flex items-baseline gap-2 mb-6">
+          <span class="text-4xl font-bold text-slate-900">$1,500</span>
+          <span class="text-gray-500">/month</span>
+          <span class="text-xs text-gray-400 ml-1">· 3-month minimum</span>
+        </div>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Building AI into a business is an ongoing process of testing, adjusting,
+          and expanding what works. The Coaching Retainer gives you a thinking partner for that process.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Twice a month, you sit down with Aaron for a focused strategy call. Between calls, you have async
+          access to get quick answers, sanity checks, and vendor feedback as things come up.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-8">
+          No filler, no padding. These are working sessions with someone who has been in the weeds on AI
+          implementation and knows what actually works versus what sounds good in a demo.
+        </p>
+        <a
+          href="/contact"
+          class="inline-block px-6 py-3 rounded text-sm font-semibold text-white transition-colors"
+          style="background:#0E1F3D"
+          onmouseover="this.style.background='#1a3358'"
+          onmouseout="this.style.background='#0E1F3D'"
+        >
+          Start a Conversation →
+        </a>
+      </div>
+
+      <div class="space-y-6">
+        <!-- What's included -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 class="font-semibold text-slate-900 mb-4">What's included</h3>
+          <ul class="space-y-3">
+            {[
+              {
+                title: '2 × 60-min strategy calls per month',
+                desc: 'Structured working sessions focused on your current priorities: progress review, problem-solving, and next steps.',
+              },
+              {
+                title: 'Async support between calls',
+                desc: 'Email or message access to Aaron for quick questions, tool recommendations, vendor vetting, and gut-checks.',
+              },
+              {
+                title: 'Tool & vendor recommendations',
+                desc: "As new tools emerge (and they do, constantly), you get an informed take on what's worth exploring and what's noise.",
+              },
+              {
+                title: 'Implementation review',
+                desc: "Share what you're building. Aaron reviews your prompts, your workflows, and your setups and tells you what to improve.",
+              },
+              {
+                title: 'Flexible focus',
+                desc: 'Each month is shaped by what matters most to your business right now, with no fixed curriculum.',
+              },
+            ].map((item) => (
+              <li class="flex gap-3">
+                <span class="text-amber-600 flex-shrink-0 mt-0.5">✓</span>
+                <div>
+                  <span class="font-medium text-slate-900 text-sm">{item.title}:</span>{' '}
+                  <span class="text-sm text-gray-600">{item.desc}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Who it's for -->
+        <div class="rounded-lg border border-amber-100 p-6" style="background:#fffbf5">
+          <h3 class="font-semibold text-slate-900 mb-3">Who this is for</h3>
+          <ul class="space-y-2">
+            {[
+              "You're actively building AI into your operations",
+              'You want a thinking partner, not just a course or a tool',
+              'You make decisions fast and need a trusted advisor',
+              'You want to stay ahead of competitors who are also moving',
+              'You value direct, opinionated guidance over hedged consulting',
+            ].map((item) => (
+              <li class="flex gap-3 items-start text-sm text-gray-700">
+                <span class="text-amber-600 flex-shrink-0">→</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-white border-t border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <h2 class="font-serif text-3xl font-bold text-slate-900 mb-10">Common questions</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+        {[
+          {
+            q: 'Do I need to start with the Audit before the Retainer?',
+            a: "Not required, but often recommended. The Audit gives both of us a clear picture of your business before we dive into ongoing strategy work. If you've already done this work internally or with another advisor, we can start straight with the Retainer.",
+          },
+          {
+            q: 'What industries do you work with?',
+            a: "Aaron has the deepest experience in biotech, professional services, and technology-adjacent businesses. That said, AI strategy translates across industries. The workflow assessment approach works whether you run a law firm, a construction company, or a healthcare practice.",
+          },
+          {
+            q: 'Do you do implementation work, or just strategy?',
+            a: "Primarily strategy: helping you make the right decisions, then execute them with your team or with vendors Aaron can recommend. For specific implementation needs, he can point you to the right resources.",
+          },
+          {
+            q: 'How quickly can we get started?',
+            a: 'Discovery calls are typically available within a week. The AI Audit begins after a brief intake and scoping process. Coaching Retainers start on the first of the following month.',
+          },
+        ].map((faq) => (
+          <div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-sm">{faq.q}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:#0E1F3D" class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="font-serif text-3xl font-bold text-white mb-4">Not sure which is right for you?</h2>
+      <p class="text-lg mb-8 max-w-xl mx-auto" style="color:#8fa6c4">
+        Start with a free 30-minute discovery call. Aaron will ask about your business and
+        tell you honestly which option makes sense, or whether the timing isn't right yet.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block px-8 py-4 rounded text-base font-semibold text-white transition-colors"
+        style="background:#C08B3A"
+        onmouseover="this.style.background='#D4A254'"
+        onmouseout="this.style.background='#C08B3A'"
+      >
+        Book a Free Discovery Call
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,236 @@
+Factor Update, January 31, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Short one unit of NY Coffee futures • Long one and a half units of CENX stock
+• Long two units of Crude Oil futures • Long two units of CHF futures
+• Long one unit of KC Wheat •
+Markets under consideration for New Initial Positions (NIPs)
+• Gold as a Hold • TPYP-etf
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 855 as
+of Jan 30
+Trading commentary
+Markets like this past week make me thankful I trade futures. It would take me days to completely unwind my retirement
+account equity portfolio while I could – if desired –- go flat in futures in less than a minute. In my opinion the futures markets
+offer the best of everything – tax treatments, liquidity, trading hours, geographic and asset class diversification, ease of
+going short, leverage. I do not believe I would have been nearly as fortunate had I been an equities trader.
+Silver
+Allow me to spend a little more time than usual on Silver. There has never been a week like the one just concluded.
+• RECORD WEEKLY VOLUME, • RECORD DAILY RANGES.
+• RECORD DAILY VOLUMES, • ABSOLUTELY CRAZY.
+• RECORD WEEKLY RANGE,
+This is what a BLOW-OFF looks like. Whether it was a blow off for many years, quarters, months, weeks (or perhaps even
+days) we do not know. The next few weeks might be very revealing.
+That the market hit a top this past week was NOT a surprise to me. That the market corrected so violently took me off guard
+if I am candid. I still own a fair amount of Gold and some Silver etfs -- and these are keepers -- thankfully from much lower
+levels.
+So, what’s next? I do NOT know. In fact, I am a very confused Bayesian because I see a Tale of Two Silvers and I am not sure
+which Tale is telling the truth. I will present two Bayesian alternatives in this Update. The first tale is based on conventional
+technical analysis. The second tale is rather conspiratorial, which I am normally not.
+Tale #1 – A conventional technical view
+First, let’s roll back the clock a few months.
+The chart right is from the Nov 15 edition of the Factor
+Update. The dominant pattern in my mind was the 45-year
+resistance line at $50 to $55. I believed that this resistance
+would hold the rally, but that if it didn’t do so Silver could be
+off to the races. I just under-estimated what “off-to-the-
+races” might mean.
+1
+
+Silver paused in the low $50 and then presented a gift in the form of a Cup and Handle pattern on the daily chart right at $55.
+The chart below is from the Nov 29 edition of the Factor Update.
+The most powerful trades throughout my career have been when clear daily continuation patterns develop just prior to the
+breakout of a weekly chart (or a clear weekly pattern just prior to a monthly breakout). A trader could make a career just
+looking for these on any universe of price graphs.
+A couple Factor members asked me off-stage why I would go long at a record high price in an over-bought market. Looking
+back, I should have taken a double-sized position.
+I underestimated just how strong Silver could be. I really thought the 90s would be it. Until the second week of January that
+is. Brief continuation patterns in the context of strong trends also are part of my trading toolbox. The Jan 10 Factor Update
+included the chart below. I noted another small Cup and Handle (also called a pennant in this case) with possible targets at
+96.x and 108.x.
+My last long-side swing trade was entered on Jun 12 at 83.49 in Mar futures. Unfortunately, I did not ride this one to the
+higher target. I have been flat in Silver ever since this trade. I was unable to conceive of Silver in the $120s as likely yet.
+2
+
+Then came the blow off into Thursday’s high and the dump on Friday.
+Fundamentals are an interesting topic. But fundamentals are not constant. The supply and demand fundamentals at $30
+Silver are not that same as at $100 Silver. On Thursday when Silver was trading at about $115,000, I posted the piece below
+on X, explaining why Silver mining companies should be hedging years’ worth of production.
+3
+
+In fact, I believe COT data released next week could show that Silver had a massive change of hands this past week as Silver
+companies sold into investor FOMO.
+Under my Tale #1, Silver is NOT done going up. But it might be done for longer than any of us might hope. Congestion periods
+following spike blow-offs in Silver can take many years and go deeper than anyone might imagine.
+Let me suggest Tale #1 path forward, pointing out that this is a PURE guess.
+Following previous corrections of 93% and 76% lasting years, I think a 55% or so decline to test the 1980 and 2011 highs would
+be quite reasonable. Again – just a wild guess – but then the market would begin the “REAL” bull market by registering a new
+ATH in 2030 or so.
+Chances are pretty good that I will not be the voice of the Factor at that point, but I will make sure you are in good hands for
+the long-term outlook in Silver. A guess – again, a pure guess – is that the chop between now and then would be vicious and
+many who made a fortune in 2025 will lose it in the interim years.
+As I always say, it is easy making money in futures trading, but the challenge is keeping it. Keeping it will be your burden.
+Tale #2 – A conspiratorial view
+I have great distaste for conspiracy theories of all kinds, especially those dealing with Comex and Silver. For years the
+conspiratorialists have accused the Comex of price manipulation. I have generally made fun of this. Yet, there are several
+Bayesian things I cannot ignore:
+1. Biblical Gold/Silver ratio <30 to 1 (I take a
+literal/contextual/historical view of the Bible)
+2. Chinese ban on exports (China represents about
+13% of global production and 35-40% of global
+consumption
+3. The Shanghai Exchange Silver contract is a
+better proxy of global pricing than the Comex
+contract
+4. The Shanghai Silver price trades at a premium
+to the Comex price (how much of a premium is
+disputable)
+While Tale #2 is an interesting global-macro wrapper, of importance to me is that I am a swing trader and there are NO set
+ups for me right now in Silver. Tale #2, while compelling, is unactionable to me as a swing trader. For now trading Silver is
+completely off the table for me. I am risk adverse, and Silver is far from a tame kitten.
+4
+
+Gold futures
+How much of the Comex Silver price correction was due to serious concerns about a delivery default? This is a complete
+guessing game. As a Bayesian I will be interested in monitoring the Shanghai/Comex relationship and also in the ratio
+between $SIVR (physical Silver ETF) and $SLV (paper ETF).
+What about Gold? For starters I think the Gold/Silver ratio will now head back into the high 60s to 1, maybe even the low 70s
+to 1. So, if Silver works its way back down to, let’s say, $60 – that would put Gold at $4,200 at the 70 to 1 ratio. Gold price is
+almost there. In other words, I am far more constructive on Gold than on Silver. While Gold is likely to correct from last
+week’s high of $5,580, I think a 20% correction would be more than enough. This would put Gold back under $4,500.
+I will return to the tiering structure which I have previously discussed as being a sound framework for understanding Gold.
+The upper boundary of Tier 8 was touched this past week. That should be it for a while. Price on Friday almost touched the
+lower boundary of Tier 6 – how is that for crazy? I just cannot see Gold retest the lower boundary of Tier 4, but Tier 5 yes. So,
+Gold moving below $4,700 is a buy for me.
+My intent expressed to Factor Members has been to move 20% or more of my net worth into Gold assets. This will be my goal
+in 2026 given the opportunity.
+The Gold chart is on next page. Don’t expect this level of analysis and discussion in future updates.
+5
+
+CENX-stock
+• Factor is long one-and-a-half units of CENX
+• I covered a half unit this past week with a tight stop
+• This is a monster base
+• An initial target at 43.50 has been met
+• Never count your chickens before they hatch
+• Lots could go wrong with this trade – so do not chase it
+New York Coffee futures
+• A massive H&S top was completed on Friday, and an entry sell stop was filled
+• My trading policy with softs is to move protective stops to break-even as quickly as possible
+6
+
+Swiss Franc futures
+• Factor increased the position to long three units on Monday
+• Always diving for foxholes when bombs start to drop, I covered a unit on Friday
+• Factor remains long two units at green dots shown
+• This trade has massive upside potential – very asymmetric R:r profile
+• Hedge funds are the big short, Commercials the are the big long
+• Daily chart = 6-month rectangle
+• Weekly chart = giant springboard
+• The big risk is intervention by the CHF Central Bank, the SNB has ruined many bull runs in the past
+Note: The Excel spreadsheet I use to log my trades and
+to produce the metrics shown on this table is available
+at no cost to Factor Members. Contact Jolleen to
+obtain a fresh file.
+7
+W
+WWPWWW
+A
+F a c to r L L C K e y P e r fo r m a n c
+h a t is th e c u m u la tiv e a n n u a l R O R ?
+h a t is th e w in ra te ?
+h a t is th e ra tio o f w in -s iz e to lo s s s iz e ?
+a re to T e s t: P a re to tra d e s a c c o u n t fo r a t le a s
+h a t's th e P ro fit F a c to r?
+h a t is th e w o rs t s e q u e n tia l c lo s e d tra d e d ra
+h a t is th e E x p e c te d V a lu e o f a ll tra d e s ?
+s o f Ja n u a ry 3 0
+e & R is k In
+t 8 0 % o f n e t p
+w d o w n ?
+d ic a
+ro fits
+to
+?
+P
+r s 2 0 2 6
+8 .8 %
+0 .6 5 2
+8 .4 5
+F a il
+1 5 .9
+-3 0 .9 2
+3 8
+re lim in a ry
+bb pp ss
+
+Kansas City Wheat futures
+• This is the variety of Wheat used in breads
+• Weekly continuation chart displays a massive falling wedge
+• Daily chart has completed a Chair with Ottoman pattern
+• Factor is long a unit
+• $5.50 is a key level on the 057 chart
+• Will this trade work? Not a clue. I enter trades because of set-ups, not because of hope
+8
+
+Crude Oil
+• An 11-month H&S failure or Compound Fulcrum bottom was completed this past week
+• Factor is long a two-unit position
+• A video about this trade was posted on Thursday at
+https://www.loom.com/share/f116896b6d724d558d906d12897b71d7
+• There are couple of etfs I really like (charts shown)
+Other notes from a crazy week
+• I covered a short T-Note position on Friday because the trade has not been able to pull away from the entry level
+• I covered a short USDX position (established Monday) as part of my dive into a fox hole
+• The upside breakout on Wednesday in NQ was quickly squashed
+9
+
+For the video version of this Factor Update Video click here: None yet recorded
+Just a reminder about ATR breakout levels
+To determine an entry stop order I undergo the
+following process:
+1. Identify the breakout level (e.g., a right
+shoulder high of a H&S bottom)
+2. Determine the length of the pattern (in
+weeks)
+3. Find the 30-day ATR of the latest day within
+the pattern
+4. Multiply the 30-day ATR by the appropriate
+% of the weekly length of the pattern (e.g.,
+the adjusted ATR for a 13-week H&S bottom
+would be 45% of the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern)
+the adjusted 30-day ATR to the breakout level. This becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading
+looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare
+exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were
+not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make
+profits – I hate giving money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay
+bills. The possibility of 50% drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on
+maximizing ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan
+for the to make the same $$ over and over and over again. It is far easier to build the value of an account
+in incrememts over time by holding onto to gains. It is easy to make money trading – the challenge is to
+keep what you make.
+Factor’s trading approach in a nutshell
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal
+patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+###
+10

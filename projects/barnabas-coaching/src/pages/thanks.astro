@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Message Received"
+  description="Thanks for reaching out to Barnabas Coaching. Aaron will be in touch within one business day."
+>
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+    <div class="max-w-lg mx-auto">
+      <div class="text-5xl mb-6">✓</div>
+      <h1 class="font-serif text-3xl font-bold text-slate-900 mb-4">Message received.</h1>
+      <p class="text-lg text-gray-600 leading-relaxed mb-8">
+        Aaron will get back to you within one business day. If you'd prefer to skip the wait,
+        grab a spot on his calendar directly.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/contact"
+          class="px-6 py-3 rounded text-sm font-semibold text-white transition-colors"
+          style="background:#0E1F3D"
+          onmouseover="this.style.background='#1a3358'"
+          onmouseout="this.style.background='#0E1F3D'"
+        >
+          Book a Call Directly
+        </a>
+        <a
+          href="/"
+          class="px-6 py-3 rounded text-sm font-semibold border border-gray-300 text-gray-700 hover:border-gray-400 hover:text-slate-900 transition-colors"
+        >
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

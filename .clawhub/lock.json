@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "humanizer": {
+      "version": "1.0.0",
+      "installedAt": 1771558208863
+    },
+    "xcode": {
+      "version": "1.0.0",
+      "installedAt": 1771971124219
+    },
+    "ios": {
+      "version": "1.0.0",
+      "installedAt": 1771971124570
+    }
+  }
+}

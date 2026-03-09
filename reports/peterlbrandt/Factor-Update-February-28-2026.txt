@@ -1,0 +1,230 @@
+Factor Update, February 28, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Long two units of TPYP-etf • Long one unit of CENX stock
+• Long one unit of CHF futures • Long one unit of 5-Yr Note futures
+• Long one unit of KC Wheat futures (chop chop) • Long two units of PBJ-etf
+• Long one unit of 2-Yr T-Note futures
+Markets under consideration for New Initial Positions (NIPs)
+• Stock indexes • Heating Oil futures
+• CHF futures • Gold futures
+• Bitcoin futures •
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 941 as
+of Feb 27
+Notice:
+U.S. Bombs Iran
+This edition of the Factor was written on Friday – with comments relative to Friday’s closes. Dealer markets (not exchange-
+traded) in London on Saturday are sharply changed, with Gold up anywhere from $125 to $175 per oz., Crude up as much as
+$6 and U.S. equities down 1% or more. Remember that a lot can change from expectations. See the chart below of Crude in
+1991. This was my biggest overnight loss EVER. Be careful with stop-limit orders next week.
+Assignment for the week
+If you have X, watch this interview TWICE. Stan
+Druckenmiller is the single best trader alive today.
+https://x.com/compound248/status/2027561891577438508
+1
+
+General market comments
+A full scroll of all the futures markets throughout the week disclosed a few new weekly swing trade chart set-ups. I took
+action as needed.
+As a reference, my sweetest spot set-ups are:
+• Horizontal chart congestion (bottoms, tops, continuation patterns)
+o Right angled triangles
+o Rectangles
+o Cup and Handles
+o Head and Shoulders (continuation, failures, reversals)
+• 8- to 26-weeks in duration (although mega patterns appear periodically)
+• Flags and pennants in context of strong trends
+• Less than 20% price range as a percentage of underlying value
+• Up to three units are taken in each trade (Weekly, Position and Trading – each with 30 to 40 BPs of risk max)
+• Generally I take profits at determined targets
+These are the main cars this dog chases at breakout points. Of course, there are exceptions that I try to explain when they
+happen. It is my goal to frame the trades/potential trades presented in Factor Reports within this framework.
+I enter trades based on an adjusted ATR breakout of pattern boundaries. Once in a trade my goal is to squeeze as much
+risk out of the trade as quickly as possible. I place capital preservation in a priority position over my opinion of a market
+or a chart.
+There will be a couple of changes to my trading planned for 2026 if I stay healthy and remain of good mind.
+1. Weekly chart entries using Last Week Rule or LDR depending on risk, moving stop to BE and then staying until
+LWR/LDR stop out or with a selected moving average once 70% of target is reached.
+2. Downplay the Prop Account and tactics on an ongoing basis but hopefully produce separate educational
+materials as the year progresses on rules for your own study and use. I want to create an environment whereby
+you all work through your own problems – the only way to learn. I want you to become fisherman on your own.
+Markets with positions
+Swiss Franc futures
+Position: Long one unit (W)
+Pattern(s) being traded Horizontal 7-month rectangle completed Jan 23
+Targeting 1.3781 and then 1.4218
+Risk strategy Feb 2 low for now, but if Feb 10 high is penetrated the risk anchor point will be the Feb 20 low
+Comments Daily chart is forming a 5-week pennant. I will consider adding a unit depending upon how the
+diagonal boundary is violated and the Feb 10 high is dealt with in price discovery
+2
+
+TPYP-etf
+Position Long two units (P and T)
+Pattern(s) being traded Horizontal 14-mo continuation inverted H&S
+Targeting 42.82 and 48.24
+Risk strategy Past week’s low and 8 WMA roll-over for now
+Comments Partial profits will be at the initial target. The further a trend goes, the more controlled I
+want my exit strategy to become
+PBJ-etf
+Position Long two units (P and W)
+Pattern(s) being traded Horizontal 46-month continuation inverted H&S
+Targeting 58.7.and 68.2
+Risk strategy Last week rule and last day rule for now
+Comments I typically do not trade such extended patterns, but the symmetry of this chart construction
+was remarkable and worthy of a risk position
+3
+
+CENX-stock
+Position Long one unit (W) having taken profits on two units
+Pattern(s) being traded Horizontal 17-yr inverted continuation H&S. This current 7-week inverted triangle
+(megaphone) is interesting to watch unfold. This could be a continuation pattern – and I am
+willing to add a unit back to the trade if this is resolved to the upside
+Targeting 79.97
+Risk strategy Weekly MA for now
+Comments I do not remember the last time I traded such a multi-year pattern – it might have been the
+DJIA back in 1982 when a 14-year continuation inverted H&S was completed. This really is
+this trade is my play on aluminum because the Aluminum futures contract do not have the
+volume I wanted to see
+4
+
+Treasury futures – 5-Yr Note
+Position Long one unit (T)
+Pattern(s) being traded Possible horizontal 41-mo inverted H&S on the weekly chart. The market broke out of a
+leading 4-mo diagonal channel this past week with a possible Brandt/Donchian Weekend
+Rule
+Targeting 115^25/32nds
+Risk strategy I am playing this tight using the mid-week low as noted. I am not willing to give this trade
+much risk because the trend is not yet fully established
+Comments The Apr 2025 high is still in play and I will consider adding both W and P units if that high is
+exceeded. The Ts still need much work to confirm this trend
+5
+
+Treasury futures – 2-Yr Note
+Position Long one unit (P)
+Pattern(s) being traded Horizontal 41-mo inverted H&S. The trade was triggered by a horizontal 7-mo rectangle
+Targeting 106^12
+Risk strategy Feb 20 low for now
+Comments • I have taken numerous stabs at the long side of Ts in the past year (all trades have been
+successful, but I have managed to make some small profits). This chart still needs to
+decisively close above the Oct 2025 high
+• My more decisive target is a yield of 2.2% as determined by a measured swing on the log
+scale of the spot 2-Yr note
+• I will be looking to add to this position if given an acceptable R:r set up
+• This market is at the upper end of a massive range. This trend still need confirmation.
+Confirmation will come with higher prices (lower yields)
+• A chart also shown is the Mar 2027 3-mo SOFR contract
+• The Ts across the yield curve have NOT NOT NOT fully broken out of the bottoms
+6
+
+Kansas City Wheat futures
+Position Long one unit (T). I want to buy any meaningful dip (5.75 or so) to add the P unit
+Pattern(s) being trades The weekly chart confirmed a 2-year falling wedge on Feb 18 when the daily continuation
+chart (not shown) completed a 3-mo Cup and Handle type structure. I should have given the
+continuation chart more credibility than the chart of the individual contracts.
+The May contract daily chart completed a HORIZONTAL 7-mo double bottom on Feb 19. This
+bottom should also be viewed as a modified Chair with Ottoman (the Ottoman being slightly
+up slanted).
+Targeting 6.13, 6.63 and eventually 7.40 if the fundamentals change
+Risk strategy Feb 27 low will be the anchor
+Comments Candidly, I screwed this trade up. It happens. When it happens, we need to move on. Traders
+need to develop self-forgiveness. Either that or forget to become a trader.
+7
+
+Markets under review for review or curiosity
+Heating Oil
+• A massive complex inverted H&S bottom is forming.
+• The May contract has already triggered early entry.
+• I unsuccessfully attempted to buy a retest this past week – my orders were too low.
+• I will enter stop orders based on the continuation chart. As always, a trader must be careful when buying
+momentum out of a large chart pattern.
+8
+
+Gold futures
+• My long-term view is BULLISH
+• A new all-time Friday closing price high was posted in Gold this week
+• I consider Friday closes to be the most important price of the week – it is the price at which positions must be
+margined for 48-hours without the ability to control risk. I am emotionally divided between hope (wanting to own
+much more in my retirement accounts) and fear (thinking I might not get the chance)
+• Gold has a well-defined rising wedge on the daily chart. This is normally a corrective pattern – but do NOT NOT bet
+on it.
+• I think Gold has three options:
+o Rising wedge will lead to a retest of the mid $4ks
+o Rising wedge will become a running wedge and launch the next thrust upwards
+Platinum etf
+• The chart exhibits a clear H&S top that should NOT be trusted
+• This pattern could become a H&S failure leading to new highs for the bull trend
+9
+
+Bitcoin
+• I will trade shorter-term patterns when they form in the context of a strong sustained trend that has further
+targets.
+• This is the case with BTC.
+• I will consider the short side of BTC for a swing trade if the current pennant is completed.
+Soybean futures
+• The May Gann chart is shown. A significant breakout has occurred
+• This is one I missed
+10
+
+Stock indexes
+• I continue to note the massive 22-mo broadening pattern in NASDAQ
+• Price is near the upper boundary of this pattern – this can be considered supply
+• The daily chart displays a possible topping pattern
+• A blow-off through the upper boundary cannot be ruled out
+• The EEM/QQQ ratio has a MAJOR inverted H&S bottom. This ratio could experience a 5X advance favoring emerging
+markets
+Trades exited during the week ending February 27, 2026
+• Chopped out of KC Wheat but re-entered a unit
+For the video version of this Factor Update Video click here:
+Focus is on interest rates only
+https://www.loom.com/share/0972ff82df524f62b763c87c292ece8f
+11
+
+Just a reminder about ATR breakout levels
+To determine an entry stop order I undergo the
+following process:
+1. Identify the breakout level (e.g., a right
+shoulder high of a H&S bottom)
+2. Determine the length of the pattern (in
+weeks)
+3. Find the 30-day ATR of the latest day within
+the pattern
+4. Multiply the 30-day ATR by the appropriate
+% of the weekly length of the pattern (e.g.,
+the adjusted ATR for a 13-week H&S bottom
+would be 45% of the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern)
+the adjusted 30-day ATR to the breakout level. This becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading
+looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare
+exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were
+not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make
+profits – I hate giving money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay
+bills. The possibility of 50% drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on
+maximizing ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan
+for the to make the same $$ over and over and over again. It is far easier to build the value of an account
+in incrememts over time by holding onto to gains. It is easy to make money trading – the challenge is to
+keep what you make.
+Factor’s trading approach in a nutshell
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal
+patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+###
+12

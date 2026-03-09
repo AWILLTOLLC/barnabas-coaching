@@ -1,0 +1,274 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'AI Strategy Coaching',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Barnabas Coaching',
+      url: 'https://barnabascoaching.com',
+    },
+    areaServed: { '@type': 'City', name: 'Seattle' },
+    description: 'AI strategy coaching for Seattle small businesses: audits, retainers, and hands-on implementation guidance.',
+  },
+];
+
+const pillars = [
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8" style="color:#C08B3A"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
+    title: 'Track record, not trend-chasing',
+    body: "Aaron has been at the leading edge of technology through multiple cycles — early internet voice infrastructure in the '90s, algorithmic trading systems, Microsoft at hundreds of millions of users, and today, complex enterprise IT at a major life sciences company. He doesn't chase what's new. He evaluates what's proven, what's ready, and what fits your specific business.",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8" style="color:#C08B3A"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>`,
+    title: 'Honest about what AI can\'t do',
+    body: "Most AI consultants want to impress you with possibilities. Aaron's job is to tell you the truth, including when the right answer is \"not yet\" or \"this one's not worth your time.\"",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8" style="color:#C08B3A"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`,
+    title: 'Owner-to-owner',
+    body: "Aaron has run his own businesses for over 8 years. He understands cash flow, hiring decisions, and what it means to make bets with your own money. He's advised from experience, not a presentation deck.",
+  },
+];
+---
+
+<Layout
+  title="Home"
+  description="Barnabas Coaching helps Seattle small businesses cut through AI hype and build workflows that actually work. Led by Aaron Williams: technologist, operator, and AI strategist."
+  schema={pageSchema}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background:#0E1F3D">
+    <!-- Subtle texture overlay -->
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-widest mb-6" style="color:#C08B3A">
+          AI Strategy · Seattle, WA
+        </p>
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          AI is transforming business.<br />
+          Most owners know it.<br />
+          <span style="color:#C08B3A">Few know where to start.</span>
+        </h1>
+        <p class="text-lg sm:text-xl leading-relaxed mb-10" style="color:#8fa6c4">
+          Barnabas Coaching helps Seattle small businesses move past the hype and build real AI workflows.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href="/contact"
+            class="inline-block px-7 py-3.5 rounded text-base font-semibold text-white text-center transition-colors"
+            style="background:#C08B3A"
+            onmouseover="this.style.background='#D4A254'"
+            onmouseout="this.style.background='#C08B3A'"
+          >
+            Book a Free Discovery Call
+          </a>
+          <a
+            href="/services"
+            class="inline-block px-7 py-3.5 rounded text-base font-semibold text-center transition-colors border"
+            style="color:#8fa6c4; border-color:#2a4a70"
+            onmouseover="this.style.color='#ffffff'; this.style.borderColor='#4a6a90'"
+            onmouseout="this.style.color='#8fa6c4'; this.style.borderColor='#2a4a70'"
+          >
+            See How It Works →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof bar -->
+  <section class="bg-white border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+      <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-sm text-gray-500 font-medium">
+        <span>Microsoft · MSN Messenger</span>
+        <span class="text-gray-300 hidden sm:inline">|</span>
+        <span>Accenture</span>
+        <span class="text-gray-300 hidden sm:inline">|</span>
+        <span>8 Years in Biotech IT</span>
+        <span class="text-gray-300 hidden sm:inline">|</span>
+        <span>AI Product Builder</span>
+        <span class="text-gray-300 hidden sm:inline">|</span>
+        <span>Seattle-Based</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Overview -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="max-w-2xl mb-12">
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Two ways to work together</h2>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        No long engagements. No vague deliverables. You'll know exactly what you're getting before we start.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- AI Audit Card -->
+      <div class="bg-white rounded-lg border border-gray-200 p-8 hover:border-gray-300 hover:shadow-sm transition-all">
+        <div class="flex items-start justify-between mb-5">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-amber-700 mb-1">One-Time</p>
+            <h3 class="font-serif text-2xl font-bold text-slate-900">AI Audit</h3>
+          </div>
+          <div class="text-right">
+            <span class="text-2xl font-bold text-slate-900">$2,500</span>
+          </div>
+        </div>
+        <p class="text-gray-600 leading-relaxed mb-6">
+          A structured assessment of your business workflows with a written report and prioritized
+          recommendations for where AI can move the needle. Get clarity in 30 days.
+        </p>
+        <ul class="space-y-2 mb-8">
+          {[
+            'Workflow mapping & intake interview',
+            'Written assessment report',
+            'Prioritized recommendations',
+            'Tool and vendor guidance',
+          ].map((item) => (
+            <li class="flex items-center gap-3 text-sm text-gray-700">
+              <span style="color:#C08B3A" class="flex-shrink-0">✓</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <a href="/services#audit" class="text-sm font-semibold transition-colors" style="color:#0E1F3D"
+          onmouseover="this.style.color='#C08B3A'"
+          onmouseout="this.style.color='#0E1F3D'">
+          Learn more →
+        </a>
+      </div>
+
+      <!-- Coaching Retainer Card -->
+      <div class="rounded-lg border p-8 hover:shadow-sm transition-all" style="background:#0E1F3D; border-color:#1a3358">
+        <div class="flex items-start justify-between mb-5">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color:#C08B3A">Monthly</p>
+            <h3 class="font-serif text-2xl font-bold text-white">Coaching Retainer</h3>
+          </div>
+          <div class="text-right">
+            <span class="text-2xl font-bold text-white">$1,500</span>
+            <span class="text-sm block" style="color:#5f7fa0">/month</span>
+          </div>
+        </div>
+        <p class="leading-relaxed mb-6" style="color:#8fa6c4">
+          Ongoing strategy support with someone who has actually built and implemented AI systems.
+          Two focused calls per month, plus async access between sessions. No wasted time.
+        </p>
+        <ul class="space-y-2 mb-8">
+          {[
+            '2 × 60-minute strategy calls/month',
+            'Async support between calls',
+            'Tool and vendor recommendations',
+            'Implementation review & feedback',
+          ].map((item) => (
+            <li class="flex items-center gap-3 text-sm" style="color:#8fa6c4">
+              <span style="color:#C08B3A" class="flex-shrink-0">✓</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <a href="/services#retainer" class="text-sm font-semibold transition-colors" style="color:#C08B3A"
+          onmouseover="this.style.color='#D4A254'"
+          onmouseout="this.style.color='#C08B3A'">
+          Learn more →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Barnabas -->
+  <section class="bg-white border-t border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="max-w-2xl mb-14">
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          Why Barnabas Coaching?
+        </h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          Aaron Williams has run his own business for over 8 years. He knows what it costs to make a wrong bet — with his own money, his own team, his own clients. When he advises you, it's owner to owner. Here's what makes that different.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {pillars.map((pillar) => (
+          <div>
+            <div class="mb-4" set:html={pillar.icon}></div>
+            <h3 class="font-serif text-xl font-bold text-slate-900 mb-3">{pillar.title}</h3>
+            <p class="text-gray-600 leading-relaxed text-sm">{pillar.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Aaron intro teaser -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+      <div class="md:col-span-3">
+        <p class="text-xs font-semibold uppercase tracking-widest text-amber-700 mb-3">About Aaron</p>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          In the late 1990s, Aaron was building routing infrastructure for real-time internet voice systems before most people knew that was even possible.
+          Skype launched four years later. He joined Microsoft at 24, working on MSN Messenger, one of the first products to prove that millions of people would shift a core communication habit to the internet.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-8">
+          He's seen what it looks like when a wave hits: the confusion, the urgency, the organizations that
+          move early and win, and the ones that wait and play catch-up for years. AI is that wave, right now.
+          Barnabas Coaching exists to help Seattle business owners get on the right side of it.
+        </p>
+        <a
+          href="/about"
+          class="inline-block text-sm font-semibold transition-colors"
+          style="color:#0E1F3D"
+          onmouseover="this.style.color='#C08B3A'"
+          onmouseout="this.style.color='#0E1F3D'"
+        >
+          Read Aaron's full story →
+        </a>
+      </div>
+      <div class="md:col-span-2">
+        <div class="rounded-lg p-8 border border-gray-200 bg-white">
+          <div class="space-y-4">
+            {[
+              { year: '1990s', label: 'Building internet voice infrastructure, pre-Skype' },
+              { year: '2004', label: 'Technical Program Manager, MSN Messenger at Microsoft' },
+              { year: '2010s', label: 'Management Consultant, Accenture' },
+              { year: '8 yrs', label: 'Boutique biotech IT consulting, Seattle' },
+              { year: 'Now', label: 'AI strategy coach for Seattle businesses' },
+            ].map((item) => (
+              <div class="flex gap-4 items-start">
+                <span class="text-xs font-semibold text-amber-700 w-12 flex-shrink-0 pt-0.5">{item.year}</span>
+                <span class="text-sm text-gray-600">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="bg-white border-t border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+        Ready to find out what AI can actually do for your business?
+      </h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-xl mx-auto">
+        Start with a free 30-minute discovery call. A genuine conversation about where your business is and where AI can take you.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block px-8 py-4 rounded text-base font-semibold text-white transition-colors"
+        style="background:#0E1F3D"
+        onmouseover="this.style.background='#1a3358'"
+        onmouseout="this.style.background='#0E1F3D'"
+      >
+        Book Your Discovery Call
+      </a>
+    </div>
+  </section>
+</Layout>

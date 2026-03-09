@@ -1,0 +1,2452 @@
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 OpenClaw macOS Native Chat Client\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Product & Technical Specification\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Version:} 1.0\line {\b Date:} February 2026\line {\b Status:} Draft \u8212- Ready for Engineering Review\line {\b Classification:} Internal\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Table of Contents\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab {\field{\*\fldinst{HYPERLINK "#1-executive-summary"}}{\fldrslt{\ul
+Executive Summary
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab {\field{\*\fldinst{HYPERLINK "#2-problem-statement"}}{\fldrslt{\ul
+Problem Statement
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab {\field{\*\fldinst{HYPERLINK "#3-mvp-specification--phase-1"}}{\fldrslt{\ul
+MVP Specification \u8212- Phase 1
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 4.\tx360\tab {\field{\*\fldinst{HYPERLINK "#4-full-product-specification--phase-2"}}{\fldrslt{\ul
+Full Product Specification \u8212- Phase 2+
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 5.\tx360\tab {\field{\*\fldinst{HYPERLINK "#5-technical-architecture"}}{\fldrslt{\ul
+Technical Architecture
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 6.\tx360\tab {\field{\*\fldinst{HYPERLINK "#6-uiux-specification"}}{\fldrslt{\ul
+UI/UX Specification
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 7.\tx360\tab {\field{\*\fldinst{HYPERLINK "#7-data-models"}}{\fldrslt{\ul
+Data Models
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 8.\tx360\tab {\field{\*\fldinst{HYPERLINK "#8-security-model"}}{\fldrslt{\ul
+Security Model
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 9.\tx360\tab {\field{\*\fldinst{HYPERLINK "#9-build--distribution"}}{\fldrslt{\ul
+Build & Distribution
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 10.\tx360\tab {\field{\*\fldinst{HYPERLINK "#10-phased-roadmap"}}{\fldrslt{\ul
+Phased Roadmap
+}}}
+\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 1. Executive Summary\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 OpenClaw is an AI agent platform running on a Linux gateway server accessible via Tailscale. It manages Claude-based agents, executes tools, handles memory, schedules cron jobs, and communicates via multiple channels (Telegram, webchat). The current interface is a web-based Control UI \u8212- functional but fundamentally limited for desktop use.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This document specifies a native macOS application to replace the web UI as the primary desktop interface for OpenClaw. The app delivers a first-class macOS experience: menu bar access, native notifications, real-time agent transparency, keyboard-driven workflow, and a direct WebSocket connection to the gateway \u8212- no third-party relay required.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Target users:} OpenClaw operators \u8212- individuals running personal AI agent setups who interact with their agents throughout the workday from a Mac.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Primary goals:}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Replace the web UI with a native macOS application\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Provide real-time visibility into agent activity (tool calls, subagent spawns, file operations)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Enable asynchronous workflows with macOS-native notification/approval flows\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Deliver an experience that feels like Slack or Linear \u8212- not a wrapped browser tab\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Phased delivery:}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Phase 1 (MVP):} Functional chat client with menu bar access, session management, streaming WebSocket chat, markdown rendering, file attachments, and notifications. Buildable in 6\u8211-8 weeks by one Swift engineer.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Phase 2:} Three-pane layout with live Work Panel, Timeline Replay, Agent Roster, Artifact Library, Steer Controls, multi-gateway support, Apple Watch companion, and full keyboard workflow. 3\u8211-4 months additional work.\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 2. Problem Statement\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 2.1 Current State\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 OpenClaw\u8217's primary user interface is a web-based Control UI served at port 18789 on the gateway. Operators interact with agents by navigating to {\f1 https://ubuntu-ct.tailb4a099.ts.net:18789} in a browser.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This works. It is not good enough.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 2.2 Specific Deficiencies\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b No native macOS integration:}\line The web UI cannot place itself in the menu bar, register global keyboard shortcuts, access the macOS notification center, integrate with Spotlight, support drag-and-drop file operations, or participate in Handoff. It is a website. macOS does not know it exists.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b No real-time task transparency:}\line When an agent executes a multi-step task \u8212- reading files, spawning subagents, calling tools, writing output \u8212- the operator sees nothing until the final response arrives. For tasks that take 30\u8211-120 seconds, this is a black box. There is no way to know if the agent is working, stuck, or about to do something undesirable.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Telegram timeout issues:}\line Telegram is currently used as an async channel, but it imposes response timeouts that break long-running tasks. Operators get disconnected from in-progress work. The conversation history fragments. There is no approval flow for sensitive actions.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Workflow friction:}\line Switching to a browser tab, navigating to the control UI, and typing in a web form is the wrong abstraction for an always-on AI assistant. The tool should be as accessible as a Spotlight search \u8212- a keyboard shortcut away, then gone when you\u8217're done.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 2.3 What \u8220"Fixed\u8221" Looks Like\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A native macOS app that:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Lives in the menu bar and is accessible in under one second via keyboard shortcut\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Streams agent responses in real-time with visible tool execution steps\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Surfaces approval requests as macOS actionable notifications\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Handles long-running tasks natively with a live work panel \u8212- no timeouts, no black box\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Stores chat history locally so it persists regardless of gateway state\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Feels like an app, not a workaround\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 3. MVP Specification \u8212- Phase 1\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Phase 1 delivers a fully functional, shippable chat client. It covers the core loop: connect, chat, see responses, get notified. Everything in Phase 1 should be buildable and testable in isolation.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.1 Feature List\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2880\clbrdrb\brdrs\cellx5760\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Feature\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Description\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Priority\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Menu bar app\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 App icon in menu bar, click to open popover or window\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Gateway connection setup\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 URL + token entry \u8594 ? Keychain storage\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 WebSocket chat\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Send messages, receive streaming responses\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Streaming text rendering\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Tokens appear as they arrive, not all at once\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Markdown rendering\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Code blocks, bold, italic, lists, inline code\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Session list (sidebar)\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Load existing sessions from gateway, switch between them\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Connection state indicator\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Visual: connected / reconnecting / offline\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Auto-reconnect\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Retry on drop with exponential backoff\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Local notifications\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Notify when response arrives while window is not focused\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P1\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 File attachment\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Drag file onto chat \u8594 ? upload to gateway workspace\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P1\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 New session creation\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Start a new session from the sidebar\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P1\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Session search\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Filter session list by query string\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P2\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.2 Menu Bar App\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The app runs as a menu bar extra ({\f1 LSUIElement = YES} in Info.plist). It does not appear in the Dock. It does not appear in the app switcher (Cmd+Tab). It is always running in the background.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Menu bar icon:} A custom icon representing OpenClaw (the claw mark). It has two states: - {\b Active/connected:} Full opacity - {\b Disconnected/error:} Dimmed or with a warning badge\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Click behavior:} Single-click opens the main window as a popover anchored to the menu bar icon. The popover is detachable \u8212- if the user drags it, it becomes a floating window that persists independently.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Detached window behavior:} The window is a standard {\f1 NSWindow} with {\f1 NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable}. Closing the window returns to popover mode (does not quit the app).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b App quit:} Via the Gear menu \u8594 ? Quit, or via right-click on the menu bar icon.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.3 Gateway Connection Setup\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.3.1 First Launch Experience\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 On first launch, the app displays a setup sheet:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +------------------------------------------------+\line
+|  Connect to OpenClaw Gateway                   |\line
+|                                                |\line
+|  Gateway URL                                   |\line
+|  [ https://ubuntu-ct.tailb4a099.ts.net _____ ] |\line
+|                                                |\line
+|  Auth Token                                    |\line
+|  [ \u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ?\u8226 ? ] |\line
+|                                                |\line
+|  [Test Connection]          [Save & Connect]   |\line
++------------------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b URL field:} Standard text field. Accepts {\f1 https://} or {\f1 wss://} prefix. The app normalizes internally \u8212- {\f1 https://host} becomes {\f1 wss://host} for WebSocket connections and {\f1 https://host} for REST calls.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Token field:} Secure text field (no autocomplete, no paste suggestion). Password-style masking.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Test Connection button:} Makes a lightweight REST probe to {\f1 GET /api/status} (or equivalent health endpoint) with the provided credentials. Shows inline success/failure without saving.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Save & Connect:} Validates URL format, saves to Keychain (see Section 8.2), initiates WebSocket connection.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.3.2 Connection Management (Settings)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Settings panel (Cmd+,) exposes: - Current gateway URL (editable) - Token (show/hide toggle, re-enter to change) - Connection status - Disconnect button - Add Gateway button (placeholder for Phase 2 multi-gateway)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.4 WebSocket Chat\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.4.1 Connection Lifecycle\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab App launches \u8594 ? read gateway URL and token from Keychain\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab If both present: initiate WebSocket connection immediately\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab Connection state: {\f1 disconnected \u8594 ? connecting \u8594 ? connected}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 4.\tx360\tab On connection drop: enter {\f1 reconnecting} state with exponential backoff (1s, 2s, 4s, 8s, 16s, cap at 60s)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 5.\tx360\tab On successful reconnect: reload session list, resume active session\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.4.2 Message Flow\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Sending a message:} 1. User types in text field, presses Return or clicks Send 2. Message appended to local SQLite store with status {\f1 sending} 3. WebSocket message sent to gateway (see protocol in Section 5.3) 4. Gateway ACKs message \u8594 ? status updated to {\f1 sent} 5. Agent begins responding \u8594 ? streaming tokens arrive 6. Each token appended to in-progress response bubble in real-time 7. Stream complete signal \u8594 ? response finalized in SQLite with status {\f1 complete}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Receiving a message:} 1. WebSocket event arrives 2. Parse JSON envelope (see Section 5.3) 3. Route to appropriate session by {\f1 session_id} 4. If session not active in UI: queue notification 5. Render in chat view\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.4.3 Streaming Text Rendering\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Streaming tokens must render with no perceptible lag. Implementation:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Use {\f1 @Published var streamBuffer: String} on the message view model\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Each incoming token triggers {\f1 streamBuffer += token}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab SwiftUI {\f1 Text(streamBuffer)} re-renders automatically\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab For markdown: buffer raw text during streaming, parse markdown only on stream completion\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Intermediate state: render as plain text with a blinking cursor indicator\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab On stream complete: replace plain text with fully parsed markdown view\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This avoids expensive markdown re-parses on every token while keeping the streaming feel.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.4.4 Markdown Rendering\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Phase 1 markdown requirements:\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Element\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Implementation\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Bold ({\f1 **text**})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 .bold()} modifier or {\f1 AttributedString}\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Italic ({\f1 *text*})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 .italic()} modifier\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Inline code ({\f1 `code`})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Monospace font, light background color\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Code blocks ({\f1 ```})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Monospace font, dark background, scrollable horizontally\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Unordered lists\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Custom list rendering with bullet points\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Ordered lists\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Custom list rendering with numbers\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Headers (H1\u8211-H3)\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Scaled font size\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Line breaks\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Preserved as rendered\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Implementation choice:} Use {\f1 swift-markdown} (Apple\u8217's open-source library) to parse Markdown AST, then walk the AST to produce SwiftUI views. Do not use {\f1 WebView} \u8212- this is a native app.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For Phase 1, syntax highlighting in code blocks is rendered in a fixed monospace font without colorization. Syntax highlighting is a Phase 2 feature.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.5 Session Management\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.5.1 Session List\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The sidebar displays a scrollable list of sessions fetched from the gateway via REST:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 GET /api/sessions\line
+Authorization: Bearer <token>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Response: array of session objects (see Section 7.1).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Session list item display:} - Session label or auto-generated name (first message preview) - Last activity timestamp (relative: \u8220"2 min ago\u8221", \u8220"Yesterday\u8221") - Unread indicator dot (for sessions with new messages since last view)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Ordering:} Most recently active first.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Session search:} Text field at top of sidebar filters list in real-time. Searches session labels and first-message previews.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.5.2 Session Selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Clicking a session: 1. Load message history from local SQLite (instant) 2. Fetch any messages newer than last cached message from gateway 3. Mark session as active \u8212- subsequent incoming messages routed here\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.5.3 New Session\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \u8220"+\u8221" button at top of sidebar calls:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 POST /api/sessions\line
+Authorization: Bearer <token>\line
+Content-Type: application/json\line
+\line
+\{ "label": null \}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Returns new session object. App selects it immediately, ready to send first message.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.6 File Attachments\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.6.1 Drag and Drop\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The chat input area accepts file drops. Drop targets: - The chat message input field - Anywhere in the chat view (fallback)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Drop behavior:} 1. User drags file from Finder into chat area 2. App shows drop preview overlay: filename, icon, size 3. User releases \u8594 ? upload begins 4. Progress indicator appears in the chat input area 5. On upload complete: attachment reference appended to current draft message 6. User sends message \u8594 ? message includes attachment reference\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.6.2 File Upload Protocol\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Files are uploaded to the gateway via HTTPS multipart upload (not WebSocket \u8212- binary file transfer over WebSocket is inefficient and adds complexity):\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 POST /api/workspace/upload\line
+Authorization: Bearer <token>\line
+Content-Type: multipart/form-data\line
+\line
+--boundary\line
+Content-Disposition: form-data; name="file"; filename="document.pdf"\line
+Content-Type: application/pdf\line
+\line
+<binary data>\line
+--boundary--\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Response:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "path": "/root/.openclaw/workspace/uploads/document.pdf",\line
+  "size": 204800,\line
+  "mime_type": "application/pdf"\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The returned {\f1 path} is included in the chat message payload so the agent can reference it.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.6.3 File Size Limits\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Phase 1: 50MB per file. Larger files show an error toast. No multi-file batch upload in Phase 1.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.7 Notifications\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.7.1 Notification Trigger Conditions\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A notification is sent when: - A new agent response completes (stream ends) - The app window is not the active, front window\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Do NOT send a notification when: - The user is actively viewing the session in a focused window - The app is in foreground\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.7.2 Notification Format\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Title: "OpenClaw"\line
+Subtitle: [Session label or "New Session"]\line
+Body: [First 120 characters of response]\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Action:} Clicking notification opens the app, selects the relevant session, scrolls to the new message.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 3.7.3 Notification Permission\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 On first launch (after connection setup), request notification permission:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 UNUserNotificationCenter.current().requestAuthorization(\line
+    options: [.alert, .sound, .badge]\line
+) \{ granted, error in ... \}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If denied: show informational banner in the app (\u8220"Notifications disabled. Enable in System Settings \u8594 ? Notifications \u8594 ? OpenClaw\u8221").\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.8 Connection State Indicator\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A persistent status bar at the bottom of the window (or inline in the sidebar header) shows connection state:\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2880\clbrdrb\brdrs\cellx5760\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 State\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Visual\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Label\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 connected}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Green dot\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Connected\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 connecting}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Yellow dot, pulsing\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Connecting\u8230 ?\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 reconnecting}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Yellow dot, pulsing\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Reconnecting (attempt N)\u8230 ?\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 disconnected}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Red dot\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Disconnected\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 error}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Red dot\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Connection Error\u8221"\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Clicking the indicator in {\f1 disconnected} or {\f1 error} state triggers a manual reconnect attempt.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3.9 Auto-Reconnect\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Reconnect logic:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 On connection drop:\line
+  state = .reconnecting\line
+  attempt = 0\line
+  \line
+  loop:\line
+    wait(min(60, 2^attempt) seconds)\line
+    try connect()\line
+    if connected: break\line
+    attempt += 1\line
+    \line
+  if attempt > 10 and still disconnected:\line
+    state = .disconnected  // stop retrying, require manual\line
+    post notification: "OpenClaw disconnected from gateway"\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Network awareness:} Use {\f1 NWPathMonitor} (Network framework) to detect network availability. Do not attempt reconnects when network is unavailable. Resume reconnect loop when network becomes available.\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 4. Full Product Specification \u8212- Phase 2+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Phase 2 builds on the MVP to deliver the full vision: real-time agent transparency, rich workspace management, multi-gateway support, and platform integrations.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.1 Three-Pane Layout\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The default window layout in Phase 2 is three vertical panes:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +------------------+------------------------+---------------------+\line
+| SIDEBAR          | CHAT                   | WORK PANEL          |\line
+| (240px min)      | (flexible, 400px min)  | (320px min)         |\line
+|                  |                        |                     |\line
+| Sessions         | Message thread         | Live tool calls     |\line
+| Agents           | Input area             | Subagent status     |\line
+| Connections      |                        | File ops timeline   |\line
+|                  |                        | Task board          |\line
++------------------+------------------------+---------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Panes are resizable via drag handles. The Work Panel can be collapsed (hidden) when not needed. The sidebar can also be collapsed.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 User pane sizes are persisted in {\f1 UserDefaults}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.2 Work Panel \u8212- Live Task Board\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Work Panel provides real-time visibility into what the agent is doing while generating a response.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 4.2.1 Event Stream\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The gateway emits structured events over the WebSocket alongside message tokens. These events describe agent activity:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "agent_event",\line
+  "event_kind": "tool_call",\line
+  "tool": "Read",\line
+  "args": \{ "file_path": "/root/.openclaw/workspace/MEMORY.md" \},\line
+  "status": "running",\line
+  "timestamp": 1740499200\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Event kinds: - {\f1 tool_call} \u8212- tool invocation started/completed/failed - {\f1 subagent_spawn} \u8212- subagent created - {\f1 subagent_complete} \u8212- subagent finished - {\f1 file_read} \u8212- file read operation - {\f1 file_write} \u8212- file write operation - {\f1 web_search} \u8212- web search issued - {\f1 thinking} \u8212- agent is reasoning (optional, if exposed) - {\f1 approval_request} \u8212- agent requests user approval\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 4.2.2 Work Panel Display\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Each event renders as a compact card in the Work Panel:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +----------------------------------------+\line
+| \u55357 ?\u56615 ? Read                         2s ago |\line
+| /root/.openclaw/workspace/MEMORY.md    |\line
+| \u10003 ? 142 lines read                       |\line
++----------------------------------------+\line
+\line
++----------------------------------------+\line
+| \u55356 ?\u57104 ? Web Search                  running |\line
+| "OpenClaw WebSocket protocol"          |\line
+| \u10251 ? Fetching results...                  |\line
++----------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Events animate in from the bottom. Completed events fade slightly. Running events show a spinner. Failed events show in red with error detail.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Card click:} Expands to show full args/result inline.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 4.2.3 Task Board Mode\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A toggle in the Work Panel switches from \u8220"Event Stream\u8221" (chronological) to \u8220"Task Board\u8221" (status-grouped):\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Running:} Currently executing operations\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Completed:} Finished this session\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Failed:} Operations that errored\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.3 Timeline Replay\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Timeline Replay feature allows scrubbing through the history of an agent task like a video.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Access:} A timeline scrubber appears at the bottom of the Work Panel for completed sessions.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Behavior:} - Scrubbing the timeline replays Work Panel events in chronological order - The chat view syncs \u8212- messages appear/disappear as if watching it happen in real time - Play/pause controls - Speed control: 1x, 2x, 4x, 8x\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Data source:} All events are persisted in SQLite (see Section 7.3). Replay reads from local store only.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Use case:} Understanding why an agent made a particular decision, auditing actions after the fact, sharing agent \u8220"runs\u8221" as recordings.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.4 Agent Roster\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A panel (accessible from the sidebar or a dedicated tab) showing all agents managed by the connected gateway.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Per-agent display:} - Agent name and label - Status: active / idle / error - Active session count - Memory size (approximate token count) - Last activity timestamp - Memory summary stats (from gateway)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Actions available per agent:} - View agent configuration - View memory (read-only in Phase 2, editable in Phase 3) - View active sessions - Kill active session\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Data source:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 GET /api/agents\line
+Authorization: Bearer <token>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Refreshed every 30 seconds and on WebSocket events.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.5 Artifact Library\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A file browser for the gateway workspace ({\f1 /root/.openclaw/workspace}).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Layout:} Two-panel file browser (directories on left, files on right).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Supported preview types:}\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Type\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Preview\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Images (jpg, png, gif, webp)\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Inline image render\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Markdown (.md)\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Rendered markdown\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Plain text\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Text viewer with monospace font\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Code (Swift, Python, JS, etc.)\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Syntax-highlighted code view\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 JSON\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Formatted/collapsible tree view\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Other\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Hex preview or \u8220"Open in default app\u8221"\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b File operations:} - Double-click: open in default macOS app via {\f1 NSWorkspace} - Drag out: drag file to Finder - Drag in: upload file to that directory - Right-click: Copy path, Delete, Rename\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Data source:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 GET /api/workspace/list?path=/root/.openclaw/workspace\line
+Authorization: Bearer <token>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.6 Steer Controls\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When an agent is actively responding, the Work Panel shows a Steer toolbar:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 [\u9208 ? Pause]  [\u9209 ? Stop]  [\u8617 ? Redirect]\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Pause:} Sends a pause signal to the gateway. Agent completes current tool call and waits.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Stop:} Sends a stop signal. Agent stops after current operation, outputs partial result.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Redirect:} Opens a text field inline. User types a new instruction. Sent as a steer message to the gateway mid-task.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Protocol:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "steer",\line
+  "action": "pause" | "stop" | "redirect",\line
+  "message": "Focus only on the billing module, skip auth",\line
+  "session_id": "abc123"\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.7 Approval Flows\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When the agent encounters an action requiring human approval (defined by gateway policy), it emits an {\f1 approval_request} event:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "approval_request",\line
+  "request_id": "req_abc123",\line
+  "action": "exec",\line
+  "description": "Run shell command: rm -rf /tmp/old_cache",\line
+  "risk_level": "medium",\line
+  "timeout_seconds": 120\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b In-app:} An approval card appears in the Work Panel with Approve/Deny buttons.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Notification:} If the app is not focused, a macOS actionable notification is delivered:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Title: "OpenClaw \u8212- Action Required"\line
+Body: "Agent wants to: rm -rf /tmp/old_cache"\line
+Actions: [Approve] [Deny]\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The user can approve or deny directly from the notification without opening the app.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Timeout:} If not responded to within {\f1 timeout_seconds}, the gateway auto-denies and the agent is notified.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Response protocol:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "approval_response",\line
+  "request_id": "req_abc123",\line
+  "approved": true,\line
+  "note": null\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.8 Multi-Gateway Support\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The app supports connecting to multiple OpenClaw gateways simultaneously (e.g., personal VPS, work server).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Gateway model:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 struct Gateway \{\line
+    var id: UUID\line
+    var label: String        // "Home Server", "Work VPS"\line
+    var url: URL\line
+    var tokenRef: String     // Keychain reference, not the token itself\line
+    var isActive: Bool\line
+    var lastConnected: Date?\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b UI:} A gateway picker at the top of the sidebar (dropdown or segmented control). Switching changes the active gateway \u8212- sessions, agents, and artifacts all update.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Simultaneous connections:} App maintains WebSocket connections to all configured gateways. Notifications arrive from all. Active gateway determines what\u8217's displayed.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b iCloud sync of gateway configs:} Gateway URLs and labels sync via {\f1 NSUbiquitousKeyValueStore}. Tokens do NOT sync \u8212- they are Keychain-bound to the local device.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.9 Spotlight-Style Summon\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A global keyboard shortcut (default: {\f1 \u8963 ?Space}, user-configurable) summons a command palette overlay:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +--------------------------------------------------+\line
+| > _                                              |\line
++--------------------------------------------------+\line
+| Recent Sessions                                  |\line
+|   \u55357 ?\u56492 ?  Debug the billing module (2 min ago)       |\line
+|   \u55357 ?\u56492 ?  Weekly planning session (1 hour ago)       |\line
+| Quick Actions                                    |\line
+|   \u10024 ?  New Chat Session                           |\line
+|   \u55357 ?\u56589 ?  Search All Sessions                        |\line
+|   \u55357 ?\u56514 ?  Open Artifact Library                      |\line
++--------------------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Behavior:} - Registered via {\f1 Carbon.framework} {\f1 EventHotKey} API (for global, system-wide shortcut) - Palette appears above all windows, including full-screen apps - ESC dismisses - Return on a session opens it in the main window - Type to fuzzy search across sessions, agents, artifacts\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.10 Command Palette (\u8984 ?K)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Within the app (window focused), \u8984 ?K opens a command palette similar to Linear or Raycast:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Sessions:} Switch to any session by name\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Agents:} Jump to agent in roster\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Artifacts:} Open any file by path\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Actions:} New session, disconnect, export conversation, open settings\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Steer commands:} Pause, stop, redirect current task\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Fuzzy search across all categories. Keyboard-navigable.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.11 Apple Watch Companion\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A watchOS app paired via {\f1 WatchConnectivity} ({\f1 WCSession}).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Watch features:} - Glanceable status: which agent is active, what it\u8217's doing (one-line summary) - Approval notifications with Digital Crown scroll to read full action description - Tap-to-approve / tap-to-deny from watch - Brief conversation summary: last message in/out\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Complication:} A small complication showing agent status (idle/active/needs-attention) on watch faces.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Data flow:} macOS app bridges messages to watch via {\f1 WCSession.sendMessage()}. Approvals reverse the flow.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.12 Handoff Support\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Implements {\f1 NSUserActivity} so a conversation can be handed off to the iPhone OpenClaw app (future).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Activity type:} {\f1 com.openclaw.session}\line {\b User info:} {\f1 \{ "session_id": "abc123", "gateway_url": "https://..." \}}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The iPhone app (out of scope for this spec) receives the Handoff and opens the same session.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.13 Voice Input\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Integrates macOS dictation via {\f1 SFSpeechRecognizer}:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Microphone button in chat input area\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Hold: push-to-talk mode\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Click: toggle on/off\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Live transcription preview in the input field\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Send on release (push-to-talk) or manual send\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Does not require internet \u8212- uses on-device speech recognition where available.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.14 Export Conversation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Export the current session as: - {\b Markdown:} Full conversation thread in {\f1 .md} format - {\b PDF:} Styled PDF via {\f1 PDFDocument} with header, timestamp, session metadata\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Access: File menu \u8594 ? Export, or right-click session in sidebar.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4.15 Syntax Highlighting\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Code blocks in Phase 2 use a syntax highlighting library (recommend {\f1 Highlightr} \u8212- a Swift wrapper around highlight.js):\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Auto-detect language from fenced code block language tag\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Fallback to plain monospace for unknown languages\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Two themes: light and dark (follows system appearance)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Language label in top-right corner of code block\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Copy button in code block header\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 5. Technical Architecture\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 5.1 App Architecture\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The app uses {\b MVVM (Model-View-ViewModel)} with Swift Concurrency ({\f1 async/await}, {\f1 Actor}) for all asynchronous operations. Combine is used for reactive UI bindings where SwiftUI\u8217's native binding is insufficient.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.1.1 Layer Overview\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +--------------------------------------------------+\line
+|                    SwiftUI Views                 |  \u8592 ? Pure display, zero business logic\line
++--------------------------------------------------+\line
+|                   ViewModels                     |  \u8592 ? @ObservableObject, @MainActor\line
++--------------------------------------------------+\line
+|                   Services                       |  \u8592 ? Business logic, protocol-oriented\line
++--------------------------------------------------+\line
+|   Gateway Client  |  Local Store  |  Keychain    |  \u8592 ? Infrastructure\line
++--------------------------------------------------+\line
+|        URLSession / Network.framework / SQLite   |  \u8592 ? System frameworks\line
++--------------------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.1.2 Key Services\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b GatewayClient:} Owns the WebSocket connection. Handles connect/disconnect/reconnect, sends messages, receives and parses incoming events. Exposes an {\f1 AsyncSequence} of {\f1 GatewayEvent} values.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b SessionStore:} Manages the SQLite database. CRUD for sessions, messages, artifacts. Provides query methods returning {\f1 AsyncStream<[Session]>} etc. Uses {\f1 @Actor} isolation.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b NotificationService:} Evaluates whether to post a notification and calls {\f1 UNUserNotificationCenter}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b KeychainService:} Wraps {\f1 SecItemAdd}/{\f1 SecItemCopyMatching}/{\f1 SecItemUpdate}/{\f1 SecItemDelete}. Typed API \u8212- {\f1 func storeToken(_ token: String, for gateway: URL)}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b FileTransferService:} Handles file uploads via {\f1 URLSession} multipart POST. Exposes {\f1 uploadFile(at url: URL, to gateway: Gateway) async throws -> RemotePath}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b WorkPanelEventProcessor:} Subscribes to {\f1 GatewayClient} events, filters {\f1 agent_event} types, maintains the ordered list of {\f1 WorkEvent} for the Work Panel view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.1.3 Concurrency Model\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab All UI updates on {\f1 @MainActor}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 GatewayClient} isolated to a custom {\f1 Actor}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab SQLite operations on a dedicated {\f1 DatabaseActor}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab File uploads on {\f1 Task} with cooperative cancellation support\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Reconnect logic runs as a structured {\f1 Task} that observes {\f1 NWPathMonitor}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.1.4 State Management\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Top-level state lives in {\f1 AppState} \u8212- an {\f1 ObservableObject} injected into the SwiftUI environment:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 @MainActor\line
+final class AppState: ObservableObject \{\line
+    @Published var gateways: [Gateway] = []\line
+    @Published var activeGateway: Gateway?\line
+    @Published var connectionState: ConnectionState = .disconnected\line
+    @Published var sessions: [Session] = []\line
+    @Published var activeSession: Session?\line
+    @Published var workEvents: [WorkEvent] = []\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 ViewModels hold view-local state and observe relevant slices of {\f1 AppState}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 5.2 Project Structure\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 OpenClaw.xcworkspace\line
+\u9500 ?\u9472 ?\u9472 ? OpenClaw/                          # Main macOS app target\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? App/\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? OpenClawApp.swift          # @main, NSApplicationDelegate\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? AppState.swift             # Global state\line
+\u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? AppDelegate.swift          # Menu bar setup, lifecycle\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? Views/\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? MenuBarView.swift          # Menu bar icon + popover\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? MainWindowView.swift       # Three-pane container\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? SidebarView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? ChatView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? MessageBubbleView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? MarkdownView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? WorkPanelView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? WorkEventCardView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? ArtifactLibraryView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? AgentRosterView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? ConnectionSetupView.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? CommandPaletteView.swift\line
+\u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? SettingsView.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? ViewModels/\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? ChatViewModel.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? SessionListViewModel.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? WorkPanelViewModel.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? ArtifactLibraryViewModel.swift\line
+\u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? AgentRosterViewModel.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? Services/\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? GatewayClient.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? SessionStore.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? KeychainService.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? NotificationService.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? FileTransferService.swift\line
+\u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? WorkPanelEventProcessor.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? Models/\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Session.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Message.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Gateway.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? WorkEvent.swift\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Artifact.swift\line
+\u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? Agent.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? Infrastructure/\line
+\u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Database/\line
+\u9474 ?   \u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? DatabaseActor.swift\line
+\u9474 ?   \u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Migrations/\line
+\u9474 ?   \u9474 ?   \u9474 ?   \u9474 ?   \u9500 ?\u9472 ?\u9472 ? Migration_001.swift\line
+\u9474 ?   \u9474 ?   \u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? ...\line
+\u9474 ?   \u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? Schema.swift\line
+\u9474 ?   \u9474 ?   \u9492 ?\u9472 ?\u9472 ? Networking/\line
+\u9474 ?   \u9474 ?       \u9500 ?\u9472 ?\u9472 ? WebSocketConnection.swift\line
+\u9474 ?   \u9474 ?       \u9492 ?\u9472 ?\u9472 ? GatewayError.swift\line
+\u9474 ?   \u9492 ?\u9472 ?\u9472 ? Resources/\line
+\u9474 ?       \u9500 ?\u9472 ?\u9472 ? Assets.xcassets\line
+\u9474 ?       \u9492 ?\u9472 ?\u9472 ? Info.plist\line
+\u9500 ?\u9472 ?\u9472 ? OpenClawWatch/                     # watchOS target\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? OpenClawWatchApp.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? Views/\line
+\u9474 ?   \u9492 ?\u9472 ?\u9472 ? WatchConnectivityBridge.swift\line
+\u9500 ?\u9472 ?\u9472 ? OpenClawTests/                     # Unit tests\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? GatewayClientTests.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? SessionStoreTests.swift\line
+\u9474 ?   \u9500 ?\u9472 ?\u9472 ? MarkdownViewTests.swift\line
+\u9474 ?   \u9492 ?\u9472 ?\u9472 ? KeychainServiceTests.swift\line
+\u9492 ?\u9472 ?\u9472 ? OpenClawUITests/                   # UI tests\line
+    \u9492 ?\u9472 ?\u9472 ? ChatFlowTests.swift\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 5.3 WebSocket Protocol\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.3.1 Connection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 WebSocket connection established to:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 wss://<gateway-host>/ws?token=<bearer-token>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Or with header-based auth (preferred, if supported by gateway):\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 GET /ws HTTP/1.1\line
+Host: ubuntu-ct.tailb4a099.ts.net\line
+Upgrade: websocket\line
+Connection: Upgrade\line
+Authorization: Bearer <token>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The gateway should prefer header-based auth as query string tokens appear in server logs.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.3.2 Heartbeat\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The client sends a ping frame every 30 seconds. If no pong is received within 10 seconds, the connection is considered dead and reconnect begins.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Heartbeat implementation\line
+func startHeartbeat() \{\line
+    heartbeatTask = Task \{\line
+        while !Task.isCancelled \{\line
+            try await Task.sleep(for: .seconds(30))\line
+            await webSocket.sendPing()\line
+            // await pong within 10s or reconnect\line
+        \}\line
+    \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.3.3 Message Envelope\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 All messages are JSON. Both directions use the same envelope structure:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "id": "msg_<uuid>",\line
+  "type": "chat" | "event" | "control" | "ack" | "error",\line
+  "session_id": "sess_<uuid>",\line
+  "timestamp": 1740499200,\line
+  "payload": \{ ... \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.3.4 Outbound Message Types\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Send chat message:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "id": "msg_abc123",\line
+  "type": "chat",\line
+  "session_id": "sess_xyz789",\line
+  "timestamp": 1740499200,\line
+  "payload": \{\line
+    "content": "Analyze the Q4 financials in my workspace",\line
+    "attachments": [\line
+      \{ "path": "/root/.openclaw/workspace/uploads/q4.pdf" \}\line
+    ]\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Steer (Phase 2):}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "id": "msg_abc124",\line
+  "type": "control",\line
+  "session_id": "sess_xyz789",\line
+  "timestamp": 1740499201,\line
+  "payload": \{\line
+    "action": "steer",\line
+    "steer_action": "pause" | "stop" | "redirect",\line
+    "message": "Focus on the revenue section only"\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Approval response (Phase 2):}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "id": "msg_abc125",\line
+  "type": "control",\line
+  "session_id": "sess_xyz789",\line
+  "timestamp": 1740499202,\line
+  "payload": \{\line
+    "action": "approval_response",\line
+    "request_id": "req_abc123",\line
+    "approved": true\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.3.5 Inbound Message Types\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Message ACK:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "ack",\line
+  "payload": \{ "message_id": "msg_abc123" \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Streaming token:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "chat",\line
+  "session_id": "sess_xyz789",\line
+  "payload": \{\line
+    "message_id": "resp_def456",\line
+    "role": "assistant",\line
+    "content": "Looking at the Q4 financials",\line
+    "streaming": true,\line
+    "token": " revenue"\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Stream complete:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "chat",\line
+  "session_id": "sess_xyz789",\line
+  "payload": \{\line
+    "message_id": "resp_def456",\line
+    "role": "assistant",\line
+    "streaming": false,\line
+    "final_content": "Looking at the Q4 financials, revenue grew 23% YoY..."\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Agent event (Phase 2):}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "event",\line
+  "session_id": "sess_xyz789",\line
+  "payload": \{\line
+    "event_kind": "tool_call",\line
+    "event_id": "evt_ghi789",\line
+    "tool": "Read",\line
+    "args": \{ "file_path": "/root/.openclaw/workspace/q4.pdf" \},\line
+    "status": "running" | "complete" | "error",\line
+    "result": null,\line
+    "duration_ms": null\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Approval request (Phase 2):}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "event",\line
+  "session_id": "sess_xyz789",\line
+  "payload": \{\line
+    "event_kind": "approval_request",\line
+    "request_id": "req_abc123",\line
+    "action": "exec",\line
+    "description": "Run: rm -rf /tmp/old_cache",\line
+    "risk_level": "medium",\line
+    "timeout_seconds": 120\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Error:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \{\line
+  "type": "error",\line
+  "payload": \{\line
+    "code": "auth_failed" | "session_not_found" | "rate_limit" | "internal",\line
+    "message": "Authentication token is invalid or expired"\line
+  \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.3.6 REST API Endpoints\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Beyond WebSocket, the gateway exposes REST for session/agent management and file operations. All authenticated with {\f1 Authorization: Bearer <token>}.\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2880\clbrdrb\brdrs\cellx5760\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Method\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Path\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Description\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/status}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Health check, returns gateway version\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/sessions}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 List all sessions\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 POST}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/sessions}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Create new session\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/sessions/:id}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Get session details + messages\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 DELETE}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/sessions/:id}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Delete session\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/agents}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 List agents\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/agents/:id}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Agent details\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/workspace/list}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 List workspace directory\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 POST}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/workspace/upload}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Upload file\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 GET}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/workspace/file}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Download file\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 DELETE}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 /api/workspace/file}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Delete file\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 5.4 Local Data Store\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 SQLite database at: {\f1 ~/Library/Application Support/OpenClaw/openclaw.db}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Encrypted with SQLCipher using a key stored in Keychain (see Section 8.3).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Database access uses {\f1 GRDB.swift} (a well-maintained, Swift-native SQLite library). GRDB provides type-safe queries, migrations, and {\f1 ValueObservation} for reactive updates.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.4.1 Dependency rationale\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 GRDB.swift} is preferred over raw SQLite3 because: - Type-safe Codable record mapping - ValueObservation integrates cleanly with SwiftUI via Combine - Built-in migration support - Active maintenance, MIT license\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 5.5 Error Handling\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.5.1 Error Categories\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2880\clbrdrb\brdrs\cellx5760\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Category\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Examples\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Recovery\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Network unreachable\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 No Tailscale, WiFi down\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 NWPathMonitor \u8594 ? retry when path available\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Auth failure\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Token expired, revoked\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Show re-auth prompt, do not auto-retry\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Gateway error\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 500, malformed response\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Show error toast, log to debug console\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Rate limit\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 429 from gateway\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Exponential backoff with Retry-After header\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 WebSocket drop\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Clean close, ungraceful drop\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Auto-reconnect with backoff\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 File upload failure\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 File too large, disk full\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Error toast with specific message\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Parse error\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Malformed JSON from gateway\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Log, skip message, show \u8220"message decode error\u8221" placeholder\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.5.2 Error Presentation\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Transient errors} (connection blip, upload retry): Toast notification, bottom of window, auto-dismisses in 4s\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Persistent errors} (auth failure, configuration): Inline in connection status area with an action button (\u8220"Re-enter credentials\u8221")\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Silent errors} (parse failure on single message): Logged to debug console, shown as error placeholder bubble\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 5.5.3 Offline Behavior\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When disconnected: - Chat input is disabled with placeholder: \u8220"Reconnecting to gateway\u8230 ?\u8221" - Session list shows cached data from SQLite - Message history is fully readable from cache - Any draft message is preserved in input field across reconnects - Outbound messages queued (up to 10) and sent on reconnect, in order\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 6. UI/UX Specification\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.1 Design Language\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Framework:} SwiftUI with AppKit interop where needed\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Appearance:} Follows system appearance (light/dark auto-switch via {\f1 @Environment(\\.colorScheme)})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Typography:} System font (SF Pro) throughout. Monospace: SF Mono for code\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Color palette:} Follows macOS system accent color. No custom brand colors that clash with system UI\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Iconography:} SF Symbols exclusively. No custom icon sets in MVP\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.2 Window & Popover\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.2.1 Popover Mode (Default)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Opens anchored to menu bar icon\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Width: 480px fixed\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Height: 640px fixed\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab No resize in popover mode\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Detach button (top-right): converts to floating window\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.2.2 Detached Window\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Minimum size: 700 \u215 ? 500px\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Default size: 1100 \u215 ? 700px\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Resizable, closable, but not full-screen-able in Phase 1 (add in Phase 2)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Title bar: \u8220"OpenClaw \u8212- [Session Name]\u8221" or \u8220"OpenClaw\u8221" if no session selected\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Remembers window position and size via {\f1 NSWindowRestoration}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.3 Sidebar\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Width: 220px default, resizable 160px\u8211-320px.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Sections:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +----------------------+\line
+| [+ New Session]      |  \u8592 ? Button, top\line
++----------------------+\line
+| \u55357 ?\u56589 ? Search sessions   |  \u8592 ? Search field\line
++----------------------+\line
+| RECENT               |  \u8592 ? Section header\line
+|  \u55357 ?\u56492 ? Debug billing    |\line
+|  \u55357 ?\u56492 ? Q4 planning      |\line
+|  \u55357 ?\u56492 ? Untitled session |\line
++----------------------+\line
+| [Gateway: Home \u9662 ?]    |  \u8592 ? Phase 2: gateway picker\line
++----------------------+\line
+| \u9675 ? Connected          |  \u8592 ? Connection indicator\line
++----------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Session row:} - SF Symbol: {\f1 bubble.left.fill} (blue if active, gray otherwise) - Session label: truncated with ellipsis at 180px - Timestamp: right-aligned, small, gray (\u8220"2m\u8221", \u8220"1h\u8221", \u8220"Yesterday\u8221") - Unread indicator: blue dot, left edge - Context menu (right-click): Rename, Delete, Export\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.4 Chat View\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.4.1 Message Layout\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +-----------------------------------------------+\line
+|                                               |\line
+|  [Avatar] Agent Response                      |\line
+|  \u9484 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9488 ? |\line
+|  \u9474 ? Here's the analysis you requested...     \u9474 ? |\line
+|  \u9474 ?                                          \u9474 ? |\line
+|  \u9474 ? ```python                                \u9474 ? |\line
+|  \u9474 ? def calculate_revenue():                 \u9474 ? |\line
+|  \u9474 ?     ...                                  \u9474 ? |\line
+|  \u9474 ? ```                                      \u9474 ? |\line
+|  \u9492 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9496 ? |\line
+|  2:34 PM                                      |\line
+|                                               |\line
+|                           User Message [You]  |\line
+|         \u9484 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9488 ?    |\line
+|         \u9474 ? Analyze the Q4 financials      \u9474 ?    |\line
+|         \u9492 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9496 ?    |\line
+|                                     2:33 PM   |\line
+|                                               |\line
++-----------------------------------------------+\line
+|  \u9484 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9488 ? [\u11014 ? Send]    |\line
+|  \u9474 ? Type a message...           \u9474 ?              |\line
+|  \u9492 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9496 ?              |\line
+|  [\u55356 ?\u57252 ?] [\u55357 ?\u56526 ?]                                    |\line
++-----------------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b User messages:} Right-aligned, blue background (system accent), white text, rounded corners (12pt radius), max 75% chat width.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Assistant messages:} Left-aligned, secondary background color, system label color, rounded corners, full width available.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Avatar:} Not used in MVP (text-only). Phase 2: small icon (system icon {\f1 cpu} for agent).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Timestamp:} Shown on hover (not always visible, reduces noise).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.4.2 Streaming State\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 While streaming, the assistant message shows: - Text rendered as it arrives (plain text during streaming) - A blinking cursor (animated SF Symbol or custom view) at the end of the text - Once complete: re-render as markdown\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.4.3 Code Blocks\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Phase 1:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +------------------------------------------+\line
+| swift                          [Copy] \u9633 ?  |\line
+| \u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ?\u9472 ? |\line
+| func connect() async throws \{            |\line
+|     ...                                  |\line
+| \}                                        |\line
++------------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Dark background ({\f1 secondarySystemBackground} in dark mode), monospace font (SF Mono 13pt), horizontal scroll for long lines, Copy button top-right.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Phase 2: Syntax colorized via Highlightr.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.4.4 Input Area\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Multi-line {\f1 TextEditor} that grows vertically up to 5 lines, then scrolls\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Return sends message; Shift+Return inserts newline\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Cmd+Return alternative send (user-configurable)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Drag-over: shows drop zone overlay with dashed border and \u8220"Drop to attach\u8221" label\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Attachment preview: below input field, filename chip with \u215 ? to remove\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Character/token count: optional, shown when >2000 characters (Phase 2)\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 6.4.5 Keyboard Shortcuts\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Shortcut\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Action\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Return\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Send message\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Shift+Return\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Newline in message\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8984 ?N\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 New session\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8984 ?K\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Command palette (Phase 2)\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8984 ?,\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Settings\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8984 ?W\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Close window / back to popover\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8984 ?Q\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Quit app\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8984 ?F\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Search in session (Phase 2)\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Up arrow (empty input)\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Edit last message (Phase 2)\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.5 Work Panel\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Width: 300px default, resizable 240px\u8211-480px. Collapsible.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Header:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 ACTIVITY                [Stream \u9662 ?] [\u8864 ? Collapse]\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Empty state:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 No active task.\line
+Agent is idle.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Active state:} Scrollable list of {\f1 WorkEventCard} views, newest at bottom.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Work Event Card:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 +------------------------------------------+\line
+| \u55357 ?\u56615 ? Read File                     running  |\line
+| /root/.openclaw/workspace/MEMORY.md      |\line
+| \u10251 ? Reading...                             |\line
++------------------------------------------+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Height: auto, minimum 56px. Expandable on click to show full args + result.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Steer toolbar (active only):}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 [\u9208 ? Pause]  [\u9209 ? Stop]  [\u8617 ? Redirect]\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.6 Settings View\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Accessible via \u8984 ?, or menu bar right-click \u8594 ? Settings.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Sections:} 1. {\b Connection} \u8212- Gateway URL, token management, connection test 2. {\b Appearance} \u8212- Compact mode, message density, font size 3. {\b Notifications} \u8212- Enable/disable, sound, which events trigger notifications 4. {\b Keyboard} \u8212- Global shortcut customization (Phase 2) 5. {\b Storage} \u8212- Cache size, clear history, database location 6. {\b About} \u8212- Version, build, OSS licenses, changelog\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6.7 Empty & Error States\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 State\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Display\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 No sessions yet\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"No sessions yet. Start a new chat with the + button.\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Session loading\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Skeleton shimmer on session rows\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Chat history loading\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Spinner centered in chat view\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 No messages in session\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Send a message to start the conversation.\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Connection error\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Centered error message + Retry button in main area\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Auth error\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Full-screen modal: \u8220"Connection failed \u8212- check your token in Settings\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Empty Work Panel\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"Agent is idle.\u8221" small text, centered\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 7. Data Models\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 7.1 SQLite Schema\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 7.1.1 Gateways Table\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 CREATE TABLE gateways (\line
+    id           TEXT PRIMARY KEY,     -- UUID string\line
+    label        TEXT NOT NULL,        -- "Home Server"\line
+    url          TEXT NOT NULL,        -- "https://ubuntu-ct.tailb4a099.ts.net"\line
+    token_ref    TEXT NOT NULL,        -- Keychain service+account key\line
+    is_active    INTEGER NOT NULL DEFAULT 0,\line
+    created_at   INTEGER NOT NULL,     -- Unix timestamp\line
+    last_seen    INTEGER              -- Last successful connection\line
+);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 7.1.2 Sessions Table\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 CREATE TABLE sessions (\line
+    id              TEXT PRIMARY KEY,  -- Gateway-assigned session ID\line
+    gateway_id      TEXT NOT NULL REFERENCES gateways(id) ON DELETE CASCADE,\line
+    label           TEXT,              -- User-facing name or null (auto-named)\line
+    first_message   TEXT,              -- Cache of first message for preview\line
+    last_activity   INTEGER NOT NULL,  -- Unix timestamp\line
+    message_count   INTEGER NOT NULL DEFAULT 0,\line
+    is_archived     INTEGER NOT NULL DEFAULT 0,\line
+    last_synced_at  INTEGER,           -- When we last fetched from gateway\line
+    created_at      INTEGER NOT NULL\line
+);\line
+\line
+CREATE INDEX sessions_gateway_id ON sessions(gateway_id);\line
+CREATE INDEX sessions_last_activity ON sessions(last_activity DESC);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 7.1.3 Messages Table\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 CREATE TABLE messages (\line
+    id              TEXT PRIMARY KEY,  -- Gateway-assigned or client-generated ID\line
+    session_id      TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,\line
+    role            TEXT NOT NULL,     -- "user" | "assistant" | "system"\line
+    content         TEXT NOT NULL,     -- Full rendered content (markdown source)\line
+    content_type    TEXT NOT NULL DEFAULT 'text',  -- "text" | "image" | "file"\line
+    status          TEXT NOT NULL DEFAULT 'complete',\line
+                                       -- "sending" | "sent" | "complete" | "error"\line
+    is_streaming    INTEGER NOT NULL DEFAULT 0,\line
+    stream_buffer   TEXT,              -- Partial content during streaming\line
+    attachment_path TEXT,              -- Remote workspace path for attached files\line
+    created_at      INTEGER NOT NULL,\line
+    completed_at    INTEGER\line
+);\line
+\line
+CREATE INDEX messages_session_id ON messages(session_id);\line
+CREATE INDEX messages_created_at ON messages(session_id, created_at);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 7.1.4 Work Events Table (Phase 2)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 CREATE TABLE work_events (\line
+    id            TEXT PRIMARY KEY,    -- Gateway event ID\line
+    session_id    TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,\line
+    message_id    TEXT,                -- Associated assistant message if any\line
+    event_kind    TEXT NOT NULL,       -- "tool_call" | "subagent_spawn" | etc.\line
+    tool_name     TEXT,                -- e.g. "Read", "exec"\line
+    args_json     TEXT,                -- JSON blob of tool args\line
+    result_json   TEXT,                -- JSON blob of result (on complete)\line
+    status        TEXT NOT NULL DEFAULT 'running',\line
+                                       -- "running" | "complete" | "error"\line
+    error_message TEXT,\line
+    duration_ms   INTEGER,\line
+    created_at    INTEGER NOT NULL,\line
+    completed_at  INTEGER\line
+);\line
+\line
+CREATE INDEX work_events_session_id ON work_events(session_id, created_at);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 7.1.5 Artifacts Table (Phase 2)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 CREATE TABLE artifacts (\line
+    id            TEXT PRIMARY KEY,    -- UUID\line
+    gateway_id    TEXT NOT NULL REFERENCES gateways(id) ON DELETE CASCADE,\line
+    session_id    TEXT,                -- Optional: associated session\line
+    remote_path   TEXT NOT NULL,       -- Full path on gateway workspace\line
+    filename      TEXT NOT NULL,\line
+    mime_type     TEXT,\line
+    size_bytes    INTEGER,\line
+    last_modified INTEGER,\line
+    local_cache   TEXT,                -- Local path if cached\line
+    cached_at     INTEGER,\line
+    UNIQUE(gateway_id, remote_path)\line
+);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 7.2 Swift Model Types\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 struct Gateway: Codable, Identifiable \{\line
+    var id: UUID\line
+    var label: String\line
+    var url: URL\line
+    var tokenRef: String        // Key into Keychain, NOT the token\line
+    var isActive: Bool\line
+    var createdAt: Date\line
+    var lastSeen: Date?\line
+\}\line
+\line
+struct Session: Codable, Identifiable \{\line
+    var id: String\line
+    var gatewayId: UUID\line
+    var label: String?\line
+    var firstMessage: String?\line
+    var lastActivity: Date\line
+    var messageCount: Int\line
+    var isArchived: Bool\line
+    var createdAt: Date\line
+    \line
+    var displayLabel: String \{\line
+        label ?? firstMessage?.prefix(40).description ?? "New Session"\line
+    \}\line
+\}\line
+\line
+struct Message: Codable, Identifiable \{\line
+    var id: String\line
+    var sessionId: String\line
+    var role: MessageRole\line
+    var content: String\line
+    var contentType: ContentType\line
+    var status: MessageStatus\line
+    var isStreaming: Bool\line
+    var streamBuffer: String?\line
+    var attachmentPath: String?\line
+    var createdAt: Date\line
+    var completedAt: Date?\line
+\}\line
+\line
+enum MessageRole: String, Codable \{\line
+    case user, assistant, system\line
+\}\line
+\line
+enum MessageStatus: String, Codable \{\line
+    case sending, sent, complete, error\line
+\}\line
+\line
+enum ContentType: String, Codable \{\line
+    case text, image, file\line
+\}\line
+\line
+struct WorkEvent: Codable, Identifiable \{\line
+    var id: String\line
+    var sessionId: String\line
+    var messageId: String?\line
+    var eventKind: WorkEventKind\line
+    var toolName: String?\line
+    var args: [String: AnyCodable]?\line
+    var result: [String: AnyCodable]?\line
+    var status: WorkEventStatus\line
+    var errorMessage: String?\line
+    var durationMs: Int?\line
+    var createdAt: Date\line
+    var completedAt: Date?\line
+\}\line
+\line
+enum WorkEventKind: String, Codable \{\line
+    case toolCall, subagentSpawn, subagentComplete\line
+    case fileRead, fileWrite, webSearch, thinking, approvalRequest\line
+\}\line
+\line
+enum WorkEventStatus: String, Codable \{\line
+    case running, complete, error\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 7.3 UserDefaults Keys\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Non-sensitive preferences stored in {\f1 UserDefaults.standard}:\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2880\clbrdrb\brdrs\cellx5760\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Key\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Type\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Description\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_window_frame}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Data\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Serialized {\f1 NSRect} for window position\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_sidebar_width}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Double\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Sidebar pane width in points\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_workpanel_width}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Double\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Work panel width in points\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_workpanel_visible}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Bool\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Work panel collapsed state\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_active_session_id}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 String\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Last selected session ID\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_active_gateway_id}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 String\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Last selected gateway UUID\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_appearance}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 String\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 \u8220"system\u8221"\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_font_size}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Double\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Chat font size (default 14.0)\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_notifications_enabled}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Bool\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 User preference (separate from system permission)\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_global_shortcut}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Data\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Serialized key combo for global shortcut\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 oc_send_on_return}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Bool\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 True = Return sends, Shift+Return newline\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 8. Security Model\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.1 Transport Security\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 All communication between the macOS app and the gateway uses TLS 1.2 minimum (TLS 1.3 preferred).\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The gateway runs behind Tailscale. Tailscale provides mutual device authentication and encrypted overlay networking \u8212- only authorized devices on the Tailscale network can reach the gateway at all.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The HTTPS/WSS certificate is validated by the system trust store. Certificate pinning is NOT implemented in Phase 1 \u8212- Tailscale\u8217's network isolation is considered sufficient. Certificate pinning can be added in Phase 2 if required.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab App Transport Security (ATS) is enabled. No HTTP (non-TLS) connections are permitted.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.2 Keychain Storage\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Auth tokens and database encryption keys are stored in the macOS Keychain, not in UserDefaults, plist files, or the filesystem.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Keychain schema:}\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2160\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx6480\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Item\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Service\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Account\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Description\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Gateway auth token\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 com.openclaw.gateway-token}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Gateway URL (e.g.\u160 ?{\f1 https://ubuntu-ct...})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Bearer token for gateway auth\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 DB encryption key\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 com.openclaw.db-key}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 local}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 32-byte random key for SQLCipher\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Access control:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 let accessControl = SecAccessControlCreateWithFlags(\line
+    nil,\line
+    kSecAttrAccessibleWhenUnlockedThisDeviceOnly,\line
+    .userPresence,  // Require biometric/password for sensitive items\line
+    nil\line
+)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 kSecAttrAccessibleWhenUnlockedThisDeviceOnly}: Items not backed up to iCloud, not transferred to new device\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Gateway tokens require {\f1 .userPresence} (biometric or password) on first access per session\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab DB key does NOT require {\f1 .userPresence} (accessed frequently, would be unusable)\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Keychain API wrapper:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 final class KeychainService \{\line
+    func store(_ value: String, service: String, account: String) throws\line
+    func retrieve(service: String, account: String) throws -> String\line
+    func update(_ value: String, service: String, account: String) throws\line
+    func delete(service: String, account: String) throws\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 All Keychain errors are typed ({\f1 KeychainError}) and handled \u8212- never silently ignored.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.3 Database Encryption\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The local SQLite database is encrypted using SQLCipher (AES-256-CBC) via the {\f1 SQLCipher} Swift package.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The encryption key is a 32-byte random value generated on first launch and stored in Keychain (see Section 8.2).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var config = Configuration()\line
+config.prepareDatabase \{ db in\line
+    let key = try KeychainService.shared.retrieve(service: "com.openclaw.db-key", account: "local")\line
+    try db.usePassphrase(key)\line
+\}\line
+let dbQueue = try DatabaseQueue(path: dbPath, configuration: config)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If the Keychain item is unavailable (e.g., user locked Mac, biometric unavailable), the database is not opened and a lock screen is displayed. Chat history is accessible only when the Mac is unlocked.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.4 Token Handling in Memory\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Auth token is loaded from Keychain into memory at connection time as a {\f1 String}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab It is passed to {\f1 GatewayClient} as a parameter and stored in the actor\u8217's private state\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab It is NOT stored in any {\f1 UserDefaults}, {\f1 AppState} @Published properties, or view models\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab It is NOT logged anywhere (no debug logging of Authorization headers)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab It is zeroed in memory when the gateway disconnects or the app quits (use {\f1 withUnsafeMutableBytes} + {\f1 memset})\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.5 No Telemetry\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The app collects no usage data, crash reports, or analytics. There are no third-party SDKs for analytics, crash reporting, or feature flags. Error logging is local only (OSLog, accessible via Console.app).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If crash reporting is desired in the future, use only Apple\u8217's built-in crash reporter via the App Store, which is opt-in and user-controlled.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.6 File Upload Security\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Uploaded files are sent to the gateway workspace with no server-side sanitization guarantees. The client: - Enforces a 50MB file size limit before upload - Does not execute or preview file content beyond known safe types (images, text, markdown) - For image previews: renders via {\f1 NSImage}/{\f1 Image}, not via a web view - Never auto-executes uploaded scripts or executables\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 8.7 macOS Sandbox\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The app runs in the macOS App Sandbox with the following entitlements:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <key>com.apple.security.app-sandbox</key>\line
+<true/>\line
+\line
+<!-- Network access to gateway -->\line
+<key>com.apple.security.network.client</key>\line
+<true/>\line
+\line
+<!-- User-selected file access for attachments -->\line
+<key>com.apple.security.files.user-selected.read-only</key>\line
+<true/>\line
+\line
+<!-- Notifications -->\line
+<key>com.apple.security.user-notifications</key>\line
+<true/>\line
+\line
+<!-- Keychain -->\line
+<key>keychain-access-groups</key>\line
+<array>\line
+    <string>$(AppIdentifierPrefix)com.openclaw</string>\line
+</array>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 No {\f1 com.apple.security.temporary-exception.files.absolute-path} or other sandbox escapes. File access outside the app container is gated on user-initiated open panels.\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 9. Build & Distribution\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.1 Deployment Target\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Minimum macOS:} 13.0 (Ventura)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Rationale:} macOS 13 introduced stable SwiftUI NavigationSplitView (needed for three-pane layout), improved {\f1 URLSession} WebSocket support, and broad user adoption. macOS 12 (Monterey) would require workarounds for NavigationSplitView.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Target architecture:} Universal Binary \u8212- native {\f1 arm64} (Apple Silicon) and {\f1 x86_64} (Intel). Built with Xcode\u8217's \u8220"Any Mac (Apple Silicon, Intel)\u8221" architecture setting.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.2 Swift & Xcode Requirements\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Swift:} 5.9 minimum (Swift Concurrency structured tasks, macros)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Xcode:} 15.0 minimum\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Swift Package Manager:} Used for all dependencies (no CocoaPods, no Carthage)\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.3 Dependencies\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 All third-party dependencies via Swift Package Manager:\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2880\clbrdrb\brdrs\cellx5760\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Package\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Version\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Purpose\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 groue/GRDB.swift}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 6.x\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 SQLite with Codable records, migrations, reactive observations\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 SQLCipher/SQLCipher}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 4.x\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 AES-256 SQLite encryption\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 apple/swift-markdown}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 latest\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Markdown AST parsing\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2880\cellx5760\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 raspu/Highlightr}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 2.x\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Syntax highlighting (Phase 2)\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Dependencies kept minimal intentionally. No Alamofire (URLSession is sufficient), no RxSwift (Combine + async/await is sufficient), no SwiftyJSON (Codable is sufficient).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.4 Build Configurations\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Configuration\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Purpose\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 Debug}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Full logging, SQLite unencrypted (dev convenience), connects to localhost gateway\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 Staging}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Real encryption, connects to staging gateway URL, debug logging off\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx4320\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 Release}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Production build, all hardening enabled, no debug symbols in app bundle\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Build configuration switcher controlled via {\f1 xcconfig} files, not hardcoded in source.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.5 Signing & Entitlements\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Development:} Personal team signing for local dev\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Distribution:} Developer ID Application certificate (for direct distribution outside App Store)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Notarization:} Required for distribution outside App Store (macOS Gatekeeper). Use {\f1 altool} or {\f1 notarytool} in CI pipeline.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Hardened Runtime:} Enabled for notarization. Required entitlements explicitly declared (see Section 8.7).\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.6 Distribution Strategy\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Phase 1:} Direct download. Distribute as a notarized {\f1 .dmg} via: - GitHub Releases (if open source) - A private download URL (if closed)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Auto-update:} Implement {\f1 Sparkle 2} for automatic updates. Update feed hosted alongside the app binary. Update check on launch and every 24 hours. User can disable auto-check in Settings.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Phase 2+:} Evaluate Mac App Store submission. App Store distribution simplifies update delivery but requires: - iCloud entitlements for config sync - No direct network connections to arbitrary URLs (may conflict with gateway URL configurability \u8212- needs review) - App Review timeline\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Recommended: Maintain Developer ID distribution as primary, App Store as secondary if required by enterprise users.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.7 CI/CD\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Recommended pipeline (GitHub Actions):\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 # On push to main\line
+jobs:\line
+  build:\line
+    runs-on: macos-14          # Apple Silicon runner\line
+    steps:\line
+      - checkout\line
+      - xcodebuild test        # Unit tests + UI tests\line
+      - xcodebuild archive     # Release build\line
+      - xcrun notarytool       # Notarization\line
+      - create dmg             # Package\line
+      - upload release         # GitHub Release\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Build matrix: run {\f1 xcodebuild test} on both {\f1 x86_64} (Intel runner) and {\f1 arm64} (Apple Silicon runner) to catch architecture-specific issues.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 9.8 Versioning\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Semantic versioning: {\f1 MAJOR.MINOR.PATCH}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 CFBundleShortVersionString}: User-facing version (e.g., {\f1 1.0.0})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 CFBundleVersion}: Build number, monotonically increasing integer, set by CI\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 10. Phased Roadmap\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Phase 1: MVP \u8212- \u8220"It Works\u8221"\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Goal:} A functional chat client that replaces Telegram as the primary interaction surface.\line {\b Timeline:} 6\u8211-8 weeks\line {\b Team:} 1 Swift engineer\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 1.1 \u8212- Foundation (Week 1\u8211-2)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Xcode project setup with targets, SwiftPackage dependencies\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Menu bar app skeleton ({\f1 NSStatusItem}, popover, detachable window)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Keychain service implementation + tests\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Gateway connection setup UI (URL + token entry)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? {\f1 GatewayClient} actor: WebSocket connect/disconnect/send/receive\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Connection state model + indicator UI\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 1.2 \u8212- Chat Core (Week 2\u8211-4)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? {\f1 SessionStore} with SQLite/GRDB + migrations\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Session list from gateway REST API\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Session selection + history load from SQLite\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? WebSocket message send/receive\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Streaming token rendering (plain text)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Message ACK handling and status tracking\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? New session creation\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 1.3 \u8212- Polish & Notifications (Week 4\u8211-6)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Markdown rendering ({\f1 swift-markdown} AST \u8594 ? SwiftUI views)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Code block rendering with copy button\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Auto-reconnect with exponential backoff + {\f1 NWPathMonitor}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? {\f1 NotificationService} + macOS notification delivery\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? File drag-and-drop + multipart upload\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Attachment preview in input area\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 1.4 \u8212- MVP Release (Week 6\u8211-8)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Settings panel (connection, notifications, appearance)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Error states and empty states for all views\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Unit tests: KeychainService, GatewayClient, SessionStore, MessageParser\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? UI test: basic chat send/receive flow\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? CI pipeline: test + build + notarize + package\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Internal release via DMG\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Exit criteria:} Send a message, receive a streaming response, see it rendered in markdown, receive a macOS notification when the window is hidden. Auth token survives app restart via Keychain.\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Phase 2: Full Build \u8212- \u8220"It\u8217's a Real App\u8221"\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Goal:} Three-pane layout with live Work Panel, agent transparency, and platform integrations.\line {\b Timeline:} 12\u8211-16 weeks additional\line {\b Team:} 1\u8211-2 Swift engineers\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 2.1 \u8212- Work Panel & Events (Week 1\u8211-4)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? {\f1 WorkPanelEventProcessor} service\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Gateway event stream protocol additions (agent_event, approval_request)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? {\f1 WorkEventCard} views (tool calls, subagent spawns, file ops)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Three-pane {\f1 NavigationSplitView} layout\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Steer Controls (pause/stop/redirect)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Approval flow: in-app card + actionable macOS notification\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Work events persisted to SQLite {\f1 work_events} table\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 2.2 \u8212- Agent Roster & Artifacts (Week 4\u8211-8)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Agent Roster panel + agent detail view\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Artifact Library: file browser, directory navigation\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? File preview: images, markdown, text, code (with Highlightr)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? File operations: drag in/out, delete, rename\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Syntax highlighting in chat code blocks\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Image rendering in chat messages\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 2.3 \u8212- Productivity Features (Week 8\u8211-12)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Command palette (\u8984 ?K) with fuzzy search\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Global keyboard shortcut summon (Carbon {\f1 EventHotKey})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Timeline Replay (scrubber + playback for work events)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Export conversation (Markdown + PDF)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Multi-gateway support (connect to N gateways)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? iCloud sync of gateway configs ({\f1 NSUbiquitousKeyValueStore})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Session search (full-text via SQLite FTS5)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Voice input (SFSpeechRecognizer)\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Milestone 2.4 \u8212- Platform Integrations (Week 12\u8211-16)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? watchOS companion app: status glance + approval\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? WatchConnectivity bridge\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Handoff support ({\f1 NSUserActivity})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Touch Bar support (if applicable hardware)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Performance audit (large session history, many work events)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Full UI test suite expansion\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Sparkle 2 auto-update integration\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \u9744 ? Public release\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Exit criteria for Phase 2:} Open Work Panel while agent executes a 10-step task, see each tool call appear in real time, approve a sensitive action from an Apple Watch, scrub the timeline replay afterward.\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Phase 3: Future Vision (Post-Phase 2)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 These features are not scoped to Phase 1 or 2 but inform design decisions:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Memory Editor:} Browse, edit, and annotate agent memory files in-app\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Cron Manager:} View, create, and edit cron jobs from the macOS app\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Channel Manager:} Configure Telegram/Discord channels without touching config files\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Multi-agent conversations:} Chat threads with multiple agents simultaneously\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Agent Marketplace:} Browse and install new agent skill packs\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collaboration:} Share session read-only link with a team member\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b iOS companion app:} Full iPhone client with Handoff continuity\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b iPad app:} Split-screen friendly iPad layout via Mac Catalyst or native SwiftUI\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Appendix A: Gateway Protocol Notes\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This spec assumes the following gateway capabilities exist or will be added:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab {\b WebSocket endpoint at {\f1 /ws}} with header-based auth\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab {\b REST endpoints} as listed in Section 5.3.6\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab {\b Streaming token events} with {\f1 streaming: true} per-token and {\f1 streaming: false} on completion\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 4.\tx360\tab {\b Agent event emission} for tool calls, subagent spawns, and file operations (Phase 2)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 5.\tx360\tab {\b Approval request protocol} (Phase 2)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 6.\tx360\tab {\b Steer control handling} (Phase 2)\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Where the gateway does not yet implement these, client-side stubs should be written so the macOS app compiles and runs against a mock implementation during development.\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Appendix B: Open Questions\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 These questions must be resolved before or during implementation:\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx2160\clbrdrb\brdrs\cellx4320\clbrdrb\brdrs\cellx6480\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 #\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Question\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Owner\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Priority\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 1\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Does the gateway WebSocket support header auth or only query-string token?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 2\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 What is the exact streaming event format \u8212- is it per-token or per-chunk?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 3\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Is there an existing {\f1 /api/status} health endpoint for connection testing?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P0\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 4\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 What session data is returned by {\f1 GET /api/sessions}? Full message history or metadata only?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P1\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 5\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Does the gateway have a concept of session labels/names, or does the client own naming?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P1\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 6\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 What file size limit does the gateway enforce for workspace uploads?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P1\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 7\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Will the gateway emit structured agent_event messages, or does this require gateway work?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P2\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx2160\cellx4320\cellx6480\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 8\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Is approval_request a new protocol addition or does an equivalent already exist?\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Backend\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 P2\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i Document maintained by the OpenClaw project. Update this spec as decisions are made and questions are resolved. Do not let implementation diverge silently \u8212- if a decision changes, update the spec first.}\par}

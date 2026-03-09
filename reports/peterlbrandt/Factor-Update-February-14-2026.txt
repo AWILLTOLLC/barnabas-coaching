@@ -1,0 +1,154 @@
+Factor Update, February 14, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Short one unit of Sugar futures • Long two units of CHF futures
+• Long two units of TPYP-etf • Long one unit of CENX stock
+• Short EUR/long JPY futures
+Markets under consideration for New Initial Positions (NIPs)
+• Gold as a Hold • KC Wheat futures
+• 2-Yr. T Note futures
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 995 as
+of Feb 13
+Note
+This edition of the Factor Update is being issued as of price data at 08:30 U.S Mountain time.
+Swiss Franc futures
+• Factor is long two units in the Mar futures contract (see green dots)
+• This trade has massive upside potential – very asymmetric R:r profile
+• Hedge funds remain the big short, Commercials are the big, long
+• Daily chart = 6-month rectangle
+• Weekly chart = giant springboard rectangle
+• The big risk is intervention by the CHF Central Bank in the EUR/CHF cross that could spill over into CHF/USD. The
+SNB does NOT NOT like speculators bidding up its currency
+1
+
+TPYP-etf
+• Factor holds a two-unit long position (green dot)
+• The current anchor prices for protective stops are shown on the daily chart as callouts
+• In equities and ETFs I prefer relatively narrow horizontal continuation congestion periods. Then I enter when
+momentum completes the congestion zone. Same thing for futures
+EUR/CHF spot
+• An 18-month continuation of H&S pattern has been completed. I did not engage in this trade because I am already
+long CHF futures and short EUR/JPY futures
+2
+
+Silver futures
+• The quarterly chart displays the massive breakout at $50-55
+• My guess – just a guess – is that a correction has begun
+• I am interested in establishing a long position in SIVR at some point. This etf represents physical Silver whereby
+SLV is an etf holding futures contracts only
+• Expect some chartists to reference the 2-week inverted H&S bottom forming on the daily graph
+• Factor is flat
+3
+
+CENX-stock
+• Factor is long one unit of CENX
+• Even though a 3-day trailing stop rule was triggered this past week, the surviving position was based on the weekly
+chart. Thus, weekly bars and daily moving averages will be used to manage the final unit
+• Sticking with rules-based swing trading based on price graphs helps me avoid becoming dogmatic about an
+individual trade. In turn, this allows me to escape relatively unscathed from huge corrections such as that recently
+experienced in precious metals
+4
+
+Treasury futures
+• The dominant pattern in the 2-Yr Note is the 40-month rounding top on the yield chart and rounding bottom on the
+corresponding continuation futures chart
+• Also note the slightly declining right-angled triangle starting at the Sep 2024 low (yield chart)
+• The weekly chart also exhibits a 7-month rectangle pattern
+• My trade set up is for the short side of yields, long side of futures
+• This is currently my favorite developing chart – which probably has no correlation with the success of an ensuing
+trade
+5
+
+Kansas City Wheat futures
+• This is the variety of Wheat used in breads
+• Weekly continuation chart has completed a massive falling wedge
+• The daily continuation chart (not shown) displays a possible 14-week Cup and Handle-type pattern
+• The daily chart of the May contract shows a possible double bottom
+• Factor is flat with orders working to buy an upside breakout
+•
+6
+
+Euro/Yen futures (Jun contracts)
+• The decline on this chart on Wednesday completed a compact 8-week top and penetrated the lower boundary of a
+12-month channel.
+• Factor established a two-unit short position upon the completion of the top
+7
+
+Stock index futures
+• This U.S. index charts feel toppy to me
+• An upside resolution in the NASDAQ would be very constructive though
+• I am re-considering the degree to which I will trade index futures ongoing unless I do so with monthly price charts
+8
+
+Sugar futures
+• The weekly chart (not shown) displays a massive H&S top with a target of 10.75
+• The daily chart completed a continuation H&S pattern on Jan 30
+• I shorted the May contract on Feb 5
+• In the rear-view mirror, I recognize this trade as being too short-term in nature. Nevertheless, with a profit
+currently locked in I will continue to hold the trade until stopped out
+Trading commentary
+Early in my trading career as a chartist, I would recognize a possible pattern forming and then bite at the bit to establish a
+position within the pattern, hoping then to double up at the breakout and be extra leveraged for a big move, if it came. Over
+time I dropped this strategy for several reasons.
+1. I would get chopped up within a developing pattern. I referred to this as “losing 20 cents in a 5-cent trading range”
+2. Trading within a trading range would tie up margin capital, precious to me in the early days
+3. There were times I my capital and emotions would be chopped up only for me to then miss the real move
+So, I migrated to the process of only entering upon pattern breakouts. All chart traders need to resolve this issue for
+themselves.
+Trading during the week ending February 13, 2026
+• Stopped out of one-half unit of long CENX
+• Stopped out of second attempt at a long Crude Oil trade
+• Stopped out of a short NY Coffee trade
+For the video version of this Factor Update Video click here: None planned although I will likely release a video if a long
+position is established in the 2-Yr Note futures contract
+9
+
+Just a reminder about ATR breakout levels
+To determine an entry stop order I undergo the
+following process:
+1. Identify the breakout level (e.g., a right
+shoulder high of a H&S bottom)
+2. Determine the length of the pattern (in
+weeks)
+3. Find the 30-day ATR of the latest day within
+the pattern
+4. Multiply the 30-day ATR by the appropriate
+% of the weekly length of the pattern (e.g.,
+the adjusted ATR for a 13-week H&S bottom
+would be 45% of the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern)
+the adjusted 30-day ATR to the breakout level. This becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading
+looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare
+exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were
+not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make
+profits – I hate giving money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay
+bills. The possibility of 50% drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on
+maximizing ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan
+for the to make the same $$ over and over and over again. It is far easier to build the value of an account
+in incrememts over time by holding onto to gains. It is easy to make money trading – the challenge is to
+keep what you make.
+Factor’s trading approach in a nutshell
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal
+patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+###
+10

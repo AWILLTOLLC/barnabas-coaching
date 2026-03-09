@@ -1,0 +1,205 @@
+[
+  {
+    "actionId": "r-1741222380",
+    "ts": "2026-03-06T02:53:00Z",
+    "status": "pending",
+    "description": "Test real RED alert flow with Vantage approval gate",
+    "context": "Simulated action: awaiting Vantage approve/deny to verify full flow"
+  },
+  {
+    "actionId": "r-1741222620",
+    "ts": "2026-03-06T02:56:00Z",
+    "status": "pending",
+    "description": "Second simulated red-line action",
+    "context": "Simulated action #2 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741222740",
+    "ts": "2026-03-06T02:59:00Z",
+    "status": "pending",
+    "description": "Third simulated red-line action",
+    "context": "Simulated action #3 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741222980",
+    "ts": "2026-03-06T03:04:00Z",
+    "status": "pending",
+    "description": "Fourth simulated red-line action",
+    "context": "Simulated action #4 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741223400",
+    "ts": "2026-03-06T03:10:00Z",
+    "status": "pending",
+    "description": "Fifth simulated red-line action",
+    "context": "Simulated action #5 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741223520",
+    "ts": "2026-03-06T03:12:00Z",
+    "status": "pending",
+    "description": "Sixth simulated red-line action",
+    "context": "Simulated action #6 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741224120",
+    "ts": "2026-03-06T03:22:00Z",
+    "status": "pending",
+    "description": "Seventh simulated red-line action",
+    "context": "Simulated action #7 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741224240",
+    "ts": "2026-03-06T03:24:00Z",
+    "status": "pending",
+    "description": "Eighth simulated red-line action",
+    "context": "Simulated action #8 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741224480",
+    "ts": "2026-03-06T03:28:00Z",
+    "status": "pending",
+    "description": "Ninth simulated red-line action",
+    "context": "Simulated action #9 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741224780",
+    "ts": "2026-03-06T03:33:00Z",
+    "status": "pending",
+    "description": "Tenth simulated red-line action",
+    "context": "Simulated action #10 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741225140",
+    "ts": "2026-03-06T03:39:00Z",
+    "status": "pending",
+    "description": "Eleventh simulated red-line action",
+    "context": "Simulated action #11 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741225260",
+    "ts": "2026-03-06T03:41:00Z",
+    "status": "pending",
+    "description": "Twelfth simulated red-line action",
+    "context": "Simulated action #12 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741225500",
+    "ts": "2026-03-06T03:45:00Z",
+    "status": "pending",
+    "description": "Thirteenth simulated red-line action",
+    "context": "Simulated action #13 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741225620",
+    "ts": "2026-03-06T03:47:00Z",
+    "status": "pending",
+    "description": "Fourteenth simulated red-line action",
+    "context": "Simulated action #14 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741225740",
+    "ts": "2026-03-06T03:49:00Z",
+    "status": "pending",
+    "description": "Fifteenth simulated red-line action",
+    "context": "Simulated action #15 awaiting Vantage approve/deny"
+  },
+  {
+    "actionId": "r-1741225800",
+    "ts": "2026-03-06T03:50:00Z",
+    "status": "approved",
+    "description": "Sixteenth simulated red-line action",
+    "context": "Simulated action #16 awaiting Vantage approve/deny",
+    "resolvedAt": "2026-03-06T03:51:00Z"
+  },
+  {
+    "actionId": "r-1741226100",
+    "ts": "2026-03-06T03:55:00Z",
+    "status": "denied",
+    "description": "Seventeenth simulated red-line action",
+    "context": "Simulated action #17 awaiting Vantage approve/deny",
+    "resolvedAt": "2026-03-06T03:55:00Z"
+  },
+  {
+    "actionId": "r-1741226160",
+    "ts": "2026-03-06T03:56:00Z",
+    "status": "pending",
+    "description": "About to run: rm -rf /root/.openclaw/workspace/memory/*.md \u2014 deletes all daily memory logs. Irreversible.",
+    "context": "User asked to clean up old workspace files. Command would permanently delete all memory/*.md files including MEMORY.md."
+  },
+  {
+    "actionId": "r-1741226400",
+    "ts": "2026-03-06T04:00:00Z",
+    "status": "approved",
+    "description": "About to run: rm -rf /root/.openclaw/workspace/tasks/blackraven-rfq/ \u2014 deletes BlackRaven task folder. Irreversible.",
+    "context": "User asked to clean up completed task folders.",
+    "resolvedAt": "2026-03-06T04:00:00Z"
+  },
+  {
+    "actionId": "r-1741226460",
+    "ts": "2026-03-06T04:01:00Z",
+    "status": "pending",
+    "description": "About to run: exec echo this is a test command",
+    "context": "User-requested command execution pending approval."
+  },
+  {
+    "actionId": "r-1741226640",
+    "ts": "2026-03-06T04:04:00Z",
+    "status": "pending",
+    "description": "About to run: DO NOT RUN THIS COMMAND",
+    "context": "User-requested command execution pending approval."
+  },
+  {
+    "actionId": "r-1741226700",
+    "ts": "2026-03-06T04:05:00Z",
+    "status": "pending",
+    "description": "About to run: THIS IS A BAD COMMAND",
+    "context": "User-requested command execution pending approval."
+  },
+  {
+    "actionId": "r-1741226820",
+    "ts": "2026-03-06T04:07:00Z",
+    "status": "approved",
+    "description": "About to run: BAD COMMAND",
+    "context": "User-requested command execution pending approval.",
+    "resolvedAt": "2026-03-06T04:08:00Z"
+  },
+  {
+    "actionId": "r-1741226940",
+    "ts": "2026-03-06T04:09:00Z",
+    "status": "pending",
+    "description": "About to run: BAD COMMAND",
+    "context": "User-requested command execution pending approval."
+  },
+  {
+    "actionId": "r-1741227420",
+    "ts": "2026-03-06T04:17:00Z",
+    "status": "denied",
+    "description": "About to run: BAD_COMMAND_HERE",
+    "context": "User-requested command execution pending approval.",
+    "resolvedAt": "2026-03-06T04:17:00Z"
+  },
+  {
+    "actionId": "r-1741227540",
+    "ts": "2026-03-06T04:19:00Z",
+    "status": "pending",
+    "description": "About to run: BAD_COMMAND_HERE",
+    "context": "User-requested command execution pending approval."
+  },
+  {
+    "actionId": "r-1741227720",
+    "ts": "2026-03-06T04:22:00Z",
+    "status": "denied",
+    "description": "About to run: BAD COMMAND",
+    "context": "User-requested command execution pending approval.",
+    "resolvedAt": "2026-03-06T04:23:00Z"
+  },
+  {
+    "actionId": "r-1741228260",
+    "ts": "2026-03-06T04:31:00Z",
+    "status": "denied",
+    "description": "About to run: curl -X DELETE https://api.production.internal/users/all",
+    "context": "Destructive API call pending approval.",
+    "resolvedAt": "2026-03-06T04:31:00Z"
+  }
+]

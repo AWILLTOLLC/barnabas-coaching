@@ -1,0 +1,167 @@
+Factor Update, February 14, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Long two units of TPYP-etf • Long one unit of CENX stock
+• Long two units of KC Wheat futures • Long one unit of CHF futures
+Markets under consideration for New Initial Positions (NIPs)
+• 2-Yr. T Note futures • Heating Oil futures
+• Stock indexes •
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 961 as
+of Feb 20
+Slight detour ahead
+• Most often the charts I post on the Factor Report are tied to whether a market provides/provided me with a tightly
+measured risk trade
+• There are many charts I really like as an example of classical charting but never post because the type of precise
+entry I seek is not flashed
+• I miss pointing out some good longer-term chart configurations because of this restriction
+• I want to be much more intentional about pointing out well formed weekly chart patterns even if they have left the
+starting gate. How you might respond to these charts is up to you
+• AUD/NZD was such an example. There will be others in the future
+• I do not want to completely skip posting outstanding examples of classical patterns that might become “Best
+Dressed List” candidates simply because I did not catch it right at the breakout
+• I may even establish a small position in such instances when a 3 to 1 R:r ratio exists as roughly calculated between
+the measured target and the low/high of the last full weekly bar within a completed pattern. I will have more to say
+about this in future editions. There will be a trend in the charts of my interest toward weekly and even monthly
+graphs
+• An argument can be made that it is better to trade a much-downsized position on a chart with a proven breakout
+than a more leveraged position before a more mature breakout is confirmed
+1
+
+Swiss Franc futures
+• Factor is long one unit
+• This position was based on the longer-term charts; thus, the trade has been given wide berth
+• The dominant chart pattern for the trade was the 6-month rectangle completed in January
+• I do NOT have high hopes for this trade, but my exit rules have not been activated
+Silver futures
+• The quarterly chart (not shown) displays the massive breakout at $50-55
+• My guess – just a guess – is that a correction has begun
+• I am interested in establishing a long position in SIVR at some point. This etf represents physical Silver whereby
+SLV is an etf holding futures contracts only
+• Expect some chartists to reference the 3-week inverted H&S bottom forming on the daily graph
+• Factor is flat. There is no trade here for me. I may miss the much predicted price explosion, but I will give this
+market the opportunity to provide me with a better weekly chart pattern
+2
+
+TPYP-etf
+• Factor holds a two-unit long position
+• The current anchor prices for protective stops are shown on the daily chart as callouts (38.57 and 40.07). I am
+constantly adjusted protective stops on trades to bleed off risk
+• In equities and ETFs I prefer relatively narrow horizontal continuation congestion periods. Then I enter when
+momentum completes the congestion zone. Same thing for futures. TPYP is a great example of this set up
+3
+
+CENX-stock
+• Factor is long one unit of CENX. Profits were taken on a unit earlier
+• The initial target has been met
+• A further move to 80.50 is expected
+4
+
+Treasury futures
+• The dominant pattern in the 2-Yr Note is the 40-month rounding bottom on the continuation futures chart
+• Also note the right-angled triangle starting at Sep 2024 high
+• The weekly chart also exhibits a 7-month rectangle pattern
+• My trade set up is for the long side of futures
+• This is currently my favorite developing chart – which probably has no correlation with the success of an ensuing
+trade
+• If there is a sharp move higher in the price of Ts, I expect it to come on the short-end of the yield curve
+Heating Oil futures
+• A large complex inverted H&S bottom is forming
+• I will be holding orders to buy the May or Jun contracts in case of a breakout
+• Factor is flat
+5
+
+Kansas City Wheat futures
+• This is the variety of Wheat used in breads
+• Weekly continuation chart has completed a massive falling wedge
+• The daily continuation chart (not shown) displays a possible 14-week Cup and Handle-type pattern
+• The daily chart of the May contract completed a double bottom this past week. This pattern also can be viewed as a
+modified Chair with Ottoman (the Ottoman being slightly up slanted)
+• Factor is long two units
+• The initial target is 615, then 746 based on the weekly graph
+6
+
+Gold futures
+• A new all-time Friday closing price high was posted in Gold today
+• I consider Friday closes to be the most important price of the week – it is the price at which positions must be
+margined for 48-hours without the ability to control risk. I am emotionally divided between hope (wanting to own
+much more in my retirement accounts) and fear (thinking I might not get the chance)
+• I will give Gold the opportunity to provide a better-defined trade, hopefully after a more substantial correction. I will
+point out that fully 10% of my retirement funds (NOT IN FUTURES) reside in precious metal ETFs
+Soybean futures
+• The May Gann chart is shown. A significant breakout has occurred
+• Factor is flat
+7
+
+Stock indexes
+• A massive, inverted H&S bottom has been completed in the spread ratio of the Emerging Market Index (EEM) and
+QQQ on the daily chart.
+• This ratio is just beginning what will likely be a multi-year bull trend of the NASDAQ losing to foreign stock markets
+• This trend could be a monster
+• I would like to figure out a way to trade this without being net short the NASDAQ unless NQ breaks down on its own
+chart
+8
+
+NASDAQ futures
+• While the idea of owning EEM relative to the NASDAQ makes sense to me, as a chartist I would independently be
+long NQ futures if the current congestion zone is resolved to the upside
+Emerging Market Index – etf
+• See the comments on page one about obtaining a position, even a small one, on worthy patterns even though the
+optimal entry has sailed by
+• Factor will seek to be a buyer for the company account
+Trades exited during the week ending February 16, 2026
+• Stopped out of Sugar futures
+• Stopped out of Euro/Yen cross
+• Stopped out of a unit of Swiss futures
+9
+
+For the video version of this Factor Update Video click here: None planned although I will likely release a video if a long
+position is established in the 2-Yr Note futures contract
+Just a reminder about ATR breakout levels
+To determine an entry stop order I undergo the
+following process:
+1. Identify the breakout level (e.g., a right
+shoulder high of a H&S bottom)
+2. Determine the length of the pattern (in
+weeks)
+3. Find the 30-day ATR of the latest day within
+the pattern
+4. Multiply the 30-day ATR by the appropriate
+% of the weekly length of the pattern (e.g.,
+the adjusted ATR for a 13-week H&S bottom
+would be 45% of the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern)
+the adjusted 30-day ATR to the breakout level. This becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading
+looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare
+exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were
+not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make
+profits – I hate giving money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay
+bills. The possibility of 50% drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on
+maximizing ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan
+for the to make the same $$ over and over and over again. It is far easier to build the value of an account
+in incrememts over time by holding onto to gains. It is easy to make money trading – the challenge is to
+keep what you make.
+Factor’s trading approach in a nutshell
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal
+patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+###
+10
