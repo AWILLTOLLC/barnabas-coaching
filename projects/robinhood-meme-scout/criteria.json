@@ -31,5 +31,10 @@
     "batch_size": 30,
     "timeout_ms": 5000,
     "divergence_pct": 25
+  },
+  "blockscout": {
+    "enabled": true,
+    "base_url": "https://robinhoodchain.blockscout.com",
+    "timeout_ms": 8000
   }
 }

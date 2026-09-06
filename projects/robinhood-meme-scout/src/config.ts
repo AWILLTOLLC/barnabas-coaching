@@ -34,6 +34,11 @@ export interface Criteria {
     timeout_ms?: number;
     divergence_pct?: number;
   };
+  blockscout?: {
+    enabled: boolean;
+    base_url?: string;
+    timeout_ms?: number;
+  };
 }
 
 export function loadCriteria(file: string = path.join(PROJECT_ROOT, 'criteria.json')): Criteria {

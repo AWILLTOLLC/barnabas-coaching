@@ -27,7 +27,7 @@ test('captures due outcomes up to limit; failures become dead after 3 passes', a
 
   // limit respected
   let calls = 0;
-  const captured = await captureDueOutcomes(db, async () => { calls++; return { price: 0.02, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 50_000 }; }, t, 5);
+  const captured = await captureDueOutcomes(db, async () => { calls++; return { price: 0.02, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 50_000, creator_status: null, total_supply: null, decimals: null }; }, t, 5);
   assert.equal(captured, 5);
   assert.equal(calls, 5);
   assert.equal(dueOutcomes(db, t, 100).length, 3);
@@ -79,7 +79,7 @@ test('batch misses fall back to gmgn (source stamped), gmgn-null misses go dead 
 
   const emptyBatch = async () => new Map();
   const gmgnOnlyA = async (address: string) =>
-    address === '0xA' ? { price: 0.05, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 40_000 } : null;
+    address === '0xA' ? { price: 0.05, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 40_000, creator_status: null, total_supply: null, decimals: null } : null;
 
   for (let pass = 0; pass < 3; pass++) {
     await captureDueOutcomes(db, gmgnOnlyA, t, 30, emptyBatch);

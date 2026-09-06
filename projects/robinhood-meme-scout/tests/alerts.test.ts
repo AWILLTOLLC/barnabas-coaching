@@ -36,3 +36,10 @@ test('sendDM dry-run succeeds without network', async () => {
   const res = await sendDM('hello', { dryRun: true });
   assert.equal(res.success, true);
 });
+
+test('formatAlert shows creator status when present', () => {
+  const msg = formatAlert({ ...coin, creator_status: 'creator_close' }, ev);
+  assert.ok(msg.includes('creator exited'));
+  // absent → no creator mention
+  assert.ok(!formatAlert(coin, ev).includes('creator'));
+});

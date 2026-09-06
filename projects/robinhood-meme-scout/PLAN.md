@@ -436,5 +436,16 @@ Replace per-coin GMGN `token info` calls in `outcomes.ts` with one DexScreener b
 ## Explicitly out of scope (decided 2026-09-06)
 
 - **pump.fun** — skip. Trades RH-chain tokens but launches remain Solana-side; Pons is the chain's actual launchpad. No coin universe GMGN + DexScreener don't cover.
-- **Pons on-chain indexer** — deferred, revisit with outcome data. Pons (ponsfamily.com) has no API; data means indexing `TokenLaunched`/graduation events over RPC. Worth building only if daily reports show (a) alerts fire too late relative to graduation, or (b) losses cluster on repeat deployers (creator-wallet history is the unique signal). Bitquery sells a hosted Pons/Robinhood API as a build-vs-buy alternative.
+- **Pons on-chain indexer** — deferred, revisit with outcome data. Pons (ponsfamily.com) has no API; data means indexing `TokenLaunched`/graduation events over RPC. Worth building only if daily reports show (a) alerts fire too late relative to graduation, or (b) losses cluster on repeat deployers (creator-wallet history is the unique signal). Bitquery sells a hosted Pons/Robinhood API as a build-vs-buy alternative. **Update 2026-09-06:** [Archive228/warden](https://github.com/Archive228/warden) is a working reference implementation — Pons v2 factory/curve/vault reads over `rpc.mainnet.chain.robinhood.com` (Deno/viem), including the false-positive traps (`lpLocked=false` pre-graduation is normal; `snipeTaxBps=0` post-decay is expected). If the triggers fire, port its recipes rather than reverse-engineering.
+
+# Warden-inspired finalist checks (v2.4)
+
+**Status:** ✅ Built 2026-09-06 (TDD, 61 tests green)
+
+From reviewing Archive228/warden: two cheap checks on finalists, both signals-not-gates.
+
+1. **Creator status on alerts.** GMGN `token info` already carries `dev.creator_token_status`; it now rides `TokenStats` → `Coin.creator_status` → the alert's Holders line ("creator exited", "⚠️ creator pulled LP"). Zero extra fetches.
+2. **Blockscout holder cross-check.** `src/blockscout.ts` fetches `/api/v2/tokens/{addr}/holders` (browser UA required), computes raw top-10 and EOA-only top-10 against GMGN's total supply/decimals, and names contract holders. A >2x gap vs GMGN's `top10_rate` records a `holders` divergence (same table/report line as v2.3). One extra HTTP call per finalist only. Config under `blockscout` in criteria.json.
+
+Skipped from warden by design: Deno/viem stack, GitHub repo vetting, buy execution, LLM judge (Ollama thesis covers it).
 - DexScreener boosts as a *gate* — record only, until the feedback loop says otherwise.

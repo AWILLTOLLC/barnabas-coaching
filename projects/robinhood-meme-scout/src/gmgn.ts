@@ -21,6 +21,9 @@ export interface Coin {
   twitter: string | null;
   website: string | null;
   source: string;
+  // v2.4 enrichment (finalists only, from token info) — optional so list
+  // payload parsing stays untouched
+  creator_status?: string | null;
 }
 
 // Payload shapes (verified live 2026-09-05, see tests/fixtures/):
@@ -97,6 +100,10 @@ export interface TokenStats {
   change_6h_pct: number;
   change_24h_pct: number;
   liquidity_usd: number | null;
+  // v2.4 (Warden-inspired): creator behavior + supply metadata for cross-checks
+  creator_status: string | null;
+  total_supply: number | null;
+  decimals: number | null;
 }
 
 // `gmgn-cli token info` payload: price fields are strings under .price
@@ -107,11 +114,17 @@ export function parseTokenStats(payload: unknown): TokenStats | null {
   const price24h = Number(p?.price_24h);
   if (!isFinite(price) || !isFinite(price6h) || price6h <= 0 || !isFinite(price24h) || price24h <= 0) return null;
   const liquidity = Number((payload as any)?.liquidity);
+  const dev = (payload as any)?.dev;
+  const totalSupply = Number((payload as any)?.total_supply);
+  const decimals = Number((payload as any)?.decimals);
   return {
     price,
     change_6h_pct: ((price - price6h) / price6h) * 100,
     change_24h_pct: ((price - price24h) / price24h) * 100,
     liquidity_usd: isFinite(liquidity) ? liquidity : null,
+    creator_status: typeof dev?.creator_token_status === 'string' ? dev.creator_token_status : null,
+    total_supply: isFinite(totalSupply) && totalSupply > 0 ? totalSupply : null,
+    decimals: isFinite(decimals) && decimals >= 0 ? decimals : null,
   };
 }
 

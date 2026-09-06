@@ -48,7 +48,7 @@ test('garbage payloads produce empty maps', () => {
 
 test('checkDivergence flags >25% relative price diff or >2x liquidity gap, null-safe', () => {
   const dex: DexStats = { price: 1.0, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 100_000, market_cap: null, dex_id: 'uniswap' };
-  const gmgn = { price: 1.1, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 150_000 };
+  const gmgn = { price: 1.1, change_6h_pct: 0, change_24h_pct: 0, liquidity_usd: 150_000, creator_status: null, total_supply: null, decimals: null };
   assert.equal(checkDivergence(dex, gmgn, 25), null);
   assert.equal(checkDivergence(dex, { ...gmgn, price: 2.0 }, 25), 'price');
   assert.equal(checkDivergence(dex, { ...gmgn, liquidity_usd: 250_000 }, 25), 'liquidity');

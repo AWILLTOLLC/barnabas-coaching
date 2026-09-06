@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseCoins, dedupeCoins } from '../src/gmgn.js';
+import { parseCoins, dedupeCoins, parseTokenStats } from '../src/gmgn.js';
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const load = (name: string) => JSON.parse(fs.readFileSync(path.join(FIXTURES, name), 'utf8'));
@@ -52,4 +52,22 @@ test('dedupeCoins keeps first occurrence per address', () => {
   const deduped = dedupeCoins([mk('0x1', 'trending'), mk('0x1', 'hot'), mk('0x2', 'hot')]);
   assert.equal(deduped.length, 2);
   assert.equal(deduped[0].source, 'trending');
+});
+
+test('parseTokenStats surfaces creator status and supply metadata (v2.4)', () => {
+  const stats = parseTokenStats(load('token-info.json'))!;
+  assert.equal(stats.creator_status, 'creator_close');
+  assert.ok(stats.total_supply !== null && stats.total_supply > 900_000_000);
+  assert.equal(stats.decimals, 18);
+});
+
+test('parseTokenStats tolerates missing dev block', () => {
+  const raw = load('token-info.json');
+  delete raw.dev;
+  delete raw.total_supply;
+  delete raw.decimals;
+  const stats = parseTokenStats(raw)!;
+  assert.equal(stats.creator_status, null);
+  assert.equal(stats.total_supply, null);
+  assert.equal(stats.decimals, null);
 });

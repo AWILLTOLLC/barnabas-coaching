@@ -22,7 +22,7 @@ export function formatAlert(coin: Coin, ev: Evaluation, thesis?: string | null, 
   const lines = [
     `🚀 Robinhood Scout: $${coin.ticker} (${coin.name}) — ${ev.score}/100`,
     `MC $${m(coin.market_cap)} | Vol $${m(coin.volume_24h)} | Liq $${m(coin.liquidity_usd)} | Age ${ageH}h`,
-    `Holders ${coin.holder_count}${coin.top10_rate !== null ? ` (top 10: ${(coin.top10_rate * 100).toFixed(0)}%)` : ''}`,
+    `Holders ${coin.holder_count}${coin.top10_rate !== null ? ` (top 10: ${(coin.top10_rate * 100).toFixed(0)}%)` : ''}${creatorNote(coin.creator_status)}`,
     `Score: ${ev.reasons.join(', ')}`,
   ];
   if (regime) lines.push(`Chain regime: ${regime}`);
@@ -81,4 +81,18 @@ function m(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
   return n.toFixed(0);
+}
+
+// GMGN dev.creator_token_status → human words. Unknown statuses pass through raw.
+function creatorNote(status: string | null | undefined): string {
+  if (!status) return '';
+  const words: Record<string, string> = {
+    creator_close: 'creator exited',
+    creator_hold: 'creator holding',
+    creator_add_liquidity: 'creator added LP',
+    creator_remove_liquidity: '⚠️ creator pulled LP',
+    creator_sell: 'creator selling',
+    creator_buy: 'creator buying',
+  };
+  return ` · ${words[status] ?? `creator: ${status}`}`;
 }

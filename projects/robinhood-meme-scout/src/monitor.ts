@@ -8,6 +8,7 @@ import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } f
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
 import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime, recordDivergence } from './db.js';
 import { DEX_DEFAULTS, fetchDexStatsBatch, checkDivergence, type DexConfig, type DexStats } from './dexscreener.js';
+import { BLOCKSCOUT_DEFAULTS, fetchHolderCheck, type BlockscoutConfig, type HolderCheck } from './blockscout.js';
 import { computeBreadth, labelRegime, RegimeTracker, type RegimeLabel } from './regime.js';
 import { captureDueOutcomes } from './outcomes.js';
 import { computeReport, formatReport, narrate } from './report.js';
@@ -26,6 +27,7 @@ export interface MonitorOptions {
   fetch?: () => Promise<Coin[]>;
   fetchStats?: (address: string) => Promise<TokenStats | null>;
   fetchDex?: (addresses: string[]) => Promise<Map<string, DexStats>>;
+  fetchHolders?: (address: string, totalSupply: number | null, decimals: number | null) => Promise<HolderCheck | null>;
   thesis?: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   criteria?: Criteria;
 }
@@ -36,7 +38,9 @@ export class Monitor {
   private fetchCoins: () => Promise<Coin[]>;
   private fetchStats: (address: string) => Promise<TokenStats | null>;
   private fetchDex?: (addresses: string[]) => Promise<Map<string, DexStats>>;
+  private fetchHolders?: (address: string, totalSupply: number | null, decimals: number | null) => Promise<HolderCheck | null>;
   private dexCfg: DexConfig;
+  private bsCfg: BlockscoutConfig;
   private thesis: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   private criteria: Criteria;
   private known: Set<string>;
@@ -53,6 +57,8 @@ export class Monitor {
     this.criteria = opts.criteria ?? loadCriteria();
     this.dexCfg = { ...DEX_DEFAULTS, ...(this.criteria.dexscreener ?? {}) };
     this.fetchDex = opts.fetchDex ?? (this.dexCfg.enabled ? (addresses) => fetchDexStatsBatch(addresses, this.dexCfg) : undefined);
+    this.bsCfg = { ...BLOCKSCOUT_DEFAULTS, ...(this.criteria.blockscout ?? {}) };
+    this.fetchHolders = opts.fetchHolders ?? (this.bsCfg.enabled ? (a, ts, dec) => fetchHolderCheck(a, ts, dec, this.bsCfg) : undefined);
     this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria, this.regime?.current));
     this.known = this.loadKnown();
     this.db = openDb(path.join(this.dataDir, 'scout.db'));
@@ -97,6 +103,20 @@ export class Monitor {
               const [dv, gv] = field === 'price' ? [dex.price, stats.price] : [dex.liquidity_usd, stats.liquidity_usd];
               recordDivergence(this.db, Date.now(), c.address, field, dv, gv);
               logEvent({ event: 'source_divergence', ticker: c.ticker, address: c.address, field, dex_value: dv, gmgn_value: gv });
+            }
+          }
+          // v2.4 (Warden-inspired): creator status rides the alert; Blockscout
+          // holder cross-check records divergence — signals, never gates
+          if (stats?.creator_status) c = { ...c, creator_status: stats.creator_status };
+          if (this.fetchHolders && stats?.total_supply) {
+            const hc = await this.fetchHolders(c.address, stats.total_supply, stats.decimals);
+            if (hc && c.top10_rate !== null && c.top10_rate > 0.01 && hc.user_top10_pct > 1) {
+              const gmgnPct = c.top10_rate * 100;
+              const ratio = Math.max(hc.user_top10_pct, gmgnPct) / Math.min(hc.user_top10_pct, gmgnPct);
+              if (ratio > 2) {
+                recordDivergence(this.db, Date.now(), c.address, 'holders', hc.user_top10_pct, gmgnPct);
+                logEvent({ event: 'source_divergence', ticker: c.ticker, address: c.address, field: 'holders', chain_user_top10_pct: hc.user_top10_pct, gmgn_top10_pct: gmgnPct, contracts: hc.contract_names });
+              }
             }
           }
           const change6h = dex?.change_6h_pct ?? stats?.change_6h_pct ?? null;
