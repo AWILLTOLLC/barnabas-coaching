@@ -86,3 +86,21 @@ test('report omits divergence line when there are none', () => {
   assert.equal(r.source_divergences_24h, 0);
   assert.ok(!formatReport(r).includes('Source divergences'));
 });
+
+test('creatorHistoryLines names serial deployers for alerted coins, silent when unconfigured', async () => {
+  const { creatorHistoryLines } = await import('../src/report.js');
+  const db = openDb(':memory:');
+  recordCoin(db, coin('0xAA', 'HOT', 0.01), { passed: true, score: 90, reasons: [], flags: [] }, true, NOW - 2 * H);
+  recordCoin(db, coin('0xBB', 'COLD', 0.01), { passed: true, score: 90, reasons: [], flags: [] }, true, NOW - 30 * H); // outside 24h
+
+  const dune = { enabled: true, query_id: 1, timeout_ms: 100, poll_interval_ms: 1 };
+  const lines = await creatorHistoryLines(db, dune, 'key', NOW,
+    async (addr: string) => addr === '0xAA' ? { deployer: '0xdeadbeef12345678', total_launches: 7, first_launch: '2026-08-01', last_launch: '2026-09-05' } : null);
+  assert.equal(lines.length, 1);
+  assert.ok(lines[0].includes('HOT'));
+  assert.ok(lines[0].includes('7 launches'));
+
+  // no key → no lines, no fetches
+  const none = await creatorHistoryLines(db, dune, '', NOW, async () => { throw new Error('must not fetch'); });
+  assert.deepEqual(none, []);
+});

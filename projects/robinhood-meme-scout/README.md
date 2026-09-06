@@ -48,6 +48,7 @@ Logs go to `data/monitor.log` / `data/monitor.err`. Unload with `launchctl unloa
 - `src/gmgn.ts` — gmgn-cli exec + payload normalizer (shapes pinned by `tests/fixtures/`)
 - `src/dexscreener.ts` — DexScreener batch fetch + normalizer (deepest-liquidity pair wins) + divergence check
 - `src/blockscout.ts` — Blockscout holder fetch: raw vs EOA-only top-10 shares, contract names (PoolManager, Pons locker)
+- `src/dune.ts` — Dune API client for creator launch history (v2.5, needs `DUNE_API_KEY` + saved query from `docs/dune-creator-history.sql`; daily report flags serial deployers)
 - `src/filters.ts` — gates + scoring
 - `src/heartbeat.ts` — PT slot scheduler
 - `src/thesis.ts` — Ollama prompt + generation for alert theses

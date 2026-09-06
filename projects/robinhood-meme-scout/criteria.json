@@ -36,5 +36,11 @@
     "enabled": true,
     "base_url": "https://robinhoodchain.blockscout.com",
     "timeout_ms": 8000
+  },
+  "dune": {
+    "enabled": false,
+    "query_id": 0,
+    "timeout_ms": 60000,
+    "poll_interval_ms": 2500
   }
 }

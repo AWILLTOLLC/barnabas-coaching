@@ -11,7 +11,8 @@ import { DEX_DEFAULTS, fetchDexStatsBatch, checkDivergence, type DexConfig, type
 import { BLOCKSCOUT_DEFAULTS, fetchHolderCheck, type BlockscoutConfig, type HolderCheck } from './blockscout.js';
 import { computeBreadth, labelRegime, RegimeTracker, type RegimeLabel } from './regime.js';
 import { captureDueOutcomes } from './outcomes.js';
-import { computeReport, formatReport, narrate } from './report.js';
+import { computeReport, formatReport, narrate, creatorHistoryLines } from './report.js';
+import { DUNE_DEFAULTS, fetchCreatorHistory, type DuneConfig } from './dune.js';
 import type { DatabaseSync } from 'node:sqlite';
 
 export interface ScanResult {
@@ -41,6 +42,8 @@ export class Monitor {
   private fetchHolders?: (address: string, totalSupply: number | null, decimals: number | null) => Promise<HolderCheck | null>;
   private dexCfg: DexConfig;
   private bsCfg: BlockscoutConfig;
+  private duneCfg: DuneConfig;
+  private duneKey: string;
   private thesis: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   private criteria: Criteria;
   private known: Set<string>;
@@ -59,6 +62,8 @@ export class Monitor {
     this.fetchDex = opts.fetchDex ?? (this.dexCfg.enabled ? (addresses) => fetchDexStatsBatch(addresses, this.dexCfg) : undefined);
     this.bsCfg = { ...BLOCKSCOUT_DEFAULTS, ...(this.criteria.blockscout ?? {}) };
     this.fetchHolders = opts.fetchHolders ?? (this.bsCfg.enabled ? (a, ts, dec) => fetchHolderCheck(a, ts, dec, this.bsCfg) : undefined);
+    this.duneCfg = { ...DUNE_DEFAULTS, ...(this.criteria.dune ?? {}) };
+    this.duneKey = env.DUNE_API_KEY ?? '';
     this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria, this.regime?.current));
     this.known = this.loadKnown();
     this.db = openDb(path.join(this.dataDir, 'scout.db'));
@@ -208,7 +213,11 @@ export class Monitor {
   async sendDailyReport(dryRun: boolean): Promise<void> {
     const stats = computeReport(this.db, Date.now());
     const narrative = await narrate(stats, this.criteria);
-    const msg = formatReport(stats) + (narrative ? `\n🧠 ${narrative}` : '');
+    const creators = await creatorHistoryLines(this.db, this.duneCfg, this.duneKey, Date.now(),
+      (address) => fetchCreatorHistory(address, this.duneCfg, this.duneKey));
+    const msg = formatReport(stats)
+      + (creators.length ? `\n${creators.join('\n')}` : '')
+      + (narrative ? `\n🧠 ${narrative}` : '');
     const dm = await sendDM(msg, { dryRun: dryRun || this.dryRun });
     logEvent({ event: 'daily_report', success: dm.success, error: dm.error });
   }

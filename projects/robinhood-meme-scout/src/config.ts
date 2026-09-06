@@ -39,6 +39,12 @@ export interface Criteria {
     base_url?: string;
     timeout_ms?: number;
   };
+  dune?: {
+    enabled: boolean;
+    query_id?: number;
+    timeout_ms?: number;
+    poll_interval_ms?: number;
+  };
 }
 
 export function loadCriteria(file: string = path.join(PROJECT_ROOT, 'criteria.json')): Criteria {

@@ -436,7 +436,18 @@ Replace per-coin GMGN `token info` calls in `outcomes.ts` with one DexScreener b
 ## Explicitly out of scope (decided 2026-09-06)
 
 - **pump.fun** — skip. Trades RH-chain tokens but launches remain Solana-side; Pons is the chain's actual launchpad. No coin universe GMGN + DexScreener don't cover.
-- **Pons on-chain indexer** — deferred, revisit with outcome data. Pons (ponsfamily.com) has no API; data means indexing `TokenLaunched`/graduation events over RPC. Worth building only if daily reports show (a) alerts fire too late relative to graduation, or (b) losses cluster on repeat deployers (creator-wallet history is the unique signal). Bitquery sells a hosted Pons/Robinhood API as a build-vs-buy alternative. **Update 2026-09-06:** [Archive228/warden](https://github.com/Archive228/warden) is a working reference implementation — Pons v2 factory/curve/vault reads over `rpc.mainnet.chain.robinhood.com` (Deno/viem), including the false-positive traps (`lpLocked=false` pre-graduation is normal; `snipeTaxBps=0` post-decay is expected). If the triggers fire, port its recipes rather than reverse-engineering.
+- **Pons on-chain indexer** — deferred, revisit with outcome data. Pons (ponsfamily.com) has no API; data means indexing `TokenLaunched`/graduation events over RPC. Worth building only if daily reports show (a) alerts fire too late relative to graduation, or (b) losses cluster on repeat deployers (creator-wallet history is the unique signal). Bitquery sells a hosted Pons/Robinhood API as a build-vs-buy alternative. **Update 2026-09-06:** [Archive228/warden](https://github.com/Archive228/warden) is a working reference implementation — Pons v2 factory/curve/vault reads over `rpc.mainnet.chain.robinhood.com` (Deno/viem), including the false-positive traps (`lpLocked=false` pre-graduation is normal; `snipeTaxBps=0` post-decay is expected). **Update 2 (same day):** Dune has full Robinhood Chain tables, which supersedes most of the RPC-indexer case — creator/launch history is one SQL query (see v2.5 below). Order of attack if more on-chain data is ever needed: Dune query first, Warden's RPC recipes only if Dune freshness disappoints.
+
+# Dune creator history (v2.5)
+
+**Status:** ✅ Built 2026-09-06 (TDD, 65 tests green) — **inert until keys added**
+
+The deferred repeat-deployer signal, via Dune instead of an RPC indexer. Daily report gains one line per alerted coin: `🏭 $TICKER creator 0xabc…: 7 launches since 2026-08-01 ⚠️ serial deployer` (⚠️ at ≥5 launches).
+
+- `src/dune.ts` — execute-and-poll client for the Dune API v1, fail-soft null
+- `docs/dune-creator-history.sql` — the query to save on dune.com once; factory address + TokenLaunched topic0 verified live against Blockscout (via warden's ABI)
+- `report.ts creatorHistoryLines` — ≤10 alerted coins/24h, skips silently when unconfigured
+- Activation (human steps): save the SQL on dune.com → put query_id in criteria.json (`dune.enabled: true`) → `DUNE_API_KEY` in `.env` → restart
 
 # Warden-inspired finalist checks (v2.4)
 

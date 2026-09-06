@@ -158,6 +158,33 @@ In at most 50 words of plain text: state whether alerted coins are outperforming
   }
 }
 
+/**
+ * Serial-deployer context for the daily report (v2.5, Dune-backed): one line
+ * per coin alerted in the last 24h. Needs DUNE_API_KEY and a saved query id
+ * (docs/dune-creator-history.sql); silently returns [] when unconfigured.
+ */
+export async function creatorHistoryLines(
+  db: DatabaseSync,
+  dune: { enabled: boolean; query_id: number },
+  apiKey: string,
+  now: number,
+  fetchHistory: (address: string) => Promise<{ deployer: string; total_launches: number; first_launch: string | null; last_launch: string | null } | null>,
+): Promise<string[]> {
+  if (!dune.enabled || !dune.query_id || !apiKey) return [];
+  const alerted = db.prepare(
+    'SELECT address, ticker FROM coins WHERE alerted = 1 AND first_seen_ms >= ? LIMIT 10',
+  ).all(now - 24 * 3_600_000) as unknown as { address: string; ticker: string }[];
+  const lines: string[] = [];
+  for (const c of alerted) {
+    const h = await fetchHistory(c.address);
+    if (!h) continue;
+    const short = `${h.deployer.slice(0, 8)}…`;
+    const since = h.first_launch ? ` since ${String(h.first_launch).slice(0, 10)}` : '';
+    lines.push(`🏭 $${c.ticker} creator ${short}: ${h.total_launches} launches${since}${h.total_launches >= 5 ? ' ⚠️ serial deployer' : ''}`);
+  }
+  return lines;
+}
+
 function count(db: DatabaseSync, sql: string, ...args: unknown[]): number {
   return ((db.prepare(sql).get(...(args as any)) as any)?.n ?? 0) as number;
 }
