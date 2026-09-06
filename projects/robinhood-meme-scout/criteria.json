@@ -1,0 +1,13 @@
+{
+  "candle_age_hours": { "min": 24, "max": 96 },
+  "market_cap_bands": [[500000, 2000000], [5000000, 25000000]],
+  "max_top10_holder_rate": 0.4,
+  "strong_top10_holder_rate": 0.2,
+  "min_volume_24h": 500000,
+  "strong_volume_24h": 1000000,
+  "min_liquidity_usd": 50000,
+  "strong_liquidity_usd": 100000,
+  "alert_score_threshold": 70,
+  "poll_interval_seconds": 60,
+  "heartbeat_hours_pt": [6, 10, 14, 18, 22]
+}

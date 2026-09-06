@@ -1,0 +1,21 @@
+{
+  "name": "robinhood-meme-scout",
+  "version": "2.0.0",
+  "description": "GMGN monitor for Robinhood Chain meme coins — Discord alerts on criteria match",
+  "type": "module",
+  "scripts": {
+    "scan": "tsx src/cli.ts scan --dry-run",
+    "monitor": "tsx src/cli.ts monitor",
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["gmgn", "meme-coin", "robinhood-chain", "alerts"],
+  "author": "Aaron",
+  "license": "MIT",
+  "dependencies": {
+    "tsx": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
