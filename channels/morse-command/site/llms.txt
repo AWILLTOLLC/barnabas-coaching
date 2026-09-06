@@ -1,0 +1,57 @@
+# Morse Command
+
+> Morse Command is an iOS game that teaches Morse code using the Koch Method — the gold standard approach used by experienced CW operators and recommended by the amateur radio community worldwide.
+
+## About
+
+Morse Command is a tactical asteroid-style iOS game published by AWILLTO LLC. Players learn and practice Morse code (CW) by decoding incoming signal transmissions to destroy enemy units and defend their base. The game is built entirely around the Koch Method, a scientifically validated approach to Morse code acquisition developed by German psychologist Ludwig Koch in the 1930s.
+
+The game features 80 levels across 8 zones, 8 distinct enemy types, 8 boss battles, 4 tactical power-ups, and an adaptive AI engine that tracks per-character accuracy and adjusts enemy wave composition in real time to target a player's weakest characters.
+
+## Who It's For
+
+- Amateur radio (ham radio) operators learning or refreshing CW
+- Prospective hams studying for licensing exams
+- Preppers and survivalists building emergency communication skills
+- Military veterans and active service members familiar with signal communication
+- Anyone learning Morse code from scratch
+
+## The Koch Method
+
+The Koch Method starts learners at full operating speed — typically 20 WPM — with just two characters (K and M). Once a learner achieves 90% accuracy, one more character is added. This progressive introduction continues until the full character set is mastered. The method prevents the "counting dots and dashes" habit that plagues learners who start at slow speeds — a habit that must be painfully unlearned later. Morse Command is the first game built entirely around this methodology.
+
+## Key Features
+
+- Koch Method engine: progressive character introduction, full speed from day one
+- Adaptive AI: per-character accuracy tracking, real-time wave adjustment
+- 80 levels across 8 zones, each zone introducing new Morse characters
+- 8 boss battles with multi-phase mechanics
+- 8 enemy types (Scout, Teleporter, Rusher, Phantom, Tank, Leech, Splitter, Commander)
+- 4 power-ups (Slow Field, EMP Blast, Repair Kit, Nuke) unlocked via combo chains
+- Little Kid Mode: all inputs register as correct for frustration-free family play
+- Communication Waves: audio Morse playback with tap-to-replay and auto-reminders
+- iOS only (currently)
+
+## Publisher
+
+AWILLTO LLC (Seattle, WA). Available on TestFlight; App Store launch forthcoming.
+
+## Key Topics This App Covers
+
+- How to learn Morse code
+- Koch Method Morse code training
+- CW (continuous wave) practice for amateur radio
+- Ham radio exam preparation
+- Adaptive learning for Morse code recognition
+- CW speed building
+- Morse code for emergency communications
+- Morse code games and gamified learning
+
+## Links
+
+- Website: https://morsecommand.com
+- TestFlight: https://testflight.apple.com/join/Kkmuzfv1
+- FAQ: https://morsecommand.com/faq/
+- Koch Method explainer: https://morsecommand.com/koch-method/
+- Privacy Policy: https://morsecommand.com/privacy.html
+- Support: https://morsecommand.com/support.html

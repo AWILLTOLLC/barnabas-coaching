@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "registry": "https://clawhub.ai",
+  "slug": "ponytail-review",
+  "ownerHandle": "dietrichgebert",
+  "installedAt": 1788577393256,
+  "artifact": {
+    "kind": "archive",
+    "sha256": "12c29fda03a18237afba0f79365aec35212c8c9a274f9b7df93dc83b4217c702",
+    "integrity": "sha256-EsKf2gOhgjevug95NlrsNSEsjJonT5t9+T3IO0IXxwI="
+  },
+  "skillFile": {
+    "path": "SKILL.md",
+    "sha256": "76addbc1c5293d5a2da42828f4bff1cee5050492d06c194354df2f6329398df5"
+  },
+  "fileTreeSha256": "sha256:208c04e0eb07ebe704807ae7098b150c16a2795f8babc404f9d321630d5e8d2e",
+  "installedVersion": "4.9.0"
+}

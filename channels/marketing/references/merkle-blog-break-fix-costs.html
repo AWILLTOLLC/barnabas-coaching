@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Hidden Costs of Break/Fix IT | Merkle & Bloom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f5f2ea;
+      --paper-deep: #e9e5d9;
+      --ink: #14201e;
+      --muted: #5c645d;
+      --rule: #bebeb1;
+      --moss: #205e55;
+      --moss-dark: #174b44;
+      --display: "Libre Baskerville", Georgia, serif;
+      --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+      --mono: "DM Mono", ui-monospace, monospace;
+    }
+    
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      line-height: 1.65;
+      margin: 0;
+      min-width: 320px;
+    }
+    
+    a { color: inherit; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 3px solid var(--moss); outline-offset: 4px; }
+    
+    .skip-link {
+      z-index: 100;
+      background: var(--ink);
+      color: var(--paper);
+      padding: .7rem 1rem;
+      position: fixed;
+      top: .6rem;
+      left: .6rem;
+      transform: translateY(-180%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    
+    .site-header {
+      z-index: 20;
+      border-bottom: 1px solid var(--rule);
+      background: color-mix(in srgb, var(--paper) 94%, transparent);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+    }
+    
+    .header-inner {
+      width: min(100% - 3rem, 1240px);
+      margin-inline: auto;
+      min-height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .wordmark {
+      color: var(--ink);
+      font-family: var(--display);
+      letter-spacing: -.055em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: baseline;
+      gap: .25rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    
+    .wordmark i { color: var(--moss); font-weight: 400; }
+    
+    nav ul {
+      gap: 1.6rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+    }
+    
+    nav a {
+      color: #313b36;
+      padding: .75rem 0;
+      font-size: .92rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .section {
+      width: min(100% - 3rem, 1240px);
+      margin-inline: auto;
+      padding-block: clamp(2.75rem, 4vw, 4.5rem);
+    }
+    
+    .section-label {
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: .055em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .7rem;
+    }
+    
+    .section-label span { color: var(--moss); }
+    
+    h1, h2, h3 { margin-top: 0; text-wrap: pretty; }
+    h1, h2 {
+      font-family: var(--display);
+      letter-spacing: -.06em;
+      font-weight: 400;
+      line-height: 1.06;
+    }
+    
+    h1 {
+      max-width: 14ch;
+      margin-bottom: 2rem;
+      font-size: clamp(1.9rem, 3.9vw, 4.1rem);
+    }
+    
+    h2 {
+      margin-bottom: 1.5rem;
+      font-size: clamp(2.1rem, 4.25vw, 4.3rem);
+    }
+    
+    h3 {
+      font-family: var(--display);
+      letter-spacing: -.04em;
+      font-size: clamp(1.55rem, 2.5vw, 2.25rem);
+      font-weight: 400;
+      line-height: 1.18;
+    }
+    
+    p {
+      color: #3d4741;
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 70ch;
+    }
+    
+    .text-link {
+      color: var(--moss);
+      border-bottom: 1px solid;
+      align-items: baseline;
+      gap: .45rem;
+      padding-bottom: .3rem;
+      font-size: 1rem;
+      font-weight: 650;
+      text-decoration: none;
+      display: inline-flex;
+    }
+    
+    .text-link:hover span { transform: translate(.18rem, -.18rem); }
+    
+    .cta-block {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .cost-box {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: var(--paper-deep);
+      border-left: 3px solid var(--moss);
+    }
+    
+    .cost-box strong { color: var(--moss); }
+    
+    ul { padding-left: 1.5rem; margin: 1rem 0; }
+    li { color: #3d4741; margin-bottom: .75rem; line-height: 1.6; }
+    
+    .seo-meta {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    
+    @media (max-width: 768px) {
+      .header-inner { flex-direction: column; gap: 1rem; }
+      nav ul { gap: 1rem; }
+      .section { padding-block: clamp(2rem, 6vw, 3rem); }
+      h1 { max-width: 100%; font-size: clamp(1.75rem, 5vw, 3rem); }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="wordmark">Merkle & <i>Bloom</i></a>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main id="main">
+    <section class="section">
+      <div class="section-label"><span>Blog</span>Thought Leadership</div>
+      <h1>Your IT Is Cheap Until It's Not</h1>
+      <p class="hero-intro">Break/fix IT sounds cheap. You pay when things break. When they're working, you pay nothing.</p>
+      <p>But your IT is cheap until it's not. Then it's expensive in ways you didn't expect.</p>
+    </section>
+    
+    <section class="section">
+      <h2>The first hidden cost: downtime</h2>
+      <p>Your network goes down. Your break/fix vendor shows up in two hours. You've lost a day of productivity. Your customers are waiting. Your team is frustrated.</p>
+      <p>The invoice says "$250 for two hours of troubleshooting." But you've lost $5,000 in productivity. You've delayed a customer delivery. You've missed a deadline.</p>
+      
+      <h2>The second hidden cost: context</h2>
+      <p>Your break/fix vendor fixes the problem. They close the ticket. They move on.</p>
+      <p>Six months later, the same problem happens. They fix it again. They close the ticket. They move on.</p>
+      <p>Who's keeping track of what happened? Who's building a history of your systems? Who's learning from each problem so it doesn't happen again?</p>
+      
+      <h2>The third hidden cost: scope</h2>
+      <p>Your CRM isn't talking to your email system. You call your break/fix vendor. They say it's not in scope. You pay extra to get someone to look at it.</p>
+      <p>Your network is slow. You call your break/fix vendor. They say it's not in scope. You pay extra to get someone to look at it.</p>
+      <p>Every time something falls between your systems, you pay for it.</p>
+    </section>
+    
+    <section class="section">
+      <h2>The real cost of "cheap" IT</h2>
+      
+      <h3>Downtime by industry</h3>
+      
+      <div class="cost-box">
+        <p><strong>Healthcare:</strong> A lab going offline for 4 hours can mean spoiled samples, delayed patient results, and audit findings. Cost: $10,000–$50,000 per incident.</p>
+      </div>
+      
+      <div class="cost-box">
+        <p><strong>Finance:</strong> A trading platform going offline for 30 minutes can mean missed opportunities and client frustration. Cost: $20,000–$100,000+ per incident.</p>
+      </div>
+      
+      <div class="cost-box">
+        <p><strong>Legal:</strong> A document management system going offline before a filing deadline can mean a delayed filing and a missed opportunity. Cost: $5,000–$25,000 per incident.</p>
+      </div>
+      
+      <div class="cost-box">
+        <p><strong>Manufacturing:</strong> A production monitoring system going offline for 2 hours can mean quality issues and wasted materials. Cost: $15,000–$75,000 per incident.</p>
+      </div>
+      
+      <p>These aren't IT costs. They're business costs. And break/fix IT treats them as afterthoughts.</p>
+    </section>
+    
+    <section class="section">
+      <h2>A case study: the lab that lost 3 weeks of data</h2>
+      
+      <h3>The scenario</h3>
+      <p>A biotech lab was using break/fix IT. Their LIMS (Laboratory Information Management System) went offline during a critical data migration. The vendor showed up the next day. They restored the system. They closed the ticket.</p>
+      
+      <h3>What happened</h3>
+      <p>The lab thought the data was safe. It wasn't. Three weeks of data was corrupted. They had to re-run the experiments. They lost $150,000 in research value. They delayed a client delivery by two months.</p>
+      
+      <h3>The invoice</h3>
+      <p>The break/fix vendor sent an invoice for "$3,500 for data restoration." But the real cost was $150,000 in lost research.</p>
+      
+      <h3>What an embedded IT owner would have done</h3>
+      <div class="cost-box">
+        <p>An embedded IT owner would have:</p>
+        <ul>
+          <li>Monitored the migration in real-time</li>
+          <li>Caught the error before it corrupted the data</li>
+          <li>Coordinated with the LIMS vendor to fix the root cause</li>
+          <li>Updated the documentation so the next migration would work</li>
+        </ul>
+        <p>The invoice would have been "$5,000 for the month." But they would have saved $150,000 in lost research.</p>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>Why break/fix IT keeps breaking</h2>
+      
+      <h3>1. No context</h3>
+      <p>Your break/fix vendor sees your systems as a portfolio of problems to solve. They don't know your business. They don't know which systems matter most. They don't know why a problem is urgent.</p>
+      
+      <h3>2. No ownership</h3>
+      <p>Your break/fix vendor fixes the problem. They close the ticket. They move on. They don't own the outcome. They don't care if the problem happens again.</p>
+      
+      <h3>3. No planning</h3>
+      <p>Your break/fix vendor reacts to problems. They don't plan for growth. They don't plan for upgrades. They don't plan for the next stage of your business.</p>
+    </section>
+    
+    <section class="section">
+      <h2>The embedded IT alternative</h2>
+      
+      <h3>1. Context matters</h3>
+      <p>An embedded IT owner sits in your office. They meet with your team. They understand your business. When a system goes down, they know which customers are affected and which deadlines are at risk.</p>
+      
+      <h3>2. Ownership vs. maintenance</h3>
+      <p>Your embedded IT owner doesn't just fix problems. They own the outcome. They plan for growth. They upgrade systems before they break. They build a history of your systems so the next person knows what happened.</p>
+      
+      <h3>3. One accountable owner</h3>
+      <p>When something breaks, you know who to call. When you need to upgrade a system, you know who to talk to. When you're planning for growth, you know who to bring in early.</p>
+    </section>
+    
+    <section class="section">
+      <h2>When break/fix IT works</h2>
+      
+      <div class="cost-box">
+        <p><strong>Break/fix works when:</strong></p>
+        <ul>
+          <li>Your IT needs are simple and stable</li>
+          <li>You have strong technical people who can manage vendors</li>
+          <li>You're okay with "good enough"</li>
+          <li>You want predictable monthly costs (or no monthly costs)</li>
+        </ul>
+      </div>
+      
+      <div class="cost-box">
+        <p><strong>Break/fix breaks when:</strong></p>
+        <ul>
+          <li>Your IT is mission-critical to your business</li>
+          <li>Your systems are complex and evolving</li>
+          <li>Leadership is spending 10+ hours/month on IT coordination</li>
+          <li>You want someone who takes ownership, not just maintenance</li>
+        </ul>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>The ROI of embedded IT</h2>
+      
+      <h3>Downtime reduction</h3>
+      <p>Companies with embedded IT saw 40–50% fewer unplanned outages in year one.</p>
+      
+      <h3>Faster onboarding</h3>
+      <p>New employees get up and running in days, not weeks.</p>
+      
+      <h3>Vendor coordination</h3>
+      <p>One accountable owner means fewer "that's their problem" moments between your vendors.</p>
+      
+      <h3>Audit readiness</h3>
+      <p>When your IT owner knows your workflows, audit prep goes from "where's the documentation?" to "here's what changed last quarter."</p>
+    </section>
+    
+    <section class="section">
+      <h2>A practical beginning</h2>
+      <p>When no one owns the whole picture, things accumulate. Systems that don't talk to each other. Documentation that's out of date. Vendors who point at each other when problems arise.</p>
+      <p>A 30-minute conversation can map your environment and show whether embedded IT is a practical fit. No pitch, just a clear picture of where you are and where the model could help.</p>
+      
+      <div class="cta-block">
+        <p class="text-link"><a href="/contact" class="text-link"><span>Map Your IT Environment</span> →</a> — 30 minutes with Aaron. We'll see where embedded IT fits.</p>
+        <p class="hero-email">Prefer email? <a href="mailto:hello@merkleandbloom.com">Reach Aaron directly</a>.</p>
+      </div>
+    </section>
+    
+    <footer class="section">
+      <div class="seo-meta">
+        <p><strong>Title:</strong> The Hidden Costs of Break/Fix IT | Merkle & Bloom</p>
+        <p><strong>Meta description:</strong> Why "cheap" break/fix IT costs more than embedded ownership. Downtime, context, scope—the hidden costs you're paying.</p>
+        <p><strong>Keywords:</strong> break/fix IT, hidden IT costs, SMB IT, IT ownership, IT strategy, downtime costs</p>
+        <p><strong>Internal links:</strong> <a href="/services/healthcare">Healthcare</a> | <a href="/services/finance">Finance</a> | <a href="/blog/why-smbs-need-embedded-it">Embedded IT vs. Managed Services</a></p>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

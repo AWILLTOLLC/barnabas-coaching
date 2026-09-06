@@ -1,0 +1,164 @@
+Factor Update, March 14, 2026
+The Factor Update serves – along with the @Factor_Members X feed – as snippets into the trading of the Factor LLC
+House Prop Account focused primarily on risk and trade management, trading processes and dealing with emotions
+Current Factor Prop Account positions
+• Long one unit of TPYP-etf • Long one unit of CENX stock
+• Long 1.5 units of KC Wheat futures • Long two units of Corn futures
+• Short two units of 2-Yr Note futures • Short one unit of 10-Yr Bund Note futures
+• Long one+ unit of Crude Oil futures • Short one unit of S&P futures
+• Short two units of EuroFX futures
+Markets under consideration for New Initial Positions (NIPs)
+• Live Moo Cow futures •
+Note: I express positions in relationship to the risk of total nominal capital taken on a trade. Each unit of a trade represents an initial
+trade risk of $3,500 of so per $1 million of total nominal capital. A two-unit trade represents a risk of $7,000 per $1M Nominal. The
+maximum risk taken on a trade is three units, or $10.5k per $1M nominal. 2026 Sequential Closed Trade NAV performance to date = 975 as
+of Mar 13
+Markets with positions
+TPYP-etf
+• Factor is long two units (P and T).
+• Current sizing = 3,600 shares/$1M.
+• The dominant chart patterns was a 14-month continuation inverted H&S on the weekly and daily charts.
+• The initial target has basically been reached.
+• This was just a textbook example of a horizontal pattern.
+1
+
+CENX-stock
+• Factor remains long one unit (W).
+• The current sizing = 300 shares/$1M.
+• The launching pattern was a 17-year inverted H&S.
+• The daily chart is forming a broadening pattern.
+• The outcome of the megaphone is uncertain, but it could become a continuation pattern. I am willing to extend my
+position based on this pattern’s completion.
+• The 48.04 level is my anchor point for stopping the trade out.
+• The target is 79.97.
+2
+
+S&P futures
+• I have been anxious to short a stock index – any stock index.
+• The wash-out decline on Monday represented an out-of-line movement for what I believe to be a now-completed
+14-wk H&S top.
+• The close on Thursday verified the completion of this possible pattern.
+• Factor sold a one-unit position on the kick-back rally to the neckline on Friday.
+• The position is 10 MES contracts per $1M.
+• An even larger H&S top could form if Monday’s low holds.
+• The current position will most likely become a loser if a larger H&S top develops.
+3
+
+Eurocurrency futures
+• Factor has commented several times in recent weeks on the expanding triangle or megaphone on the daily chart.
+• I have held some uncertainty about this pattern until Friday during the Factor webinar when in talking through the
+pattern I was able to get my arms around the importance of Friday’s decline.
+• Factor established a two-unit position on Friday. I typically do not make intraday decisions.
+• The sizing is four Minis per $1M (a mini is 62,500 EUR). Using Minis may allow me to split a unit into tranches.
+• The chart of the June contract was the thing that did it for me – an 8-monthh double top (a horizontal pattern).
+4
+
+Kansas City Wheat futures
+• Factor is long one-and-one-half units.
+• Sizing = 8 lots/$1M.
+• The dominant patterns were a wedge on the weekly chart and 7-month Chair with Ottoman on the daily chart of the
+May contract.
+• Per the comments from the Feb 28 Update, a second unit was purchased Mar 2 at 5.75.
+5
+
+Corn futures
+• Factor is long a two-unit position, having been stopped out of one unit on Monday’s wash-out decline (it happens).
+• Current sizing = 12 lots/$1M.
+• The dominant chart patterns are a “Flying M” on the weekly continuation chart and an 18-month common bottom on
+the daily chart of the December contract.
+6
+
+2-Year T-Note futures
+• The 15-week rectangle I have so frequently mentioned broke down this past week.
+• Factor established a full two-unit short position.
+• The size is 14 lots per $1M.
+• The 1X and 2X targets are shown.
+10-Yr Euro Bund futures
+• The decline this past week completed 30-month and 12-month descending triangles.
+• Factor established a single-unit short position on Wednesday.
+• The size is 3 lots per $1M.
+• The targets are shown on the chart.
+7
+
+Crude Oil
+• After Monday’s unprecedented blast off the market was retraced all the way back to the $78 breakout level on the
+weekly chart. I was tempted to buy this retracement but waited for an indication of a bottom.
+• A Factor Member alerted me to an inverted H&S at the retracement level on the intraday chart.
+• This inverted bottom was completed on Thursday.
+• Factor is long an overweighted unit. I was too spooked to purchase two units.
+• The size is 8 micros per $1M.
+8
+
+Markets under review for review or curiosity
+Live Cattle futures
+• The Dec-Mar rally can be viewed as a retest of the Oct 2025 high.
+• The daily chart displays a developing H&S top with a down-sloping neckline.
+• I will consider the short side of this market, but with only a single unit.
+U.S. Dollar Index futures
+• A well-established rectangle is formed on the weekly chart.
+• This pattern could be completed in either direction. It should be noted that overhead resistance is heavy.
+• Factor is flat in USDX – see comments on Eurocurrency.
+9
+
+Gold futures
+• My long-term view is BULLISH.
+• Thinking a market is going higher is NOT NOT the reason to be long as a swing trader.
+• The inability of Gold to rally strongly in the face of this week’s Iran war was a sign of underlying weakness, which
+showed its hand on Friday.
+• There is no daily chart pattern with which I can establish a long position.
+• Factor is flat. I will be monitoring the daily chart for a trading opportunity – but I see nothing now.
+Trades existed during the week ending Mar 13, 2026
+• Stopped out of a unit of Bitcoin futures when Friday’s rally faltered
+• Stopped out of a unit of Corn futures
+• Stopped out of a unit of TPYP-etf
+For the video version of this Factor Update Video click here:
+Link is to Factor Video Scroll from Mar 13, 2026
+https://www.youtube.com/watch?v=lYowHzDZguw
+10
+
+Just a reminder about ATR breakout levels
+To determine an entry stop order I undergo the
+following process:
+1. Identify the breakout level (e.g., a right
+shoulder high of a H&S bottom)
+2. Determine the length of the pattern (in
+weeks)
+3. Find the 30-day ATR of the latest day within
+the pattern
+4. Multiply the 30-day ATR by the appropriate
+% of the weekly length of the pattern (e.g.,
+the adjusted ATR for a 13-week H&S bottom
+would be 45% of the 30-day ATR)
+5. Add (long pattern)/subtract (short pattern)
+the adjusted 30-day ATR to the breakout level. This becomes the entry stop level.
+Trading commentary – Swing trading
+People have different definitions. As for myself as a swing trader in the futures markets, swing trading
+looks like this:
+• Positions held from a few days (for losses) to a few weeks and even a few months in rare
+exceptions.
+• Intent is to catch sustainable short-term trends and then move onto the next trade.
+• Targets on trades are seldom more than 10-15% of the underlying asset value.
+I evolved as a swing trader for three major reasons:
+• As a new trader with limited capital, I could not afford to tie up trading capital in markets that were
+not moving.
+• I hate having to make the same dollar again. Risk-adjusted RORs is my compulsion. I like to make
+profits – I hate giving money back (I am referring here to closed trade NAV).
+• Trading was the source of my living starting in 1981. I had to take money from my account to pay
+bills. The possibility of 50% drawdowns was something I had to purge from my trading approach.
+Why my focus is on Profit Factor, Calmar and limited drawdowns rather than on maximizing
+ROR?
+It’s easy folks. If you shoot for the moon to upwardly explode the value of your trading account, then plan
+for the to make the same $$ over and over and over again. It is far easier to build the value of an account
+in incrememts over time by holding onto to gains. It is easy to make money trading – the challenge is to
+keep what you make.
+Factor’s trading approach in a nutshell
+• Futures are the ideal asset class for swing trading
+• Identify clear classical chart patterns (preferably on weekly charts and most preferably horizontal
+patterns)
+• Enter with ATR breakout stops
+• Risk no more than 35 to 40 basis points per unit (70 to 80 BPs per trade)
+• Protect open profits (if they develop) like a banshee
+• Try to achieve a BE trade within a week or so
+• Take at least partial profits at targets
+###
+11

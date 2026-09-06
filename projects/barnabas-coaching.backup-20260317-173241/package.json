@@ -1,0 +1,21 @@
+{
+  "name": "barnabas-coaching",
+  "version": "1.0.0",
+  "description": "Barnabas Coaching — AI strategy for Seattle businesses, led by Aaron Williams",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.1.6",
+    "@astrojs/tailwind": "^5.1.0",
+    "astro": "^4.16.0",
+    "tailwindcss": "^3.4.14"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15"
+  }
+}

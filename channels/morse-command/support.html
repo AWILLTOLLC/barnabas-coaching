@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support — Morse Command</title>
+<meta name="description" content="Get help with Morse Command — the Koch Method Morse code training game for iOS. FAQ, troubleshooting, and contact support.">
+<link rel="canonical" href="https://morsecommand.com/support.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://morsecommand.com/support.html">
+<meta property="og:title" content="Support — Morse Command">
+<meta property="og:description" content="Get help with Morse Command — FAQ, troubleshooting, and contact support.">
+<meta property="og:image" content="https://morsecommand.com/img/og-image.jpg">
+<meta property="og:site_name" content="Morse Command">
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-NFxDEkgyg2K1aPmkmQCcI.js"></script>
+<script>
+ window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+ plausible.init()
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg-deep: #060B18;
+  --bg-primary: #0B1120;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --green-primary: #4ADE80;
+  --green-glow: #22C55E;
+  --cyan-primary: #22D3EE;
+  --gold-primary: #F59E0B;
+  --red-primary: #EF4444;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border-subtle: rgba(148, 163, 184, 0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 0;
+  background: rgba(6, 11, 24, 0.95);
+  border-bottom: 1px solid var(--border-subtle);
+}
+nav .inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800; font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--green-primary), var(--cyan-primary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 2px; text-decoration: none;
+}
+.nav-back {
+  color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+  display: flex; align-items: center; gap: 6px; transition: color 0.3s;
+}
+.nav-back:hover { color: var(--green-primary); }
+
+/* PAGE HEADER */
+.page-header {
+  padding: 120px 0 60px; text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.page-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 600; color: var(--cyan-primary);
+  text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;
+}
+.page-header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 900; margin-bottom: 16px;
+}
+.page-header p {
+  color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7;
+  max-width: 560px; margin: 0 auto;
+}
+
+/* CONTACT CARD */
+.contact-card {
+  background: var(--bg-card); border: 1px solid rgba(74, 222, 128, 0.15);
+  border-radius: 16px; padding: 36px; text-align: center;
+  margin: 48px 0;
+}
+.contact-card h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
+}
+.contact-card p { color: var(--text-secondary); margin-bottom: 24px; line-height: 1.7; }
+.btn-email {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--green-primary), var(--green-glow));
+  color: var(--bg-deep); padding: 14px 28px; border-radius: 10px;
+  font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  text-transform: uppercase; letter-spacing: 1px;
+  transition: all 0.3s;
+}
+.btn-email:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74, 222, 128, 0.3); }
+.response-time {
+  margin-top: 14px; font-size: 0.8rem; color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* FAQ */
+.faq-section { padding: 48px 0; }
+.faq-section h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem; font-weight: 800;
+  margin-bottom: 32px; color: var(--text-primary);
+}
+.faq-item {
+  border: 1px solid var(--border-subtle); border-radius: 12px;
+  margin-bottom: 12px; overflow: hidden; background: var(--bg-card);
+  transition: border-color 0.3s;
+}
+.faq-item:hover { border-color: rgba(74, 222, 128, 0.15); }
+.faq-question {
+  width: 100%; padding: 20px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
+  color: var(--text-primary); text-align: left; gap: 16px;
+}
+.faq-question .icon {
+  flex-shrink: 0; width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green-primary); transition: transform 0.3s; font-size: 1.1rem;
+}
+.faq-item.open .faq-question .icon { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease;
+  padding: 0 24px;
+}
+.faq-item.open .faq-answer { max-height: 300px; padding: 0 24px 20px; }
+.faq-answer p {
+  font-size: 0.9rem; line-height: 1.75; color: var(--text-secondary);
+  border-top: 1px solid var(--border-subtle); padding-top: 16px;
+}
+.faq-answer a { color: var(--cyan-primary); text-decoration: none; }
+.faq-answer a:hover { text-decoration: underline; }
+
+/* TESTFLIGHT SECTION */
+.testflight-block {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 12px; padding: 24px 28px; margin-bottom: 48px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.testflight-block .icon {
+  font-size: 2rem; flex-shrink: 0;
+}
+.testflight-block h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem; font-weight: 700; margin-bottom: 6px;
+}
+.testflight-block p { font-size: 0.85rem; color: var(--text-secondary); }
+.testflight-block a { color: var(--green-primary); text-decoration: none; font-weight: 600; }
+.testflight-block a:hover { text-decoration: underline; }
+
+/* FOOTER */
+footer {
+  padding: 40px 0 30px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 60px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-logo { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 0.9rem; color: var(--text-muted); letter-spacing: 2px; }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { color: var(--text-muted); font-size: 0.82rem; text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--green-primary); }
+.footer-copy { width: 100%; text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a href="/" class="nav-logo">MORSE COMMAND</a>
+    <a href="/" class="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+
+    <header class="page-header">
+      <div class="page-label">// Support</div>
+      <h1>We've Got You, Operator.</h1>
+      <p>Questions, bugs, or just need a hand? Check the FAQ below or send us a direct signal.</p>
+    </header>
+
+    <!-- CONTACT -->
+    <div class="contact-card">
+      <h2>Send a Direct Message</h2>
+      <p>Can't find what you need below? Email us and we'll get back to you within 24 hours on business days.</p>
+      <a href="mailto:support@morsecommand.com" class="btn-email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        support@morsecommand.com
+      </a>
+      <div class="response-time">// avg response: &lt; 24h on business days</div>
+    </div>
+
+    <!-- TESTFLIGHT NOTE -->
+    <div class="testflight-block">
+      <div class="icon">🧪</div>
+      <div>
+        <h3>Currently on TestFlight</h3>
+        <p>Morse Command is in beta testing. Download it at <a href="https://testflight.apple.com/join/Kkmuzfv1">testflight.apple.com/join/Kkmuzfv1</a>. The App Store release is coming soon.</p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          What is the Koch Method?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>The Koch Method is a scientifically proven approach to learning Morse code, developed by German psychologist Ludwig Koch. Instead of starting with slow code and speeding up (which builds bad habits), it starts at full speed with just two characters. Once you can copy those at 90% accuracy, a new character is added. Your brain learns to hear Morse as sounds rather than counting dots and dashes — the way real operators do it.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          I'm new to Morse code. Where do I start?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Start at Zone 1, Level 1 — that's exactly what it's designed for. The game introduces characters gradually using the Koch Method. You'll start with just two characters and add more as you prove mastery. No prior Morse code experience needed. Don't worry about memorizing dots and dashes — just listen and respond.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          What is Little Kid Mode?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Little Kid Mode is a play mode where every input registers as correct. Kids get the full visual and audio experience — lights, explosions, the works — without any frustration from wrong answers. It's designed for parents and grandparents to share the game with young kids who aren't ready for the real challenge yet. Great for building early familiarity with Morse sounds.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          How do power-ups work?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Power-ups unlock through combo streaks during gameplay. Hit an 8x combo for Slow Field (slows all enemies), 12x for EMP Blast (stuns all enemies), 15x for Repair Kit (restores base health), and 23x for the Nuke (clears the entire screen). They're designed as rewards for sustained accuracy under pressure — not a crutch for struggling through levels.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Why is the Morse code played at full speed?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Because slow Morse code teaches you the wrong skill. When you learn at reduced speed, you learn to count individual dits and dahs rather than recognizing character sounds instantly. The Koch Method — and experienced CW operators — have known for decades that full-speed training from day one is how you build real, fluent copy ability. Morse Command is built around this principle.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          The app crashed or I found a bug. How do I report it?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Email us at <a href="mailto:support@morsecommand.com">support@morsecommand.com</a> with a description of what happened, your device model, and iOS version. Screenshots or screen recordings help a lot. We're actively improving the app and all bug reports are addressed — usually within one update cycle.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Will Morse Command help me pass my ham radio license exam?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Morse code is no longer required for any US amateur radio license (it was removed from requirements in 2007). But plenty of ham operators still use CW — it's efficient, reliable, and a point of pride in the hobby. Morse Command builds genuine CW copy ability using the same method recommended by experienced operators. If you want to get on the air with CW, this is a solid training platform.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Is the app free? What's the pricing model?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Morse Command is currently available on TestFlight for free during the beta period. Pricing for the App Store release will be announced closer to launch. Follow us or check back at this site for updates.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          I have a suggestion or feature request.
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Send it to <a href="mailto:support@morsecommand.com">support@morsecommand.com</a>. We read every message. Operator feedback has directly shaped the game — if you have a good idea, there's a real chance it shows up in a future update.</p>
+        </div>
+      </div>
+
+    </section>
+  </div><!-- /container -->
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">MORSE COMMAND</div>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/support.html">Support</a>
+      <a href="/press-kit.html">Press Kit</a>
+    </div>
+  </div>
+  <div class="footer-inner" style="justify-content: center;">
+    <div class="footer-copy">&copy; 2026 Morse Command. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function toggle(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>

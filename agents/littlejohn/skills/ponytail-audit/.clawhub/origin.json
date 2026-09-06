@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "registry": "https://clawhub.ai",
+  "slug": "ponytail-audit",
+  "ownerHandle": "dietrichgebert",
+  "installedAt": 1788577403847,
+  "artifact": {
+    "kind": "archive",
+    "sha256": "90aa6dea36d6cea6671bdbb3c26911259d3b26627ffb341933fbac8e979798a1",
+    "integrity": "sha256-kKpt6jbWzqZnG9uzwmkRJZ07JmJ/+zQZM/usjpeXmKE="
+  },
+  "skillFile": {
+    "path": "SKILL.md",
+    "sha256": "baba579ec3261cef555797c06484b4374ff4febbdb3eb0b4333e6d92b3434f87"
+  },
+  "fileTreeSha256": "sha256:3c0c3a769f476fb0b2c83de1a107fc2af206ed8232ae604289a1c87eabfab7ce",
+  "installedVersion": "4.9.0"
+}

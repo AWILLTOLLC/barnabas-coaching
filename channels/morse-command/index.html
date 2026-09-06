@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morse Command — Learn Morse Code the Fun Way | Ham Radio & CW Training Game</title>
+<meta name="description" content="Master Morse Code through 80 levels of tactical gameplay. Built on the Koch Method with adaptive AI learning. Perfect for ham radio operators, amateur radio enthusiasts, and anyone learning CW.">
+<meta name="keywords" content="morse code, learn morse code, koch method, ham radio, amateur radio, CW training, morse code game, morse code app, morse code practice, CW practice, ham radio training, amateur radio morse code, iOS morse code">
+<link rel="canonical" href="https://morsecommand.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://morsecommand.com/">
+<meta property="og:title" content="Morse Command — Learn Morse Code the Fun Way">
+<meta property="og:description" content="Master Morse Code through 80 levels of tactical gameplay. Built on the Koch Method with adaptive AI. Perfect for ham radio operators and CW learners.">
+<meta property="og:image" content="https://morsecommand.com/img/og-image.jpg">
+<meta property="og:site_name" content="Morse Command">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Morse Command — Learn Morse Code the Fun Way">
+<meta name="twitter:description" content="80 levels of tactical Morse Code gameplay. Koch Method. Adaptive AI. Built for ham radio operators and CW learners.">
+<meta name="twitter:image" content="https://morsecommand.com/img/og-image.jpg">
+
+<!-- App Meta -->
+<meta name="apple-itunes-app" content="app-id=YOUR_APP_ID">
+<meta name="application-name" content="Morse Command">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Morse Command",
+  "operatingSystem": "iOS",
+  "applicationCategory": "GameApplication",
+  "description": "Learn Morse Code through 80 levels of tactical gameplay using the Koch Method. Adaptive AI learning, boss battles, and 8 enemy types. Built for ham radio operators, amateur radio enthusiasts, and CW learners.",
+  "url": "https://morsecommand.com",
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock"
+  },
+  "keywords": "morse code, ham radio, amateur radio, CW, Koch Method, morse code game, morse code training"
+}
+</script>
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-NFxDEkgyg2K1aPmkmQCcI.js"></script>
+<script>
+ window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+ plausible.init()
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg-deep: #060B18;
+  --bg-primary: #0B1120;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --green-primary: #4ADE80;
+  --green-glow: #22C55E;
+  --green-dark: #166534;
+  --gold-primary: #F59E0B;
+  --gold-light: #FBBF24;
+  --gold-dark: #B45309;
+  --red-primary: #EF4444;
+  --red-glow: #DC2626;
+  --cyan-primary: #22D3EE;
+  --cyan-glow: #06B6D4;
+  --orange-primary: #F97316;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border-subtle: rgba(148, 163, 184, 0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== ANIMATED BACKGROUND PARTICLES ===== */
+#particles-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 0;
+  background: rgba(6, 11, 24, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+}
+nav.scrolled { padding: 10px 0; background: rgba(6, 11, 24, 0.95); }
+nav .container { display: flex; align-items: center; justify-content: space-between; }
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800; font-size: 1.25rem;
+  background: linear-gradient(135deg, var(--green-primary), var(--cyan-primary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+}
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;
+  font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--green-primary); }
+.nav-cta {
+  background: var(--green-primary) !important; color: var(--bg-deep) !important;
+  padding: 10px 24px; border-radius: 8px; font-weight: 700 !important;
+  transition: all 0.3s !important; text-transform: uppercase !important;
+}
+.nav-cta:hover { background: var(--green-glow) !important; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(74,222,128,0.3); }
+
+/* ===== HERO SECTION ===== */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 120px 0 80px;
+}
+.hero-content {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+.hero-text { max-width: 560px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 6px 16px; border-radius: 100px;
+  font-size: 0.75rem; font-weight: 600; color: var(--green-primary);
+  text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 24px;
+}
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-primary); animation: pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900; line-height: 1.1;
+  margin-bottom: 24px; letter-spacing: -0.5px;
+}
+.hero h1 .gradient-text {
+  background: linear-gradient(135deg, var(--green-primary) 0%, var(--cyan-primary) 50%, var(--gold-primary) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradient-shift 4s ease infinite;
+}
+@keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.hero p {
+  font-size: 1.125rem; line-height: 1.75;
+  color: var(--text-secondary); margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--green-primary), var(--green-glow));
+  color: var(--bg-deep); padding: 16px 32px; border-radius: 12px;
+  font-weight: 700; font-size: 1rem; text-decoration: none;
+  text-transform: uppercase; letter-spacing: 1px;
+  transition: all 0.3s; border: none; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(74, 222, 128, 0.25);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(74, 222, 128, 0.4); }
+.btn-primary svg { width: 20px; height: 20px; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--text-secondary);
+  padding: 16px 28px; border-radius: 12px;
+  font-weight: 600; font-size: 0.9rem; text-decoration: none;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.3s; letter-spacing: 0.5px;
+}
+.btn-secondary:hover { border-color: var(--cyan-primary); color: var(--cyan-primary); }
+.hero-stats {
+  display: flex; gap: 40px; margin-top: 48px;
+  padding-top: 32px; border-top: 1px solid var(--border-subtle);
+}
+.hero-stat .number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.75rem; font-weight: 800;
+  color: var(--green-primary);
+}
+.hero-stat .label {
+  font-size: 0.8rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;
+}
+
+/* ===== PHONE MOCKUP ===== */
+.hero-visual { display: flex; justify-content: center; position: relative; }
+.phone-mockup {
+  position: relative; width: 280px;
+  background: #1a1a2e; border-radius: 40px;
+  padding: 12px; box-shadow:
+    0 0 0 2px rgba(148, 163, 184, 0.15),
+    0 25px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(74, 222, 128, 0.08);
+}
+.phone-mockup .phone-screen {
+  border-radius: 30px; overflow: hidden;
+  aspect-ratio: 9/19.5;
+}
+.phone-mockup .phone-screen img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.phone-mockup .phone-notch {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 28px; background: #1a1a2e;
+  border-radius: 0 0 18px 18px; z-index: 2;
+}
+.phone-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 350px; height: 350px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.12) 0%, transparent 70%);
+  z-index: -1; animation: phone-glow-pulse 4s ease-in-out infinite;
+}
+@keyframes phone-glow-pulse { 0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+
+/* Floating elements around phone */
+.float-badge {
+  position: absolute; background: var(--bg-card);
+  border: 1px solid var(--border-subtle); border-radius: 12px;
+  padding: 10px 16px; font-size: 0.8rem; font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: float 6s ease-in-out infinite;
+  white-space: nowrap;
+}
+.float-badge.combo { top: 15%; right: -40px; animation-delay: 0s; }
+.float-badge.combo .value { color: var(--red-primary); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; }
+.float-badge.score { bottom: 30%; left: -50px; animation-delay: -2s; }
+.float-badge.score .value { color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; }
+.float-badge.stars { top: 45%; left: -60px; animation-delay: -4s; font-size: 1.2rem; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+/* ===== SECTION STYLES ===== */
+section { position: relative; z-index: 1; padding: 120px 0; }
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--cyan-primary); text-transform: uppercase;
+  letter-spacing: 3px; margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 800; margin-bottom: 20px;
+  line-height: 1.2;
+}
+.section-desc {
+  font-size: 1.05rem; line-height: 1.8;
+  color: var(--text-secondary); max-width: 640px;
+}
+.section-header { text-align: center; max-width: 700px; margin: 0 auto 64px; }
+.section-header .section-desc { margin: 0 auto; }
+
+/* ===== MORSE CODE DIVIDER ===== */
+.morse-divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 20px 0; opacity: 0.3;
+}
+.morse-dit { width: 8px; height: 8px; border-radius: 50%; background: var(--green-primary); }
+.morse-dah { width: 24px; height: 8px; border-radius: 4px; background: var(--green-primary); }
+.morse-space { width: 16px; }
+
+/* ===== FEATURES GRID ===== */
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px; padding: 36px 28px;
+  transition: all 0.4s;
+  position: relative; overflow: hidden;
+}
+.feature-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, transparent, var(--green-primary), transparent);
+  opacity: 0; transition: opacity 0.4s;
+}
+.feature-card:hover { transform: translateY(-4px); border-color: rgba(74, 222, 128, 0.15); background: var(--bg-card-hover); }
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 20px;
+}
+.feature-icon.green { background: rgba(74, 222, 128, 0.1); color: var(--green-primary); }
+.feature-icon.cyan { background: rgba(34, 211, 238, 0.1); color: var(--cyan-primary); }
+.feature-icon.gold { background: rgba(245, 158, 11, 0.1); color: var(--gold-primary); }
+.feature-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--red-primary); }
+.feature-icon.orange { background: rgba(249, 115, 22, 0.1); color: var(--orange-primary); }
+.feature-icon.purple { background: rgba(168, 85, 247, 0.1); color: #A855F7; }
+.feature-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 12px; letter-spacing: 0.5px;
+}
+.feature-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+
+/* ===== CAMPAIGN SECTION ===== */
+.campaign-section { background: linear-gradient(180deg, var(--bg-deep) 0%, rgba(8, 15, 25, 1) 50%, var(--bg-deep) 100%); }
+.campaign-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+@media (max-width: 1024px) { .campaign-content { grid-template-columns: 1fr; } }
+
+/* ===== ENEMY SECTION ===== */
+.enemies-section { background: linear-gradient(180deg, var(--bg-deep) 0%, rgba(11, 17, 32, 1) 50%, var(--bg-deep) 100%); }
+.enemy-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.enemy-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 16px; padding: 28px 20px; text-align: center;
+  transition: all 0.3s; position: relative;
+}
+.enemy-card:hover { transform: translateY(-4px); }
+.enemy-hex {
+  width: 64px; height: 64px; margin: 0 auto 16px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.enemy-hex svg { width: 64px; height: 64px; }
+.enemy-card h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  margin-bottom: 8px; letter-spacing: 1px;
+}
+.enemy-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+.enemy-card.scout { border-color: rgba(74, 222, 128, 0.15); }
+.enemy-card.scout:hover { box-shadow: 0 0 30px rgba(74, 222, 128, 0.08); }
+.enemy-card.teleporter { border-color: rgba(34, 211, 238, 0.15); }
+.enemy-card.teleporter:hover { box-shadow: 0 0 30px rgba(34, 211, 238, 0.08); }
+.enemy-card.rusher { border-color: rgba(239, 68, 68, 0.15); }
+.enemy-card.rusher:hover { box-shadow: 0 0 30px rgba(239, 68, 68, 0.08); }
+.enemy-card.phantom { border-color: rgba(168, 85, 247, 0.15); }
+.enemy-card.phantom:hover { box-shadow: 0 0 30px rgba(168, 85, 247, 0.08); }
+.enemy-card.tank { border-color: rgba(245, 158, 11, 0.15); }
+.enemy-card.tank:hover { box-shadow: 0 0 30px rgba(245, 158, 11, 0.08); }
+.enemy-card.leech { border-color: rgba(16, 185, 129, 0.15); }
+.enemy-card.leech:hover { box-shadow: 0 0 30px rgba(16, 185, 129, 0.08); }
+.enemy-card.splitter { border-color: rgba(249, 115, 22, 0.15); }
+.enemy-card.splitter:hover { box-shadow: 0 0 30px rgba(249, 115, 22, 0.08); }
+.enemy-card.commander { border-color: rgba(239, 68, 68, 0.15); }
+.enemy-card.commander:hover { box-shadow: 0 0 30px rgba(239, 68, 68, 0.08); }
+
+/* ===== BOSS SECTION ===== */
+.boss-section {
+  background: linear-gradient(180deg,
+    var(--bg-deep) 0%,
+    rgba(15, 10, 5, 1) 30%,
+    rgba(25, 15, 5, 1) 50%,
+    rgba(15, 10, 5, 1) 70%,
+    var(--bg-deep) 100%
+  );
+}
+.boss-showcase {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+.boss-visual { position: relative; display: flex; justify-content: center; }
+.boss-hex-container {
+  width: 300px; height: 300px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.boss-hex-glow {
+  position: absolute; width: 100%; height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
+  animation: boss-pulse 3s ease-in-out infinite;
+}
+@keyframes boss-pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+.boss-hex-ring {
+  width: 200px; height: 200px; position: relative;
+  animation: boss-rotate 20s linear infinite;
+}
+@keyframes boss-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.boss-hex-ring::before {
+  content: ''; position: absolute; inset: 0;
+  border: 2px solid var(--gold-primary);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  opacity: 0.6;
+}
+.boss-hex-ring::after {
+  content: ''; position: absolute; inset: 20px;
+  border: 1px solid var(--gold-light);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  opacity: 0.3;
+}
+.boss-label {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Orbitron', sans-serif; font-weight: 800;
+  font-size: 0.85rem; letter-spacing: 3px; color: var(--gold-primary);
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+}
+.boss-text h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem; font-weight: 800; color: var(--gold-primary);
+  margin-bottom: 20px;
+}
+.boss-text p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+.boss-list { list-style: none; padding: 0; margin-top: 24px; }
+.boss-list li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; font-size: 0.9rem; color: var(--text-secondary);
+}
+.boss-list li::before {
+  content: ''; width: 8px; height: 8px; flex-shrink: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: var(--gold-primary);
+}
+
+/* ===== POWERUPS ===== */
+.powerups-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.powerup-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 16px; padding: 32px 20px; text-align: center;
+  transition: all 0.3s;
+}
+.powerup-card:hover { transform: translateY(-4px); }
+.powerup-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.powerup-card h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;
+}
+.powerup-card .unlock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.powerup-card p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ===== KOCH METHOD SECTION ===== */
+.koch-section { background: linear-gradient(180deg, var(--bg-deep), rgba(6, 20, 15, 0.8), var(--bg-deep)); }
+.koch-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.koch-visual {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 20px; padding: 40px;
+}
+.koch-step {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.koch-step:last-child { border-bottom: none; }
+.koch-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem; font-weight: 800;
+  color: var(--green-primary);
+  background: rgba(74, 222, 128, 0.08);
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.koch-step h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+.koch-step p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ===== SCREENSHOT GALLERY ===== */
+.gallery-section { overflow: hidden; }
+.gallery-track {
+  display: flex; gap: 24px; padding: 20px 0;
+  animation: gallery-scroll 30s linear infinite;
+}
+.gallery-track:hover { animation-play-state: paused; }
+@keyframes gallery-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.gallery-phone {
+  flex-shrink: 0; width: 220px;
+  background: #1a1a2e; border-radius: 28px;
+  padding: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  transition: transform 0.3s;
+}
+.gallery-phone:hover { transform: scale(1.05); }
+.gallery-phone .screen {
+  border-radius: 22px; overflow: hidden;
+  aspect-ratio: 9/19.5;
+}
+.gallery-phone .screen img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===== LITTLE KID MODE ===== */
+.kidmode-section { background: linear-gradient(180deg, var(--bg-deep), rgba(15, 8, 25, 0.6), var(--bg-deep)); }
+.kidmode-content {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.kidmode-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  padding: 6px 16px; border-radius: 100px;
+  font-size: 0.75rem; font-weight: 600; color: #A855F7;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+.kidmode-features { margin-top: 24px; }
+.kidmode-features li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0; font-size: 0.95rem; color: var(--text-secondary);
+}
+.kidmode-features li .check { color: #A855F7; font-size: 1.1rem; }
+
+/* ===== ADAPTIVE LEARNING ===== */
+.adaptive-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.adaptive-visual {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 20px; padding: 32px; position: relative; overflow: hidden;
+}
+.adaptive-bar-group { margin-bottom: 20px; }
+.adaptive-bar-label {
+  display: flex; justify-content: space-between;
+  font-size: 0.8rem; margin-bottom: 6px;
+}
+.adaptive-bar-label span:first-child { color: var(--text-secondary); }
+.adaptive-bar-label span:last-child { font-family: 'JetBrains Mono', monospace; color: var(--green-primary); }
+.adaptive-bar {
+  height: 6px; border-radius: 3px;
+  background: rgba(148, 163, 184, 0.1);
+}
+.adaptive-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--green-primary), var(--cyan-primary));
+  transition: width 1.5s ease;
+}
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  padding: 120px 0 100px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.06) 0%, transparent 70%);
+}
+.cta-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900; margin-bottom: 20px;
+}
+.cta-desc {
+  font-size: 1.1rem; color: var(--text-secondary);
+  max-width: 500px; margin: 0 auto 40px; line-height: 1.7;
+}
+.cta-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.app-store-badge {
+  display: inline-block; transition: transform 0.3s;
+}
+.app-store-badge:hover { transform: translateY(-2px); }
+.app-store-badge svg { height: 54px; }
+
+/* ===== MORSE FOOTER ===== */
+.morse-footer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--text-muted);
+  text-align: center; padding: 24px 0 20px;
+  letter-spacing: 2px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  position: relative; z-index: 1;
+  padding: 60px 0 30px;
+  border-top: 1px solid var(--border-subtle);
+}
+.footer-content {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 20px;
+}
+.footer-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800; font-size: 1rem;
+  color: var(--text-muted); letter-spacing: 2px;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--green-primary); }
+.footer-copy { width: 100%; text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 24px; }
+
+/* ===== SCROLL ANIMATIONS ===== */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; }
+  .hero-text { max-width: 100%; }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; }
+  .hero-visual { margin-top: 40px; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .enemy-grid { grid-template-columns: repeat(2, 1fr); }
+  .powerups-grid { grid-template-columns: repeat(2, 1fr); }
+  .boss-showcase, .koch-content, .kidmode-content, .adaptive-content { grid-template-columns: 1fr; }
+  .boss-visual { order: -1; }
+  .nav-links { display: none; }
+}
+@media (max-width: 640px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .enemy-grid { grid-template-columns: repeat(2, 1fr); }
+  .powerups-grid { grid-template-columns: repeat(2, 1fr); }
+  section { padding: 80px 0; }
+  .phone-mockup { width: 240px; }
+  .float-badge { display: none; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-logo">MORSE COMMAND</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#enemies">Enemies</a>
+      <a href="#bosses">Bosses</a>
+      <a href="#method">Method</a>
+      <a href="https://testflight.apple.com/join/Kkmuzfv1" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge"><span class="dot"></span> Now Available on iOS</div>
+        <h1>DECODE THE<br>SIGNAL.<br><span class="gradient-text">DEFEND THE BASE.</span></h1>
+        <p>Master Morse Code through 80 levels of tactical defense. Whether you're a ham radio operator sharpening your CW, or picking up the code for the first time — the Koch Method and adaptive AI make every session count. This isn't a tutorial. It's a battlefield.</p>
+        <div class="hero-actions">
+          <a href="https://testflight.apple.com/join/Kkmuzfv1" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download Now
+          </a>
+          <a href="#features" class="btn-secondary">See How It Works ↓</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="number">80</div>
+            <div class="label">Levels</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">8</div>
+            <div class="label">Boss Battles</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">8</div>
+            <div class="label">Enemy Types</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">4</div>
+            <div class="label">Power-Ups</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="phone-glow"></div>
+        <div class="phone-mockup">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <img src="img/photo_5.jpg" alt="Morse Command Gameplay — Boss Battle" loading="eager">
+          </div>
+        </div>
+        <div class="float-badge combo">
+          <div class="value">18x</div>
+          COMBO
+        </div>
+        <div class="float-badge score">
+          <div class="value">9,872</div>
+          SCORE
+        </div>
+        <div class="float-badge stars">⭐⭐⭐</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MORSE DIVIDER -->
+<!-- MORSE = -- / --- / .-. / ... / . -->
+<div class="morse-divider" title="MORSE">
+  <span class="morse-dah"></span><span class="morse-dah"></span>
+  <span class="morse-space"></span>
+  <span class="morse-dah"></span><span class="morse-dah"></span><span class="morse-dah"></span>
+  <span class="morse-space"></span>
+  <span class="morse-dit"></span><span class="morse-dah"></span><span class="morse-dit"></span>
+  <span class="morse-space"></span>
+  <span class="morse-dit"></span><span class="morse-dit"></span><span class="morse-dit"></span>
+  <span class="morse-space"></span>
+  <span class="morse-dit"></span>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">// Core Systems</div>
+      <h2 class="section-title">Not Just Another Learning App</h2>
+      <p class="section-desc">Every mechanic is designed to forge real Morse Code fluency — the kind ham radio operators and amateur radio enthusiasts actually need. No flashcards. No boring drills. Just adaptive gameplay that rewires your brain.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Koch Method Engine</h3>
+        <p>The scientifically proven approach to learning CW at full speed from day one. No slow ramp-up — your ears adapt naturally through gameplay, just like seasoned operators recommend.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon cyan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3>Adaptive AI</h3>
+        <p>The game watches how you play. Struggling with a character? It shows up more. Nailing it? Time to push harder. Every session is tuned to you.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon gold">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3>80 Levels, 8 Zones</h3>
+        <p>From the Signal Station to the final frontier. Each zone introduces new characters, enemy types, and challenges that scale with your growing skill.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon red">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>Boss Battles</h3>
+        <p>Eight epic encounters that test everything you've learned. Each boss has unique mechanics that push your decoding speed to the limit.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon orange">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <h3>Little Kid Mode</h3>
+        <p>Pull the grandkids up in your lap. Every input counts as correct — zero frustration, pure discovery. Builds familiarity with Morse sounds through play.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon purple">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Communication Waves</h3>
+        <p>Hear the Morse, decode it, type the answer. Tap to replay. Auto-reminders and halfway replays keep the flow without breaking immersion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPAIGN MAP -->
+<section class="campaign-section">
+  <div class="container">
+    <div class="campaign-content">
+      <div class="reveal">
+        <div class="section-label">// Campaign</div>
+        <h2 class="section-title">Chart Your Course Through 8 Zones</h2>
+        <p class="section-desc" style="margin-bottom: 20px;">Each zone is a gauntlet of 10 levels capped by an epic boss encounter. Clear levels to earn stars, unlock new zones, and push deeper into the signal.</p>
+        <p class="section-desc">New Morse characters are introduced zone by zone — matching the Koch Method's progressive approach. By the final zone, you're decoding the full alphabet under fire.</p>
+        <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 140px;">
+            <div style="font-family: 'Orbitron', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--green-primary);">10</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">Levels Per Zone</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 140px;">
+            <div style="font-family: 'Orbitron', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--gold-primary);">3</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">Stars Per Level</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 140px;">
+            <div style="font-family: 'Orbitron', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--red-primary);">1</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">Boss Per Zone</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="display: flex; justify-content: center;">
+        <div class="phone-mockup" style="width: 260px;">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <img src="img/campaign.jpg" alt="Campaign zone map showing level progression" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENEMIES -->
+<section id="enemies" class="enemies-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">// Threat Assessment</div>
+      <h2 class="section-title">Know Your Enemy</h2>
+      <p class="section-desc">Eight distinct hostile types, each designed to test a different dimension of your decoding ability. Learn their patterns or watch your base fall.</p>
+    </div>
+    <div class="enemy-grid">
+      <div class="enemy-card scout reveal reveal-delay-1">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#4ADE80" stroke-width="2"/><text x="32" y="36" text-anchor="middle" fill="#4ADE80" font-family="Orbitron" font-size="14" font-weight="700">S</text></svg>
+        </div>
+        <h4>SCOUT</h4>
+        <p>Standard speed. Your bread and butter. Don't let them stack up.</p>
+      </div>
+      <div class="enemy-card teleporter reveal reveal-delay-2">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#22D3EE" stroke-width="2"/><text x="32" y="36" text-anchor="middle" fill="#22D3EE" font-family="Orbitron" font-size="14" font-weight="700">T</text></svg>
+        </div>
+        <h4>TELEPORTER</h4>
+        <p>Blinks across the field. Now you see it, now it's at your gates.</p>
+      </div>
+      <div class="enemy-card rusher reveal reveal-delay-3">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#EF4444" stroke-width="2"/><text x="32" y="36" text-anchor="middle" fill="#EF4444" font-family="Orbitron" font-size="14" font-weight="700">R</text></svg>
+        </div>
+        <h4>RUSHER</h4>
+        <p>Fast. Aggressive. Decode it quick or take the hit.</p>
+      </div>
+      <div class="enemy-card phantom reveal reveal-delay-4">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#A855F7" stroke-width="2" stroke-dasharray="4,4"/><text x="32" y="36" text-anchor="middle" fill="#A855F7" font-family="Orbitron" font-size="14" font-weight="700">P</text></svg>
+        </div>
+        <h4>PHANTOM</h4>
+        <p>Fades in and out. Hard to target. Demands precise timing.</p>
+      </div>
+      <div class="enemy-card tank reveal reveal-delay-1">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#F59E0B" stroke-width="2.5"/><text x="32" y="36" text-anchor="middle" fill="#F59E0B" font-family="Orbitron" font-size="14" font-weight="700">T</text></svg>
+        </div>
+        <h4>TANK</h4>
+        <p>Heavy armor. Takes multiple correct decodes to bring down.</p>
+      </div>
+      <div class="enemy-card leech reveal reveal-delay-2">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#10B981" stroke-width="2"/><text x="32" y="36" text-anchor="middle" fill="#10B981" font-family="Orbitron" font-size="14" font-weight="700">L</text></svg>
+        </div>
+        <h4>LEECH</h4>
+        <p>Drains your base health over time. Remove it or suffer the bleed.</p>
+      </div>
+      <div class="enemy-card splitter reveal reveal-delay-3">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#F97316" stroke-width="2"/><text x="32" y="36" text-anchor="middle" fill="#F97316" font-family="Orbitron" font-size="14" font-weight="700">S</text></svg>
+        </div>
+        <h4>SPLITTER</h4>
+        <p>Destroy one, two more take its place. Clear them fast.</p>
+      </div>
+      <div class="enemy-card commander reveal reveal-delay-4">
+        <div class="enemy-hex">
+          <svg viewBox="0 0 64 64"><polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="#EF4444" stroke-width="2.5"/><polygon points="32,14 52,24 52,40 32,50 12,40 12,24" fill="none" stroke="#EF4444" stroke-width="1" opacity="0.4"/><text x="32" y="36" text-anchor="middle" fill="#EF4444" font-family="Orbitron" font-size="14" font-weight="700">C</text></svg>
+        </div>
+        <h4>COMMANDER</h4>
+        <p>Buffs nearby enemies. Take it down first or face the swarm.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOSS BATTLES -->
+<section id="bosses" class="boss-section">
+  <div class="container">
+    <div class="boss-showcase reveal">
+      <div class="boss-visual">
+        <div class="boss-hex-container">
+          <div class="boss-hex-glow"></div>
+          <div class="boss-hex-ring"></div>
+          <div class="boss-label">THE BEACON</div>
+        </div>
+      </div>
+      <div class="boss-text">
+        <div class="section-label">// Boss Encounters</div>
+        <h3>8 BOSSES. 8 TESTS OF EVERYTHING YOU'VE LEARNED.</h3>
+        <p>Each zone culminates in an epic boss battle. These aren't just harder enemies — they're multi-phase encounters with unique mechanics that demand speed, accuracy, and composure under fire.</p>
+        <ul class="boss-list">
+          <li>Multi-phase boss encounters that escalate in intensity</li>
+          <li>Unique attack patterns force you to decode under pressure</li>
+          <li>Boss difficulty scales with your proven skill level</li>
+          <li>Visually distinct designs that get more imposing each zone</li>
+          <li>Star ratings reward flawless execution</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POWER-UPS -->
+<section id="powerups">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">// Arsenal</div>
+      <h2 class="section-title">Tactical Power-Ups</h2>
+      <p class="section-desc">Unlocked as you progress, each power-up gives you a strategic edge when the signal gets thick. Use them wisely.</p>
+    </div>
+    <div class="powerups-grid">
+      <div class="powerup-card reveal reveal-delay-1">
+        <div class="powerup-icon" style="background: rgba(34, 211, 238, 0.1); color: var(--cyan-primary);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>Slow Field</h4>
+        <div class="unlock">UNLOCKED AT 8x COMBO</div>
+        <p>Decelerates all enemies on screen. Buy time to decode under pressure.</p>
+      </div>
+      <div class="powerup-card reveal reveal-delay-2">
+        <div class="powerup-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--gold-primary);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h4>EMP Blast</h4>
+        <div class="unlock">UNLOCKED AT 12x COMBO</div>
+        <p>Stuns every enemy in range. Perfect for clutch moments when the field gets overwhelming.</p>
+      </div>
+      <div class="powerup-card reveal reveal-delay-3">
+        <div class="powerup-icon" style="background: rgba(74, 222, 128, 0.1); color: var(--green-primary);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h4>Repair Kit</h4>
+        <div class="unlock">UNLOCKED AT 15x COMBO</div>
+        <p>Restores your base station health. When the red zone hits, this is your lifeline.</p>
+      </div>
+      <div class="powerup-card reveal reveal-delay-4">
+        <div class="powerup-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--red-primary);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        </div>
+        <h4>Nuke</h4>
+        <div class="unlock">UNLOCKED AT 23x COMBO</div>
+        <p>Obliterates every enemy on screen. The ultimate reset button. Save it for when it matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOT GALLERY -->
+<section class="gallery-section">
+  <div class="section-header reveal" style="padding: 0 24px;">
+    <div class="section-label">// Gameplay</div>
+    <h2 class="section-title">See It In Action</h2>
+  </div>
+  <div class="gallery-track">
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_1.jpg" alt="Zone map" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_2.jpg" alt="Word entities" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_3.jpg" alt="Enemy types" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_4.jpg" alt="Gameplay combat" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_5.jpg" alt="Boss battle" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_6.jpg" alt="Power-ups" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_7.jpg" alt="Settings" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_8.jpg" alt="Level complete" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/campaign.jpg" alt="Campaign map" loading="lazy"></div></div>
+    <!-- Duplicate for infinite scroll -->
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_1.jpg" alt="Zone map" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_2.jpg" alt="Word entities" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_3.jpg" alt="Enemy types" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_4.jpg" alt="Gameplay combat" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_5.jpg" alt="Boss battle" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_6.jpg" alt="Power-ups" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_7.jpg" alt="Settings" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/photo_8.jpg" alt="Level complete" loading="lazy"></div></div>
+    <div class="gallery-phone"><div class="screen"><img src="img/campaign.jpg" alt="Campaign map" loading="lazy"></div></div>
+  </div>
+</section>
+
+<!-- KOCH METHOD -->
+<section id="method" class="koch-section">
+  <div class="container">
+    <div class="koch-content">
+      <div class="reveal">
+        <div class="section-label">// The Science</div>
+        <h2 class="section-title">The Koch Method, Gamified</h2>
+        <p class="section-desc" style="margin-bottom: 20px;">Developed by German psychologist Ludwig Koch, this method is the gold standard for learning Morse Code — and the one recommended most by experienced amateur radio operators. We built an entire game around it.</p>
+        <p class="section-desc">Instead of slowing the code down (which teaches you wrong), Koch starts at full speed with just two characters. Master those, add one more. Your brain builds the right neural pathways from the start — the same way veteran CW operators learned.</p>
+      </div>
+      <div class="koch-visual reveal">
+        <div class="koch-step">
+          <div class="koch-num">01</div>
+          <div>
+            <h4>Full Speed From Day One</h4>
+            <p>Characters are always sent at real speed. No crutches, no bad habits to unlearn later.</p>
+          </div>
+        </div>
+        <div class="koch-step">
+          <div class="koch-num">02</div>
+          <div>
+            <h4>Progressive Character Introduction</h4>
+            <p>Start with two characters. Each zone adds more as you prove mastery through gameplay.</p>
+          </div>
+        </div>
+        <div class="koch-step">
+          <div class="koch-num">03</div>
+          <div>
+            <h4>Instant Recognition, Not Counting</h4>
+            <p>You learn to hear characters as sounds, not dots and dashes. The way real operators do it.</p>
+          </div>
+        </div>
+        <div class="koch-step">
+          <div class="koch-num">04</div>
+          <div>
+            <h4>Adaptive Reinforcement</h4>
+            <p>The AI targets your weak spots. Characters you miss appear more until they lock in permanently.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADAPTIVE LEARNING -->
+<section>
+  <div class="container">
+    <div class="adaptive-content">
+      <div class="adaptive-visual reveal">
+        <div style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 24px; text-transform: uppercase;">Player Profile — Live Adaptation</div>
+        <div class="adaptive-bar-group">
+          <div class="adaptive-bar-label"><span>Character: K</span><span>97%</span></div>
+          <div class="adaptive-bar"><div class="adaptive-bar-fill" style="width: 97%;"></div></div>
+        </div>
+        <div class="adaptive-bar-group">
+          <div class="adaptive-bar-label"><span>Character: M</span><span>94%</span></div>
+          <div class="adaptive-bar"><div class="adaptive-bar-fill" style="width: 94%;"></div></div>
+        </div>
+        <div class="adaptive-bar-group">
+          <div class="adaptive-bar-label"><span>Character: R</span><span>88%</span></div>
+          <div class="adaptive-bar"><div class="adaptive-bar-fill" style="width: 88%;"></div></div>
+        </div>
+        <div class="adaptive-bar-group">
+          <div class="adaptive-bar-label"><span>Character: S</span><span>72%</span></div>
+          <div class="adaptive-bar"><div class="adaptive-bar-fill" style="width: 72%; background: linear-gradient(90deg, var(--gold-primary), var(--orange-primary));"></div></div>
+        </div>
+        <div class="adaptive-bar-group">
+          <div class="adaptive-bar-label"><span>Character: U</span><span>58%</span></div>
+          <div class="adaptive-bar"><div class="adaptive-bar-fill" style="width: 58%; background: linear-gradient(90deg, var(--orange-primary), var(--red-primary));"></div></div>
+        </div>
+        <div style="margin-top: 20px; padding: 12px; border-radius: 8px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); font-size: 0.78rem; color: var(--text-secondary);">
+          <span style="color: var(--red-primary); font-weight: 600;">ADAPTING:</span> Increasing frequency of S and U in upcoming waves
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="section-label">// Intelligence</div>
+        <h2 class="section-title">It Learns How You Learn</h2>
+        <p class="section-desc" style="margin-bottom: 20px;">The adaptive engine tracks your accuracy on every character in real-time. It builds a living profile of your strengths and weaknesses.</p>
+        <p class="section-desc">Characters you struggle with show up more often. Characters you've mastered appear less. The result: every second of gameplay is targeted practice, not wasted repetition.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LITTLE KID MODE -->
+<section class="kidmode-section">
+  <div class="container">
+    <div class="kidmode-content reveal">
+      <div>
+        <div class="kidmode-badge">Family Friendly</div>
+        <h2 class="section-title">Little Kid Mode</h2>
+        <p class="section-desc" style="margin-bottom: 24px;">Pull the grandkids up in your lap and let them experience the world of Morse Code with zero frustration. Every single input registers as a correct hit.</p>
+        <p class="section-desc">They get the lights, the sounds, the explosions — all while their brains start making subconscious connections between Morse sounds and letters. Learning disguised as pure fun.</p>
+        <ul class="kidmode-features" style="list-style: none; margin-top: 24px;">
+          <li><span class="check">✓</span> Every input counts as correct — zero frustration</li>
+          <li><span class="check">✓</span> Full visual and audio feedback on every tap</li>
+          <li><span class="check">✓</span> Subconscious Morse Code exposure through play</li>
+          <li><span class="check">✓</span> Same great gameplay, judgment-free</li>
+        </ul>
+      </div>
+      <div style="display: flex; justify-content: center;">
+        <div style="position: relative;">
+          <div class="phone-mockup" style="width: 240px;">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <img src="img/photo_4.jpg" alt="Little Kid Mode gameplay" loading="lazy">
+            </div>
+          </div>
+          <div style="position: absolute; top: -10px; right: -20px; background: #A855F7; color: white; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; letter-spacing: 1px; transform: rotate(3deg);">KID MODE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL WAITLIST -->
+<section id="notify" style="padding: 80px 0; background: linear-gradient(180deg, var(--bg-deep) 0%, rgba(6,15,10,0.7) 50%, var(--bg-deep) 100%); position: relative; z-index: 1;">
+  <div class="container">
+    <div class="reveal" style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <div class="section-label">// Launch Notification</div>
+      <h2 class="section-title">Be First in Line</h2>
+      <p class="section-desc" style="margin: 0 auto 32px;">Drop your email and we'll ping you the moment Morse Command hits the App Store. No spam. One message. That's the whole deal.</p>
+      <form action="/subscribe" method="POST" style="display: flex; gap: 12px; max-width: 480px; margin: 0 auto;" onsubmit="handleSubmit(event, this)">
+        <input type="email" name="email" placeholder="your@callsign.com" required
+          style="flex: 1; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 14px 18px; color: var(--text-primary); font-size: 0.95rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.3s;"
+          onfocus="this.style.borderColor='rgba(74,222,128,0.3)'"
+          onblur="this.style.borderColor='rgba(148,163,184,0.08)'">
+        <button type="submit"
+          style="background: linear-gradient(135deg, var(--green-primary), var(--green-glow)); color: var(--bg-deep); padding: 14px 24px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.9rem; font-family: 'Inter', sans-serif; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: all 0.3s;">
+          Notify Me
+        </button>
+      </form>
+      <p id="form-success" style="display:none; margin-top: 16px; font-size: 0.85rem; color: var(--green-primary); font-family: 'JetBrains Mono', monospace;">// Signal received. You're on the list.</p>
+      <p style="margin-top: 14px; font-size: 0.78rem; color: var(--text-muted);">One email. Launch day only. Unsubscribe any time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="download" class="cta-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="morse-divider" style="margin-bottom: 40px; opacity: 0.4;">
+        <span class="morse-dit"></span><span class="morse-dit"></span><span class="morse-dit"></span>
+        <span class="morse-space"></span>
+        <span class="morse-dah"></span><span class="morse-dah"></span><span class="morse-dah"></span>
+        <span class="morse-space"></span>
+        <span class="morse-dit"></span><span class="morse-dit"></span><span class="morse-dit"></span>
+      </div>
+      <h2 class="cta-title">YOUR SIGNAL AWAITS</h2>
+      <p class="cta-desc">80 levels. 8 boss battles. One mission: master Morse Code. Whether you're studying for your ham radio license or brushing up your CW — the Koch Method has never been this fun.</p>
+      <div class="cta-buttons">
+        <a href="https://testflight.apple.com/join/Kkmuzfv1" class="app-store-badge" aria-label="Download on the App Store">
+          <svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="40" rx="6" fill="#000"/>
+            <rect x="0.5" y="0.5" width="119" height="39" rx="5.5" fill="none" stroke="#A6A6A6"/>
+            <text x="40" y="13" fill="#fff" font-family="Inter, sans-serif" font-size="5" letter-spacing="0.5">Download on the</text>
+            <text x="40" y="27" fill="#fff" font-family="Inter, sans-serif" font-size="11" font-weight="600">App Store</text>
+            <g transform="translate(10, 6) scale(0.65)">
+              <path d="M22.2 17.4c0-3.3 2.7-4.9 2.8-5-1.5-2.2-3.9-2.5-4.7-2.5-2-.2-4 1.2-5 1.2s-2.6-1.2-4.3-1.1c-2.2 0-4.2 1.3-5.4 3.3-2.3 4-.6 10 1.7 13.2 1.1 1.6 2.4 3.4 4.2 3.3 1.7-.1 2.3-1.1 4.3-1.1s2.6 1.1 4.3 1c1.8 0 3-1.6 4.1-3.2 1.3-1.9 1.8-3.7 1.8-3.8-.1 0-3.5-1.4-3.5-5.3h-.3z" fill="#fff"/>
+              <path d="M19 7.2c.9-1.1 1.5-2.7 1.3-4.2-1.3.1-2.9.9-3.8 2s-1.7 2.6-1.5 4.1c1.5.1 3-.7 4-1.9z" fill="#fff"/>
+            </g>
+          </svg>
+        </a>
+      </div>
+      <p style="margin-top: 20px; font-size: 0.85rem; color: var(--text-muted);">Available now on TestFlight.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-logo">MORSE COMMAND</div>
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/support.html">Support</a>
+        <a href="/press-kit.html">Press Kit</a>
+      </div>
+    </div>
+    <!-- MORSE COMMAND = -- --- .-. ... .   -.-. --- -- -- .- -. -.. -->
+    <div class="morse-footer">
+      — —&nbsp;&nbsp; — — —&nbsp;&nbsp; · — ·&nbsp;&nbsp; · · ·&nbsp;&nbsp; ·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— · — ·&nbsp;&nbsp; — — —&nbsp;&nbsp; — —&nbsp;&nbsp; — —&nbsp;&nbsp; · —&nbsp;&nbsp; — ·&nbsp;&nbsp; — · ·
+    </div>
+    <div class="footer-copy">&copy; 2026 Morse Command. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// ===== PARTICLE BACKGROUND =====
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const PARTICLE_COUNT = 80;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.size = Math.random() * 2 + 0.5;
+      this.opacity = Math.random() * 0.4 + 0.1;
+      const colors = ['74,222,128', '34,211,238', '245,158,11'];
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== NAVBAR SCROLL =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// ===== EMAIL FORM =====
+function handleSubmit(e, form) {
+  e.preventDefault();
+  const email = form.querySelector('input[type="email"]').value;
+  const btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  fetch('/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } else {
+      btn.textContent = 'Notify Me';
+      btn.disabled = false;
+      alert('Something went wrong. Try again.');
+    }
+  })
+  .catch(() => {
+    btn.textContent = 'Notify Me';
+    btn.disabled = false;
+    alert('Something went wrong. Try again.');
+  });
+}
+
+// ===== SMOOTH SCROLL FOR NAV LINKS =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
+
+

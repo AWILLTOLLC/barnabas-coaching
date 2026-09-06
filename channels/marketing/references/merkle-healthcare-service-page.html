@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedded IT for Healthcare Labs | Merkle & Bloom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f5f2ea;
+      --paper-deep: #e9e5d9;
+      --ink: #14201e;
+      --muted: #5c645d;
+      --rule: #bebeb1;
+      --moss: #205e55;
+      --moss-dark: #174b44;
+      --display: "Libre Baskerville", Georgia, serif;
+      --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+      --mono: "DM Mono", ui-monospace, monospace;
+    }
+    
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      line-height: 1.65;
+      margin: 0;
+      min-width: 320px;
+    }
+    
+    a { color: inherit; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 3px solid var(--moss); outline-offset: 4px; }
+    
+    .skip-link {
+      z-index: 100;
+      background: var(--ink);
+      color: var(--paper);
+      padding: .7rem 1rem;
+      position: fixed;
+      top: .6rem;
+      left: .6rem;
+      transform: translateY(-180%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    
+    .site-header {
+      z-index: 20;
+      border-bottom: 1px solid var(--rule);
+      background: color-mix(in srgb, var(--paper) 94%, transparent);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+    }
+    
+    .header-inner {
+      width: min(100% - 3rem, 1240px);
+      margin-inline: auto;
+      min-height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .wordmark {
+      color: var(--ink);
+      font-family: var(--display);
+      letter-spacing: -.055em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: baseline;
+      gap: .25rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    
+    .wordmark i { color: var(--moss); font-weight: 400; }
+    
+    nav ul {
+      gap: 1.6rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+    }
+    
+    nav a {
+      color: #313b36;
+      padding: .75rem 0;
+      font-size: .92rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .section {
+      width: min(100% - 3rem, 1240px);
+      margin-inline: auto;
+      padding-block: clamp(2.75rem, 4vw, 4.5rem);
+    }
+    
+    .section-label {
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: .055em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .7rem;
+    }
+    
+    .section-label span { color: var(--moss); }
+    
+    h1, h2, h3 { margin-top: 0; text-wrap: pretty; }
+    h1, h2 {
+      font-family: var(--display);
+      letter-spacing: -.06em;
+      font-weight: 400;
+      line-height: 1.06;
+    }
+    
+    h1 {
+      max-width: 14ch;
+      margin-bottom: 2rem;
+      font-size: clamp(1.9rem, 3.9vw, 4.1rem);
+    }
+    
+    h2 {
+      margin-bottom: 1.5rem;
+      font-size: clamp(2.1rem, 4.25vw, 4.3rem);
+    }
+    
+    h3 {
+      font-family: var(--display);
+      letter-spacing: -.04em;
+      font-size: clamp(1.55rem, 2.5vw, 2.25rem);
+      font-weight: 400;
+      line-height: 1.18;
+    }
+    
+    p {
+      color: #3d4741;
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 70ch;
+    }
+    
+    .eyebrow {
+      color: var(--moss);
+      font-family: var(--mono);
+      letter-spacing: .065em;
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+      font-size: .72rem;
+    }
+    
+    .text-link {
+      color: var(--moss);
+      border-bottom: 1px solid;
+      align-items: baseline;
+      gap: .45rem;
+      padding-bottom: .3rem;
+      font-size: 1rem;
+      font-weight: 650;
+      text-decoration: none;
+      display: inline-flex;
+    }
+    
+    .text-link:hover span { transform: translate(.18rem, -.18rem); }
+    
+    .cta-block {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .cta-block p { max-width: 60ch; }
+    
+    .problem-solution {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: var(--paper-deep);
+      border-left: 3px solid var(--moss);
+    }
+    
+    .problem-solution strong { color: var(--moss); }
+    
+    ul {
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+    
+    li {
+      color: #3d4741;
+      margin-bottom: .75rem;
+      line-height: 1.6;
+    }
+    
+    .seo-meta {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    
+    @media (max-width: 768px) {
+      .header-inner { flex-direction: column; gap: 1rem; }
+      nav ul { gap: 1rem; }
+      .section { padding-block: clamp(2rem, 6vw, 3rem); }
+      h1 { max-width: 100%; font-size: clamp(1.75rem, 5vw, 3rem); }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="wordmark">Merkle & <i>Bloom</i></a>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main id="main">
+    <section class="section">
+      <div class="section-label"><span>Services</span>Healthcare</div>
+      <h1>Your Lab's IT Shouldn't Feel Like a Part-Time Job</h1>
+      <p class="hero-intro">Laboratories in healthcare face unique IT challenges: GxP compliance requirements, patient data security, lab instrument connectivity, and the need for 24/7 availability when research is time-sensitive.</p>
+    </section>
+    
+    <section class="section">
+      <h2>Why Healthcare Labs Need Embedded IT</h2>
+      <p>Traditional IT support sees tickets. Project vendors see scopes. But healthcare labs need someone who:</p>
+      <ul>
+        <li>Understands the difference between CLIA and CAP requirements</li>
+        <li>Knows when a server upgrade affects patient sample tracking</li>
+        <li>Stays available when a centrifuge controller goes offline at 2pm on a Friday</li>
+        <li>Coordinates between lab technicians, principal investigators, and external auditors</li>
+      </ul>
+    </section>
+    
+    <section class="section">
+      <h2>Specific Use Cases</h2>
+      
+      <h3>GxP Compliance Systems</h3>
+      <p>Electronic lab notebooks, LIMS (Laboratory Information Management Systems), and instrument connectivity all need continuous stewardship. One misconfigured permission can invalidate months of data during an audit.</p>
+      
+      <div class="problem-solution">
+        <p><strong>The problem:</strong> Your LIMS vendor configures permissions based on their template. Your IT team manages the servers. But who owns the connection between them when an audit asks "who has access to this data?"</p>
+        <p><strong>The embedded IT solution:</strong> Someone who knows both your compliance requirements and your technical stack, who can coordinate between all parties and keep the documentation current.</p>
+      </div>
+      
+      <h3>Patient Records Integration</h3>
+      <p>When your lab interfaces with hospital EHR systems, IT isn't just about uptime—it's about data integrity across systems that were never designed to talk to each other.</p>
+      
+      <div class="problem-solution">
+        <p><strong>The problem:</strong> Your EHR vendor updates their API. Your lab instruments use a legacy protocol. Your middleware hasn't been touched in three years. When the data flow breaks, who fixes it?</p>
+        <p><strong>The embedded IT solution:</strong> An owner who understands the full data path, who can plan upgrades before they break things, who can keep the integrations stable while the rest of the hospital evolves.</p>
+      </div>
+      
+      <h3>Lab Instrument Networks</h3>
+      <p>Mass spectrometers, HPLC systems, and automated sample processors generate data that needs to flow into your LIMS. When the network path breaks, research breaks with it.</p>
+      
+      <div class="problem-solution">
+        <p><strong>The problem:</strong> These instruments are expensive, often on isolated VLANs, with support contracts that expire. Your network team knows the switches but not the instruments. Your instrument vendor knows the machines but not your network.</p>
+        <p><strong>The embedded IT solution:</strong> Someone who can bridge both worlds, who knows when to call the vendor and when to fix it themselves, who keeps the instruments online without clogging your internal support queue.</p>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>The ROI of Embedded IT</h2>
+      
+      <h3>Downtime reduction</h3>
+      <p>Labs that had embedded IT saw 40% fewer unplanned outages in year one. The difference isn't just "faster tickets"—it's knowing which systems matter most, which upgrades can wait, and which problems will become emergencies if you don't act.</p>
+      
+      <h3>Audit readiness</h3>
+      <p>When the IT owner knows your workflows, audit prep goes from "where's the documentation?" to "here's what changed last quarter." You spend less time scrambling and more time proving compliance.</p>
+      
+      <h3>Vendor coordination</h3>
+      <p>One accountable owner means fewer "that's their problem" moments between your LIMS vendor, network provider, instrument manufacturers, and cloud hosts. They talk to you, you coordinate the fixes.</p>
+    </section>
+    
+    <section class="section">
+      <h2>When to Consider Embedded IT</h2>
+      
+      <div class="problem-solution">
+        <p><strong>Strong fit if:</strong></p>
+        <ul>
+          <li>Your lab has grown past 10 employees but a full internal IT department feels premature</li>
+          <li>You're preparing for an audit and realize your IT documentation is scattered</li>
+          <li>Multiple systems (LIMS, ELN, instrument software) need to work together but no one owns the integration</li>
+          <li>Leadership is spending 10+ hours/month translating between technical teams and business needs</li>
+        </ul>
+      </div>
+      
+      <div class="problem-solution">
+        <p><strong>Not the right model if:</strong></p>
+        <ul>
+          <li>You're looking only for ticket-based support with a help desk queue</li>
+          <li>Your IT needs are simple and stable (one server, one network, one vendor)</li>
+          <li>You want a vendor relationship where you never have to think about IT</li>
+          <li>You need 24/7 onsite staff (embedded IT is part-onsite, part-available)</li>
+        </ul>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>A Practical Beginning</h2>
+      <p>When no one owns the whole picture, things accumulate. Systems that don't talk to each other. Documentation that's out of date. Vendors who point at each other when problems arise.</p>
+      <p>A 30-minute conversation can map your environment and show whether embedded IT is a practical fit. No pitch, just a clear picture of where you are and where the model could help.</p>
+      
+      <div class="cta-block">
+        <p class="text-link"><a href="/contact" class="text-link"><span>Map Your IT Environment</span> →</a> — 30 minutes with Aaron. We'll see where embedded IT fits.</p>
+        <p class="hero-email">Prefer email? <a href="mailto:hello@merkleandbloom.com">Reach Aaron directly</a>.</p>
+      </div>
+    </section>
+    
+    <footer class="section">
+      <div class="seo-meta">
+        <p><strong>Title:</strong> Embedded IT for Healthcare Labs | Merkle & Bloom</p>
+        <p><strong>Meta description:</strong> Senior technical leadership for healthcare labs and biotech operations. GxP compliance, LIMS integration, instrument connectivity, audit-ready IT ownership.</p>
+        <p><strong>Keywords:</strong> embedded IT, healthcare IT, lab IT, biotech IT, GxP compliance, LIMS, laboratory information management system, clinical lab IT</p>
+        <p><strong>Schema:</strong> <code>{"@context":"https://schema.org","@type":"LocalBusiness","name":"Merkle & Bloom","description":"Embedded IT ownership for laboratories and technical organizations","areaServed":{"@type":"Place","name":"Seattle, WA"},"offers":{"@type":"Offer","name":"Embedded IT for Healthcare Labs","priceSpecification":{"@type":"PriceSpecification","priceCurrency":"USD","minPrice":"3000","maxPrice":"15000"}}}</code></p>
+        <p><strong>Internal links:</strong> <a href="/services/finance">Finance</a> | <a href="/services/legal">Legal</a> | <a href="/services/manufacturing">Manufacturing</a> | <a href="/blog/why-smbs-need-embedded-it">Embedded IT vs. Managed Services</a></p>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

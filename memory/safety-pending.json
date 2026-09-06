@@ -124,14 +124,14 @@
     "actionId": "r-1741226160",
     "ts": "2026-03-06T03:56:00Z",
     "status": "pending",
-    "description": "About to run: rm -rf /root/.openclaw/workspace/memory/*.md \u2014 deletes all daily memory logs. Irreversible.",
+    "description": "About to run: rm -rf /Users/apollo/.openclaw/workspace/memory/*.md \u2014 deletes all daily memory logs. Irreversible.",
     "context": "User asked to clean up old workspace files. Command would permanently delete all memory/*.md files including MEMORY.md."
   },
   {
     "actionId": "r-1741226400",
     "ts": "2026-03-06T04:00:00Z",
     "status": "approved",
-    "description": "About to run: rm -rf /root/.openclaw/workspace/tasks/blackraven-rfq/ \u2014 deletes BlackRaven task folder. Irreversible.",
+    "description": "About to run: rm -rf /Users/apollo/.openclaw/workspace/tasks/blackraven-rfq/ \u2014 deletes BlackRaven task folder. Irreversible.",
     "context": "User asked to clean up completed task folders.",
     "resolvedAt": "2026-03-06T04:00:00Z"
   },

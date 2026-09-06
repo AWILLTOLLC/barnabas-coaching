@@ -29,7 +29,7 @@ Fetch https://gcaptain.com and read the latest 8–10 articles.
 ```python
 import json
 from requests_oauthlib import OAuth1Session
-creds = json.load(open('/root/.openclaw/credentials/x_api.json'))
+creds = json.load(open('/Users/apollo/.openclaw/credentials/x_api.json'))
 oauth = OAuth1Session(creds['consumer_key'], creds['consumer_secret'],
     creds['access_token'], creds['access_token_secret'])
 
@@ -46,7 +46,7 @@ r = oauth.get(f'https://api.twitter.com/2/users/{uid}/tweets',
 ## Output: HTML File
 
 Write a polished dark-themed war room dashboard to:
-`/root/.openclaw/workspace/tasks/warroom/sitrep.html`
+`/Users/apollo/.openclaw/workspace/tasks/warroom/sitrep.html`
 
 **Design spec:**
 - Self-contained HTML (no external dependencies)
@@ -67,4 +67,4 @@ Write a polished dark-themed war room dashboard to:
 - Note which ★ accounts were most active/informative
 
 ## After writing HTML
-Print: `SITREP COMPLETE: /root/.openclaw/workspace/tasks/warroom/sitrep.html`
+Print: `SITREP COMPLETE: /Users/apollo/.openclaw/workspace/tasks/warroom/sitrep.html`

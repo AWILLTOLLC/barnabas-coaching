@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Contact"
+  description="Book a free 30-minute discovery call with Aaron Williams of Barnabas Coaching. Find out what AI can actually do for your Seattle business."
+>
+  <!-- Header -->
+  <section style="background:#0E1F3D" class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#C08B3A">Get in Touch</p>
+      <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5 max-w-2xl">
+        Start with a conversation.
+      </h1>
+      <p class="text-lg max-w-xl leading-relaxed" style="color:#8fa6c4">
+        The discovery call is free, 30 minutes, and genuinely useful regardless of whether you end up working with Aaron. He'll ask real questions and give you real answers.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- Contact form -->
+      <div>
+        <h2 class="font-serif text-2xl font-bold text-slate-900 mb-2">Send a message</h2>
+        <p class="text-gray-600 mb-8 text-sm">
+          Prefer to start by email? Fill this out and Aaron will respond within one business day.
+        </p>
+
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/thanks"
+          class="space-y-5"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <!-- Honeypot -->
+          <div class="hidden">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                Your name <span class="text-red-400">*</span>
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                required
+                placeholder="Jane Smith"
+                class="w-full px-4 py-2.5 rounded border border-gray-300 text-sm text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-colors"
+              />
+            </div>
+            <div>
+              <label for="company" class="block text-sm font-medium text-slate-700 mb-1.5">
+                Company
+              </label>
+              <input
+                id="company"
+                type="text"
+                name="company"
+                placeholder="Acme Co."
+                class="w-full px-4 py-2.5 rounded border border-gray-300 text-sm text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-colors"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">
+              Email address <span class="text-red-400">*</span>
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              placeholder="you@yourcompany.com"
+              class="w-full px-4 py-2.5 rounded border border-gray-300 text-sm text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-colors"
+            />
+          </div>
+
+          <div>
+            <label for="service" class="block text-sm font-medium text-slate-700 mb-1.5">
+              What are you interested in?
+            </label>
+            <select
+              id="service"
+              name="service"
+              class="w-full px-4 py-2.5 rounded border border-gray-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-colors"
+            >
+              <option value="">Select one…</option>
+              <option value="discovery">Free discovery call</option>
+              <option value="audit">AI Audit ($2,500)</option>
+              <option value="retainer">Coaching Retainer ($1,500/mo)</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-slate-700 mb-1.5">
+              Tell Aaron a bit about your business and what you're hoping to figure out
+              <span class="text-red-400">*</span>
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="5"
+              placeholder="We run a 20-person professional services firm in Seattle. We're using AI for a few things but I'm not sure we're doing it right, and I want a clear-eyed view of where to focus…"
+              class="w-full px-4 py-2.5 rounded border border-gray-300 text-sm text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-colors resize-none"
+            ></textarea>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              class="w-full sm:w-auto px-8 py-3 rounded text-sm font-semibold text-white transition-colors"
+              style="background:#0E1F3D"
+              onmouseover="this.style.background='#1a3358'"
+              onmouseout="this.style.background='#0E1F3D'"
+            >
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Calendly + context -->
+      <div class="space-y-8">
+        <!-- Calendly embed -->
+        <div>
+          <h2 class="font-serif text-2xl font-bold text-slate-900 mb-2">Book a call directly</h2>
+          <p class="text-gray-600 mb-6 text-sm">
+            Prefer to skip the back-and-forth? Pick a time that works for you.
+          </p>
+
+          <div class="calendly-inline-widget" data-url="https://calendly.com/aaron-merkleandbloom/30min" style="min-width:320px;height:700px;"></div>
+          <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        </div>
+
+        <!-- What to expect -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 class="font-semibold text-slate-900 mb-4">What to expect on the call</h3>
+          <ul class="space-y-3">
+            {[
+              {
+                time: '0–5 min',
+                desc: 'Quick intro. Aaron will ask you to share a little about your business and what brought you here.',
+              },
+              {
+                time: '5–20 min',
+                desc: "He'll ask about your operations, team size, current tools, and the specific pain points that made you start thinking about AI.",
+              },
+              {
+                time: '20–30 min',
+                desc: "You'll hear an honest take on where AI fits for your situation, and where it doesn't. No upselling.",
+              },
+            ].map((step) => (
+              <li class="flex gap-4 items-start">
+                <span class="text-xs font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded flex-shrink-0 mt-0.5">
+                  {step.time}
+                </span>
+                <p class="text-sm text-gray-600">{step.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Location note -->
+        <div class="text-sm text-gray-500">
+          <p class="font-medium text-slate-700 mb-1">Based in Seattle</p>
+          <p>
+            Discovery calls are conducted via video or phone. In-person meetings in the Seattle area
+            can be arranged for the AI Audit and ongoing Coaching Retainer clients.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

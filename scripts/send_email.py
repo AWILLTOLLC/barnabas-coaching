@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 
-CREDS_PATH = Path("/root/.openclaw/credentials/email.json")
+CREDS_PATH = Path("/Users/apollo/.openclaw/credentials/email.json")
 
 def load_creds():
     with open(CREDS_PATH) as f:

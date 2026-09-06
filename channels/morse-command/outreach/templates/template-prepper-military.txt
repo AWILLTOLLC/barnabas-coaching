@@ -1,0 +1,17 @@
+Hey {{name}},
+
+Morse Command just dropped on the App Store. Thought it'd be relevant to your crowd.
+
+It's an asteroid shooter that teaches Morse code. Enemy ships transmit, you decode, you fire. Built on the Koch method: the approach serious CW operators use, active decoding under pressure with accuracy thresholds before new characters unlock.
+
+Aaron built it. Developer, K1AXP. Made it for people who treat comms as a capability.
+
+Promo code available if you want to run it yourself before sharing.
+
+aaron@morsecommand.com
+
+View screenshots of the game and full overview here: https://morsecommand.com
+App Store: https://apps.apple.com/us/app/morse-command-cw-trainer/id6759479305
+
+73,
+Dash @ Morse Command

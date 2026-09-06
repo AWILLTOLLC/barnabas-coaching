@@ -1,0 +1,72 @@
+---
+const year = new Date().getFullYear();
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<footer style="background:#0E1F3D" class="text-white mt-24">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- Brand column -->
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded flex items-center justify-center flex-shrink-0" style="background:#1a3358">
+            <span class="font-serif font-bold text-lg" style="color:#C08B3A">B</span>
+          </div>
+          <span class="font-serif font-bold text-white text-base">Barnabas Coaching</span>
+        </div>
+        <p class="text-sm leading-relaxed" style="color:#8fa6c4">
+          AI strategy for Seattle businesses.<br />
+          Led by Aaron Williams.
+        </p>
+      </div>
+
+      <!-- Pages -->
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#5f7fa0">Pages</h4>
+        <ul class="space-y-2">
+          {links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm transition-colors"
+                style="color:#8fa6c4"
+                onmouseover="this.style.color='#ffffff'"
+                onmouseout="this.style.color='#8fa6c4'"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#5f7fa0">Work Together</h4>
+        <p class="text-sm mb-1" style="color:#8fa6c4">Based in Seattle, WA</p>
+        <p class="text-sm mb-4" style="color:#8fa6c4">Serving businesses across the region</p>
+        <a
+          href="/contact"
+          class="inline-block text-sm font-semibold transition-colors"
+          style="color:#C08B3A"
+          onmouseover="this.style.color='#D4A254'"
+          onmouseout="this.style.color='#C08B3A'"
+        >
+          Book a discovery call →
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-3" style="border-color:#1a3358">
+      <p class="text-xs" style="color:#4a6480">© {year} Barnabas Coaching. All rights reserved.</p>
+      <p class="text-xs" style="color:#3a5470">Seattle, Washington · AI Strategy Coaching</p>
+    </div>
+  </div>
+</footer>

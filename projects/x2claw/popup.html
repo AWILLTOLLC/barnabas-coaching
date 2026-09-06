@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    :root { color-scheme: dark; }
+    body { width: 360px; margin: 0; font: 13px/1.45 -apple-system, "Segoe UI", sans-serif; background: #15202b; color: #e7e9ea; }
+    .wrap { padding: 14px; }
+    .label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #71767b; margin: 0 0 4px; }
+    .url { color: #1d9bf0; word-break: break-all; margin: 0 0 12px; }
+    .preview { background: #212e3d; border: 1px solid #38444d; border-radius: 8px; padding: 10px; max-height: 150px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; margin: 0 0 12px; }
+    .preview.empty { color: #71767b; font-style: italic; }
+    .author { color: #71767b; margin: -6px 0 12px; }
+    select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #38444d; background: #212e3d; color: #e7e9ea; font-size: 13px; margin-bottom: 12px; }
+    button { width: 100%; padding: 10px; border: 0; border-radius: 999px; background: #1d9bf0; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+    button:hover:enabled { background: #1a8cd8; }
+    button:disabled { opacity: .5; cursor: default; }
+    #status { margin-top: 10px; min-height: 18px; }
+    #status.ok { color: #00ba7c; }
+    #status.err { color: #f4212e; }
+    #status.warn { color: #ffd400; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="label">Post</p>
+    <p class="url" id="url">Reading tab&hellip;</p>
+
+    <div id="form" class="hidden">
+      <div class="preview empty" id="preview">No tweet text found.</div>
+      <p class="author" id="author"></p>
+      <p class="label">Send to agent</p>
+      <select id="agent"></select>
+      <button id="send">Send</button>
+      <div id="status"></div>
+    </div>
+
+    <div id="nopost" class="hidden">
+      <div class="preview empty">This tab isn't an X post. Open a post (x.com/&lt;user&gt;/status/&lt;id&gt;) and click the extension again.</div>
+    </div>
+  </div>
+  <script src="common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

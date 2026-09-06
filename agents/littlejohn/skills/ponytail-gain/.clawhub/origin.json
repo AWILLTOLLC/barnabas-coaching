@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "registry": "https://clawhub.ai",
+  "slug": "ponytail-gain",
+  "ownerHandle": "dietrichgebert",
+  "installedAt": 1788577423085,
+  "artifact": {
+    "kind": "archive",
+    "sha256": "e916d47a1f47abd7b63a9e3346c4758f362032966b77dbd2a923b3f898d78905",
+    "integrity": "sha256-6RbUeh9Hq9e2Op4zRsR1jzYgMpZrd9vSqSOz+JjXiQU="
+  },
+  "skillFile": {
+    "path": "SKILL.md",
+    "sha256": "6268baa130520efa48406ee9463e0c844cbfea9a299a4687b1adf8352f2471f6"
+  },
+  "fileTreeSha256": "sha256:7a897dc9761a3a9209ff57d1af7fbbfb9a0e1c7a567f133702bab7aa9e87879a",
+  "installedVersion": "4.9.0"
+}

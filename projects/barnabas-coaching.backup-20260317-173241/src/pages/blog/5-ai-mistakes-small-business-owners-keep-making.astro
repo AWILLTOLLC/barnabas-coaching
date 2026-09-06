@@ -1,0 +1,304 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const postSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: '5 AI Mistakes Small Business Owners Keep Making',
+  description:
+    'Most small business owners are failing at AI because they started in the wrong place. Here are the 5 mistakes I see most often, and what to do instead.',
+  author: {
+    '@type': 'Person',
+    name: 'Aaron Williams',
+    url: 'https://barnabas.coach/about',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Barnabas Coaching',
+    url: 'https://barnabas.coach',
+  },
+  datePublished: '2026-03-13',
+  url: 'https://barnabas.coach/blog/5-ai-mistakes-small-business-owners-keep-making',
+};
+---
+
+<Layout
+  title="5 AI Mistakes Small Business Owners Keep Making"
+  description="Most small business owners are failing at AI because they started in the wrong place. Here are the 5 mistakes I see most often, and what to do instead."
+  schema={postSchema}
+>
+  <!-- Post header -->
+  <section style="background:#0E1F3D" class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <a
+          href="/blog"
+          class="text-xs font-semibold uppercase tracking-widest mb-6 inline-block transition-colors"
+          style="color:#C08B3A"
+          onmouseover="this.style.color='#D4A254'"
+          onmouseout="this.style.color='#C08B3A'"
+        >
+          ← Blog
+        </a>
+        <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5 leading-tight">
+          5 AI Mistakes Small Business Owners Keep Making
+        </h1>
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+              style="background:#C08B3A"
+            >
+              AW
+            </div>
+            <span class="text-sm font-medium" style="color:#8fa6c4">Aaron Williams</span>
+          </div>
+          <span style="color:#1a3358">·</span>
+          <span class="text-sm" style="color:#8fa6c4">March 13, 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post body -->
+  <section class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <div class="prose prose-slate prose-lg max-w-none">
+
+          <p>
+            Most small business owners I talk to aren't failing at AI because they're behind on
+            technology. They're failing because they started in the wrong place.
+          </p>
+
+          <p>
+            Growing up on a farm in south Arkansas in the '80s taught me a lot of lessons I didn't
+            recognize until later. I remember when our neighbor bought a brand new $50,000 tractor.
+            It could pull the biggest plow I'd ever seen. It could haul 2 round bales of hay on the
+            back and one on the front, at the same time. I remember thinking, "Just think of all the
+            things I could do if we had that!" The fact was, we didn't need to do any of those things
+            on our farm. Life lesson: the fanciest tool made won't do you any good if it doesn't fix
+            a problem you have.
+          </p>
+
+          <p>
+            I've been watching technology adoption cycles for a long time. I built VoIP routing
+            infrastructure in the late '90s, before Skype existed. I watched hundreds of millions of
+            people adopt instant messaging when I was a TPM on MSN Messenger at Microsoft. I've seen
+            what happens when a real technology wave hits: some businesses catch it, most don't, and
+            the difference is rarely about budget.
+          </p>
+
+          <p>Here are the five mistakes I see Seattle business owners making right now.</p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Mistake 1: Starting With the Tool Instead of the Problem</h2>
+
+          <p>
+            I'm seeing the same thing in AI with my clients today. Someone reads an article, buys
+            ChatGPT Plus, Microsoft Copilot, or really jumps in and wants me to build them an H100
+            cluster to run their own local models — then figures out what to do with it. This is
+            backwards.
+          </p>
+
+          <p>
+            AI tools aren't magic wands, they're much closer to fancy tractors. They solve specific
+            problems with specific capabilities. If you can't name the problem you're trying to solve
+            before you buy, you won't find it after.
+          </p>
+
+          <p>
+            The question isn't "how do we use AI?" The question is "where are we losing time, money,
+            or accuracy that a machine could help with?" Start there. The tool selection is secondary,
+            and sometimes the answer is "this isn't an AI problem."
+          </p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Mistake 2: Trying to Automate a Broken Process</h2>
+
+          <p>
+            I had a client in biotech who wanted to use AI to speed up their vendor onboarding. Seems
+            perfect on the surface. It's a tedious, repetitive task that nobody enjoys. But when we
+            mapped the process, it ran through four people, two spreadsheets, an email thread, and a
+            shared drive folder that hadn't been cleaned up since 2019.
+          </p>
+
+          <p>
+            AI on top of chaos is faster chaos. Whatever's broken about a process, automation
+            amplifies it. Inconsistent steps become inconsistently faster. Missing approvals go
+            missing faster.
+          </p>
+
+          <p>
+            Before you automate anything, you have to understand it. That means mapping it, cleaning
+            it, and agreeing on what the correct version looks like. The AI part comes last.
+          </p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Mistake 3: Underestimating the Data Problem</h2>
+
+          <p>
+            This is the one that surprises people most. They hear "AI" and picture a smart assistant
+            that figures things out. What most AI actually does is pattern-match against data. Your
+            data.
+          </p>
+
+          <p>
+            If your customer records are in three places and none of them agree, the AI has nothing
+            reliable to work with. If your product descriptions are inconsistent across your catalog,
+            your AI-powered search will reflect that inconsistency. If your files live in a dozen
+            folders with no naming convention, you can't feed them to anything useful.
+          </p>
+
+          <p>
+            Most small businesses have messier data than they think. This isn't a criticism, it's
+            just true. Before you invest in AI tools, it's worth an honest look at what you actually
+            have and where it lives.
+          </p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Mistake 4: Delegating the Decision to IT or a Vendor</h2>
+
+          <p>One of my teaching phrases for my clients is this: AI may be smarter than you, but it doesn't know what you know.</p>
+
+          <p>
+            Neither does your IT person or your managed service provider. Many are excellent at their
+            jobs, but they're not you. They don't know which parts of your business are actually
+            grinding, which processes matter, or what a successful outcome looks like from where you
+            sit.
+          </p>
+
+          <p>
+            Vendors have incentives. They get paid when you buy things or use their time. Even good
+            vendors who aren't actively pushing unnecessary tools are still working from a product
+            menu, not from a clean-sheet understanding of your business.
+          </p>
+
+          <p>
+            You don't need to become an AI expert. But you need to understand enough to lead the
+            conversation — to know when what you're being sold actually fits your problem and when it
+            doesn't. That's not a technical skill. It's a leadership one.
+          </p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Mistake 5: Waiting for the Right Time</h2>
+
+          <p>
+            This is a true story. When I was 4 years old, it came a big winter ice storm on that farm
+            in south Arkansas. Sleeting, freezing cold. We had a cow about to give birth — and sure
+            enough, that was the day. My dad braved the sleet to go find the calf, picked her up, put
+            her in his truck, and brought her inside. Not to the house. In the house. Right down in
+            front of the fireplace.
+          </p>
+
+          <p>
+            About 15 minutes later, little Sleet got her legs under her and did what every baby calf
+            does: learned to run. I was the only other calf around, so off we went, round and round
+            the dinner table, full speed ahead.
+          </p>
+
+          <p>The timing couldn't have been worse. It didn't matter.</p>
+
+          <p>
+            There's no version of this where the timing gets easier. The tools aren't going to
+            stabilize anytime soon. The learning curve isn't going to flatten next month. And the
+            businesses already in motion will compound their advantage while you wait.
+          </p>
+
+          <p>
+            I hear this a lot: "We'll take a harder look at AI once things slow down." Things don't
+            slow down. And waiting for perfect conditions is how you end up two years behind.
+          </p>
+
+          <p>
+            The businesses making real progress right now aren't betting the company on AI. They're
+            making deliberate small bets: one use case, one team, one workflow. They learn from that,
+            then pick the next one. That's it.
+          </p>
+
+          <p>You don't need a transformation strategy. You need a first move.</p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Where to Start</h2>
+
+          <p>
+            None of this is meant to be discouraging — exactly the opposite. The honest truth is that
+            most small businesses are closer to useful AI adoption than they think. The gap is usually
+            clarity, not capability.
+          </p>
+
+          <p>
+            If you're not sure where your first move should be, I offer a free 30-minute discovery
+            call. No pitch, no agenda. Just a real conversation about where you are and whether it
+            makes sense to go further together.
+          </p>
+
+        </div>
+
+        <!-- CTA box -->
+        <div class="mt-12 rounded-lg p-8 border" style="background:#0E1F3D; border-color:#1a3358">
+          <h3 class="font-serif text-xl font-bold text-white mb-2">Book a free discovery call</h3>
+          <p class="text-sm mb-6 leading-relaxed" style="color:#8fa6c4">
+            No pitch, no agenda. Just a real conversation about where you are and whether it makes
+            sense to go further together.
+          </p>
+          <a
+            href="/contact"
+            class="inline-block px-5 py-2.5 rounded text-sm font-semibold text-white transition-colors"
+            style="background:#C08B3A"
+            onmouseover="this.style.background='#D4A254'"
+            onmouseout="this.style.background='#C08B3A'"
+          >
+            Book at barnabas.coach →
+          </a>
+        </div>
+
+        <!-- Author bio -->
+        <div class="mt-10 pt-10 border-t border-gray-200 flex items-start gap-4">
+          <div
+            class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+            style="background:#C08B3A"
+          >
+            AW
+          </div>
+          <div>
+            <p class="font-semibold text-slate-900 text-sm mb-1">Aaron Williams</p>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Founder of Barnabas Coaching. 25 years at the leading edge of technology — early VoIP,
+              Microsoft, biotech IT consulting, and AI-assisted development. He helps Seattle-area
+              small businesses figure out what AI can actually do for them.
+            </p>
+            <a
+              href="/about"
+              class="text-sm font-semibold mt-2 inline-block transition-colors"
+              style="color:#0E1F3D"
+              onmouseover="this.style.color='#C08B3A'"
+              onmouseout="this.style.color='#0E1F3D'"
+            >
+              Read Aaron's full story →
+            </a>
+          </div>
+        </div>
+
+        <!-- Back to blog -->
+        <div class="mt-12">
+          <a
+            href="/blog"
+            class="text-sm font-semibold transition-colors"
+            style="color:#0E1F3D"
+            onmouseover="this.style.color='#C08B3A'"
+            onmouseout="this.style.color='#0E1F3D'"
+          >
+            ← Back to Blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

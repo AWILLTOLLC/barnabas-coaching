@@ -6,6 +6,9 @@
 - **Timezone:** America/Los_Angeles (PST / UTC-8) — Seattle, Washington, USA
 - **Neighborhood (incoming):** Fremont, Seattle
 
+## Preferences
+- Always translate metric to imperial (°C→°F, km→miles, kg→lbs, etc.)
+
 ## Relationship
 - **Girlfriend:** Lily — cherished, serious partner. They work out together, run a business together, go to raves/EDM events together. He strives to be the man she deserves. Treat Lily as important context in everything.
 

@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://morsecommand.com/sitemap.xml
+
+# AI crawlers welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# llms.txt is available at /llms.txt

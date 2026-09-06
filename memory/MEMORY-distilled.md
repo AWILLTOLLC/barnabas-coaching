@@ -24,7 +24,7 @@ _Active context only. Raw logs in memory/YYYY-MM-DD.md. Full original: MEMORY.md
 
 ### 2. Black Raven Company
 - Handmade scotch eye augers. **Active manufacturer search** (started 2026-03-01).
-- RFQ: `/root/.openclaw/workspace/BlackRavenAuger_RFQ.docx`. Contact email: claude@kaw.cc (August).
+- RFQ: `/Users/apollo/.openclaw/workspace/BlackRavenAuger_RFQ.docx`. Contact email: claude@kaw.cc (August).
 - Target: 1,500–2,000 units @ $8–15/unit. Non-China preferred (Taiwan, India, Vietnam, Mexico, Eastern Europe, USA).
 - Previous Chinese factory had communication failures. QIMA pre-shipment QC planned.
 - Task tracker: `tasks/blackraven-rfq/todo.md`.
@@ -33,9 +33,9 @@ _Active context only. Raw logs in memory/YYYY-MM-DD.md. Full original: MEMORY.md
 - Rave compliment cards. Brand new, wants to grow.
 - **Site:** letsgoglimmer.com — on Cloudflare Pages (glimmer-cards-web.pages.dev). DNS stable.
 - **Shop:** shop.letsgoglimmer.com → Shopify (phsjm0-jp.myshopify.com).
-- **GitHub:** AWILLTOLLC/glimmer-cards-web. My account: AugustCrane (PAT at `/root/.openclaw/credentials/github.json`).
-- **CF creds:** `/root/.openclaw/credentials/cloudflare.json` (account: 5c68e7493917ba789644831da2432fdb).
-- **Local project:** `/root/.openclaw/workspace/projects/glimmer-cards-web/`
+- **GitHub:** AWILLTOLLC/glimmer-cards-web. My account: AugustCrane (PAT at `/Users/apollo/.openclaw/credentials/github.json`).
+- **CF creds:** `/Users/apollo/.openclaw/credentials/cloudflare.json` (account: 5c68e7493917ba789644831da2432fdb).
+- **Local project:** `/Users/apollo/.openclaw/workspace/projects/glimmer-cards-web/`
 
 ## Merkle and Bloom (S-corp)
 
@@ -105,8 +105,8 @@ _Active context only. Raw logs in memory/YYYY-MM-DD.md. Full original: MEMORY.md
 - **Tailscale:** on ubuntu-ct. Gateway: `wss://ubuntu-ct.tailb4a099.ts.net`.
 - **Nightly memory cron:** 11pm PST, cron ID: 2a848c7f-2d2c-4e73-8dfe-d7adc248cb72.
 - **Daily briefing:** `scripts/daily_briefing.py`, 7am PST (15:00 UTC). Telegram + email (a@kaw.cc). Sections: weather, iCloud calendar, Amazon deliveries, email flags, Nectar Lounge events.
-- **iCloud CalDAV:** mac@kaw.cc, app password at `/root/.openclaw/credentials/icloud.json`. Amazon emails forwarded to drubot@posteo.com.
-- **Backup:** daily 9am PST (17:00 UTC). Script: `/root/backups/backup-openclaw.sh`. Output: `/root/backups/openclaw-YYYY-MM-DD.tar.gz`, 14-day retention.
+- **iCloud CalDAV:** mac@kaw.cc, app password at `/Users/apollo/.openclaw/credentials/icloud.json`. Amazon emails forwarded to drubot@posteo.com.
+- **Backup:** daily 9am PST (17:00 UTC). Script: `/Users/apollo/backups/backup-openclaw.sh`. Output: `/Users/apollo/backups/openclaw-YYYY-MM-DD.tar.gz`, 14-day retention.
 
 ## Music Preferences (Nectar Lounge Briefings)
 
@@ -117,7 +117,7 @@ _Active context only. Raw logs in memory/YYYY-MM-DD.md. Full original: MEMORY.md
 
 ## Knowledge Bases
 
-- **Situational Awareness** (Leopold Aschenbrenner, June 2024): SQLite FTS5 at `/root/.openclaw/workspace/data/situational-awareness.db`. Search: `python3 scripts/search_situational_awareness.py "query"`. 241 chunks, 10 sections. Topics: AGI timelines, intelligence explosion, lab security, superalignment, US/China race. **Do NOT load full text into context** — query DB on demand.
+- **Situational Awareness** (Leopold Aschenbrenner, June 2024): SQLite FTS5 at `/Users/apollo/.openclaw/workspace/data/situational-awareness.db`. Search: `python3 scripts/search_situational_awareness.py "query"`. 241 chunks, 10 sections. Topics: AGI timelines, intelligence explosion, lab security, superalignment, US/China race. **Do NOT load full text into context** — query DB on demand.
 
 ---
 
@@ -129,4 +129,4 @@ _Active context only. Raw logs in memory/YYYY-MM-DD.md. Full original: MEMORY.md
 - DUNS number requested through Apple flow (2026-02-21): awaiting approval.
 - Dru came online 2026-02-20. SOUL.md last updated 2026-02-27 with current canonical operating rules.
 - OpenClaw Native App (macOS + iOS chat client): design/vision stage only — not built.
-- X API setup: complete, credentials in `/root/.openclaw/credentials/x_api.json`. See TOOLS.md for usage.
+- X API setup: complete, credentials in `/Users/apollo/.openclaw/credentials/x_api.json`. See TOOLS.md for usage.

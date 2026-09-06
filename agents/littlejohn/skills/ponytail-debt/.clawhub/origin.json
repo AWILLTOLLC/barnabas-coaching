@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "registry": "https://clawhub.ai",
+  "slug": "ponytail-debt",
+  "ownerHandle": "dietrichgebert",
+  "installedAt": 1788577413451,
+  "artifact": {
+    "kind": "archive",
+    "sha256": "e5e7c241a4ae068b7a72615f5fc02429afa8256dbdd567263543fb7c4aa1c0a1",
+    "integrity": "sha256-5efCQaSuBot6cmFfX8AkKa+oJW291WcmNUP7fEqhwKE="
+  },
+  "skillFile": {
+    "path": "SKILL.md",
+    "sha256": "b0281c1d96fa5acc411ab6bbc219802c5551ecc73f4e3be3a3b74ada78a84bcb"
+  },
+  "fileTreeSha256": "sha256:d79fc7d297f53310a08f6c2a3211846266967d6d64a58c2fff06b07a762129b1",
+  "installedVersion": "4.9.0"
+}

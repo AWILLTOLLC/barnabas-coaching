@@ -3,7 +3,7 @@
 # Checksums key config files and alerts if anything changed since last run
 # On first run, creates the baseline
 
-BASELINE="/root/.openclaw/workspace/scripts/.config_baseline"
+BASELINE="/Users/apollo/.openclaw/workspace/scripts/.config_baseline"
 TELEGRAM_TARGET="5161266419"
 
 # Files to watch
@@ -15,7 +15,7 @@ WATCH_FILES=(
   "/etc/shadow"
   "/etc/crontab"
   "/etc/ufw/user.rules"
-  "/root/.ssh/authorized_keys"
+  "/Users/apollo/.ssh/authorized_keys"
 )
 
 # Build current checksums (only for files that exist)

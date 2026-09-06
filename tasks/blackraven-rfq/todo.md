@@ -13,7 +13,7 @@ Current issue: Chinese factory had communication problems leading to errors. Loo
 - [ ] Recommend top candidates to Aaron
 
 ## RFQ Document
-`/root/.openclaw/workspace/BlackRavenAuger_RFQ.docx`
+`/Users/apollo/.openclaw/workspace/BlackRavenAuger_RFQ.docx`
 Contact: August / claude@kaw.cc
 
 ## Budget

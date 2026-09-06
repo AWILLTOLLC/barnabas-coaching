@@ -1,6 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Do I need to start with the Audit before the Retainer?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "Not required, but often recommended. The Audit gives both of us a clear picture of your business before we dive into ongoing strategy work. If you've already done this work internally or with another advisor, we can start straight with the Retainer.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What industries do you work with?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "Aaron has the deepest experience in biotech, professional services, and technology-adjacent businesses. That said, AI strategy translates across industries. The workflow assessment approach works whether you run a law firm, a construction company, or a healthcare practice.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do you do implementation work, or just strategy?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "Primarily strategy: helping you make the right decisions, then execute them with your team or with vendors Aaron can recommend. For specific implementation needs, he can point you to the right resources.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How quickly can we get started?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Discovery calls are typically available within a week. The AI Audit begins after a brief intake and scoping process. Coaching Retainers start on the first of the following month.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does AI strategy coaching cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Barnabas Coaching offers two services: an AI Audit at $2,500 (one-time engagement) and a Coaching Retainer at $1,500 per month with a 3-month minimum. Both start with a free 30-minute discovery call.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is included in the AI Audit?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The AI Audit includes a structured 90-minute intake interview, workflow mapping of your core business processes, a written assessment report with prioritized recommendations, tool and vendor guidance, and a 60-minute debrief call. The engagement typically completes in 7–10 business days.',
+      },
+    },
+  ],
+};
+
 const serviceSchemas = [
   {
     '@context': 'https://schema.org',
@@ -50,7 +105,7 @@ const serviceSchemas = [
 <Layout
   title="Services"
   description="Two ways to work with Barnabas Coaching: a one-time AI Audit ($2,500) or an ongoing Coaching Retainer ($1,500/month). Clear scope, real deliverables, no consultantspeak."
-  schema={serviceSchemas}
+  schema={[faqSchema, ...serviceSchemas]}
 >
   <!-- Page Header -->
   <section style="background:#0E1F3D" class="py-16 lg:py-20">
@@ -81,8 +136,9 @@ const serviceSchemas = [
           in your specific workflows, with your team and budget? That's the question the AI Audit answers.
         </p>
         <p class="text-gray-600 leading-relaxed mb-4">
-          Over approximately 30 days, Aaron maps your existing operations, identifies where AI can create
+          Aaron maps your existing operations, identifies where AI can create
           real returns, and delivers a written report you can act on immediately, or hand to your team.
+          For Seattle-area clients, the intake and workflow mapping can be done on-site.
         </p>
         <p class="text-gray-600 leading-relaxed mb-8">
           The report isn't a generic AI overview. It's specific to your business: the tools, the vendors,
@@ -311,6 +367,18 @@ const serviceSchemas = [
       >
         Book a Free Discovery Call
       </a>
+      <p class="mt-6 text-sm" style="color:#5f7fa0">
+        Based in Seattle and serving the greater Puget Sound area.
+        <a
+          href="/ai-consulting-seattle"
+          class="transition-colors"
+          style="color:#8fa6c4"
+          onmouseover="this.style.color='#ffffff'"
+          onmouseout="this.style.color='#8fa6c4'"
+        >
+          Learn more about our Seattle AI consulting work →
+        </a>
+      </p>
     </div>
   </section>
 </Layout>

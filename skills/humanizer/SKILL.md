@@ -1,13 +1,14 @@
 ---
 name: humanizer
-version: 2.1.1
+version: 2.2.0
 description: |
   Remove signs of AI-generated writing from text. Use when editing or reviewing
   text to make it sound more natural and human-written. Based on Wikipedia's
-  comprehensive "Signs of AI writing" guide. Detects and fixes patterns including:
+  "Signs of AI writing" guide + stop-slop by Hardik Pandya. Detects and fixes:
   inflated symbolism, promotional language, superficial -ing analyses, vague
   attributions, em dash overuse, rule of three, AI vocabulary words, negative
-  parallelisms, and excessive conjunctive phrases.
+  parallelisms, excessive conjunctive phrases, adverbs, passive voice, Wh- starters,
+  binary contrast structures, false agency, pull-quotes, and vague declaratives.
 allowed-tools:
   - Read
   - Write
@@ -430,8 +431,72 @@ Provide:
 
 ---
 
+---
+
+## STOP-SLOP: Sentence-Level Rules
+
+*(Integrated from [stop-slop by Hardik Pandya](https://github.com/hardikpandya/stop-slop))*
+
+These rules operate at the sentence and word level — apply them after the content-pattern pass above.
+
+### Kill all adverbs
+No -ly words. Cut "really," "truly," "genuinely," "simply," "honestly," "actually," "deeply," "fundamentally," "inherently," "inevitably," "interestingly," "importantly," "crucially" — all of them. Strong verbs don't need adverb support.
+
+### Active voice, always
+Every sentence needs a human subject doing something. Find the actor. If you can't name one, restructure. No inanimate objects performing human actions:
+- "the decision emerged" → "Aaron decided"
+- "the data tells us" → "the numbers show X"
+- "the culture shifts" → "people changed behavior"
+- "the complaint becomes a fix" → "the team fixed it"
+
+### No Wh- sentence starters
+Never start a sentence with What, When, Where, Which, Who, Why, or How. Restructure:
+- "What makes this hard is the timeline" → "The timeline is the constraint"
+- "What I find interesting is..." → just state the interesting thing
+
+### Two items beat three
+Break the rule-of-three compulsion. If you have 3 items, drop one or collapse two. A tight pair is stronger than a padded triple.
+
+### Cut pull-quotes
+If a sentence sounds like it was designed to be screenshot and shared, rewrite it as a plain statement. Good writing doesn't announce itself.
+
+### No throat-clearing openers
+State the point directly. Cut:
+- "Here's the thing:" / "Here's what/why/this/that..."
+- "It turns out" / "The truth is," / "The real X is"
+- "Let me be clear" / "I'm going to be honest"
+
+### No binary contrast structures
+State the positive claim. Drop the negation runway:
+- "Not X. Y." → just "Y."
+- "It's not X, it's Y." → just "It's Y."
+- "Not because X. Because Y." → just "Because Y."
+
+### Cut vague declaratives
+If a sentence announces importance without naming the specific thing, replace it with the specific thing or delete it:
+- "The implications are significant" → name the implication
+- "The reasons are structural" → name the reason
+- "The stakes are high" → name what's at stake
+
+### Prose scoring (use for content going to publication)
+
+Rate 1-10 on each dimension. Below 35/50: revise.
+
+| Dimension | Question |
+|-----------|----------|
+| Directness | Statements or announcements? |
+| Rhythm | Varied or metronomic? |
+| Trust | Respects reader intelligence? |
+| Authenticity | Sounds human? |
+| Density | Anything cuttable? |
+
+---
+
 ## Reference
 
-This skill is based on [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), maintained by WikiProject AI Cleanup. The patterns documented there come from observations of thousands of instances of AI-generated text on Wikipedia.
+This skill combines two sources:
 
-Key insight from Wikipedia: "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
+1. [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) — content and grammar patterns from WikiProject AI Cleanup.
+2. [stop-slop by Hardik Pandya](https://github.com/hardikpandya/stop-slop) — sentence-level rules: adverbs, active voice, structural clichés, scoring.
+
+Key insight: "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."

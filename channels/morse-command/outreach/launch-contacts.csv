@@ -1,0 +1,26 @@
+name,handle,email,platform,tier,template,notes,status
+Josh Nass,KI6NAZ,,YouTube/Podcast,1,hamradio-creator,Email on hamradiocrashcourse.com — need to scrape contact form or find direct email,needs_email
+Jason Johnston,KC5HWB,jason@livefromthehamshack.tv,YouTube/Podcast,1,hamradio-creator,Ham Radio 2.0 — email confirmed domain,ready
+Gaston Gonzalez,TheTechPrepper,,YouTube,1,hamradio-creator,Contact form at thetechprepper.com — need direct email,needs_email
+Julian OH8STN,OH8STN,,YouTube,1,hamradio-creator,Contact via oh8stn.org — need to scrape,needs_email
+Callum McCormick,M0MCX,,YouTube,1,hamradio-creator,DX Commander — contact via dxcommander.com,needs_email
+Thomas Witherspoon,K4SWL,,YouTube/Blog,1,hamradio-creator,QRPer.com — contact form,needs_email
+Charlie NJ7V,redsummitrf,,YouTube/TikTok,1,hamradio-creator,Red Summit RF — via ARRL.net email or arrl.net forum,needs_email
+Gil Gruson,F4WBY,,YouTube,1,hamradio-creator,Radio Prepper — radiopreppers.com community,needs_email
+Dan Romanchik,KB6NU,cwgeek@kb6nu.com,Blog,1,hamradio-creator,CW Geek — email confirmed,ready
+David Casler,KE0OG,,YouTube,2,hamradio-creator,Contact via mtsneffelspress.com,needs_email
+Michael Martens,KB9VBR,,YouTube,2,hamradio-creator,Contact via jpole-antenna.com,needs_email
+Eric Guth,4Z1UG,,Podcast,1,podcast-pitch,QSO Today — qsotoday.com contact,needs_email
+George KJ6VU,,,,Podcast,1,podcast-pitch,Ham Radio Workbench — hamradioworkbench.com,needs_email
+Christian Cudnik,K0STH,,Podcast,2,podcast-pitch,100 Watts and a Wire — 100wattsandawire.com,needs_email
+LICW,,info@longislandcwclub.org,Organization,1,cw-org-partnership,Long Island CW Club — Koch method direct overlap,ready
+CWops,,cwops@cwops.org,Organization,1,cw-org-partnership,CW Operators Club — check email on cwops.org,needs_verify
+FISTS,,,,Organization,1,cw-org-partnership,fistsna.org — need contact email,needs_email
+Ham Radio Duo,,,,Community,1,cw-org-partnership,hamradioduo.com + Discord,needs_email
+LCWO.net,,,,Community,1,cw-org-partnership,Koch method learner community — contact via lcwo.net,needs_email
+steponesurvival,,,,Instagram,3,prepper-military,USMC vet — email @outlook.com listed in bio,needs_email
+amber_combat_survivalist,,,,Instagram,3,prepper-military,Army vet survivalist — email @hotmail.com listed in bio,needs_email
+survival.doctors,,contact@survivaldoctors.com,Instagram,3,prepper-military,Dr. Teimojin Tan — military + medical,needs_verify
+creekstewart,,,,Instagram,3,prepper-military,Creek Stewart — survivaldoctors.com,needs_email
+VideosByDPF,,,,YouTube,2,hamradio-creator,Amateur radio + doomsday prepping — email @outlook.com listed,needs_email
+RadioHamGuy,,,,YouTube,2,hamradio-creator,pallcprivacy.com email,needs_email

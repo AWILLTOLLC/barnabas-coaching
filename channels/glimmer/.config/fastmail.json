@@ -1,0 +1,17 @@
+{
+  "jmap_token": "fmu1-c06e4053-33d063abb50d359e15fcffac05b98e19-0-5c9d0c938bceab6215aeecadd5615d0a",
+  "account_id": "uc06e4053",
+  "username": "spark@letsgoglimmer.com",
+  "sending_name": "Spark@Glimmer",
+  "sending_address": "spark@letsgoglimmer.com",
+  "identity_id": "177037471",
+  "jmap_api_url": "https://api.fastmail.com/jmap/api/",
+  "mailboxes": {
+    "Inbox": "P-F",
+    "Sent": "P2F",
+    "Drafts": "P3V",
+    "Archive": "P6-",
+    "Spam": "P4k",
+    "Trash": "P1-"
+  }
+}

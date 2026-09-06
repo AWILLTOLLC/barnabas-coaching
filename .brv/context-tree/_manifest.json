@@ -1,0 +1,187 @@
+{
+  "active_context": [
+    {
+      "order": 3,
+      "path": "_index.md",
+      "tokens": 666,
+      "type": "summary"
+    },
+    {
+      "order": 2,
+      "path": "conventions/_index.md",
+      "tokens": 774,
+      "type": "summary"
+    },
+    {
+      "order": 2,
+      "path": "infrastructure/_index.md",
+      "tokens": 446,
+      "type": "summary"
+    },
+    {
+      "order": 1,
+      "path": "projects/barnabas_coaching/_index.md",
+      "tokens": 111,
+      "type": "summary"
+    },
+    {
+      "importance": 70,
+      "path": "user/aaron_personal_context.md",
+      "tokens": 372,
+      "type": "context"
+    },
+    {
+      "importance": 55,
+      "path": "projects/malta_2026/malta_2026_trip.md",
+      "tokens": 286,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/content_strategy/content_format_libraries.md",
+      "tokens": 357,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/content_strategy/context.md",
+      "tokens": 70,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/context.md",
+      "tokens": 43,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/patterns/context.md",
+      "tokens": 20,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/patterns/learned_patterns.md",
+      "tokens": 226,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/patterns/long_running_task_orchestration.md",
+      "tokens": 257,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "conventions/workspace/workspace_rules.md",
+      "tokens": 184,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/context.md",
+      "tokens": 52,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/dru_agent/dru_agent_hard_rules.md",
+      "tokens": 356,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/ollama/local_llm_timeout_bug.md",
+      "tokens": 279,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/workspace_config/context.md",
+      "tokens": 24,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/workspace_config/tailscale_serve_control_ui.md",
+      "tokens": 297,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/workspace_config/workspace_and_infrastructure.md",
+      "tokens": 181,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/barnabas_coaching/barnabas_coaching.md",
+      "tokens": 151,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/barnabas_coaching/context.md",
+      "tokens": 20,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/black_raven/black_raven_rfq.md",
+      "tokens": 145,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/black_raven/context.md",
+      "tokens": 19,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/context.md",
+      "tokens": 47,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/creel/context.md",
+      "tokens": 183,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/creel/creel_macos_client.md",
+      "tokens": 147,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/creel/creel_system.md",
+      "tokens": 114,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/glimmer_cards/context.md",
+      "tokens": 18,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "projects/glimmer_cards/glimmer_cards.md",
+      "tokens": 135,
+      "type": "context"
+    }
+  ],
+  "generated_at": "2026-09-06T17:12:54.139Z",
+  "lane_tokens": {
+    "contexts": 3983,
+    "stubs": 0,
+    "summaries": 1997
+  },
+  "source_fingerprint": "4584ad66b69e16957b83d4a7af1f615af17243eb431365aedc55c022e52278bb",
+  "total_tokens": 5980,
+  "version": 1
+}

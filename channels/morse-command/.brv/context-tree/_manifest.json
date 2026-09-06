@@ -1,0 +1,55 @@
+{
+  "active_context": [
+    {
+      "order": 3,
+      "path": "_index.md",
+      "tokens": 329,
+      "type": "summary"
+    },
+    {
+      "order": 2,
+      "path": "infrastructure/_index.md",
+      "tokens": 179,
+      "type": "summary"
+    },
+    {
+      "order": 2,
+      "path": "marketing/_index.md",
+      "tokens": 253,
+      "type": "summary"
+    },
+    {
+      "order": 1,
+      "path": "infrastructure/monitoring/_index.md",
+      "tokens": 131,
+      "type": "summary"
+    },
+    {
+      "order": 1,
+      "path": "marketing/seo/_index.md",
+      "tokens": 230,
+      "type": "summary"
+    },
+    {
+      "importance": 50,
+      "path": "infrastructure/monitoring/x_post_monitoring.md",
+      "tokens": 311,
+      "type": "context"
+    },
+    {
+      "importance": 50,
+      "path": "marketing/seo/ai_search_optimization.md",
+      "tokens": 260,
+      "type": "context"
+    }
+  ],
+  "generated_at": "2026-03-25T19:42:05.866Z",
+  "lane_tokens": {
+    "contexts": 571,
+    "stubs": 0,
+    "summaries": 1122
+  },
+  "source_fingerprint": "37b78acd2429b9d121f33d3a865939b03316f2dbc61969ec1f1a1e79a14f7083",
+  "total_tokens": 1693,
+  "version": 1
+}

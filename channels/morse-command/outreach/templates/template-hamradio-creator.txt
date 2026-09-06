@@ -1,0 +1,16 @@
+Hey {{name}},
+
+Morse Command just launched on the App Store. Asteroid shooter that teaches Morse code via the Koch method. Enemy ships transmit in Morse, you decode and fire.
+
+Aaron built it because he wanted to learn CW and found the standard tools too passive. Koch progression is baked in: starts with K and M, adds characters as accuracy holds. Active decoding with stakes attached.
+
+Your audience would dig it. Promo code available if you want to try it first.
+
+Aaron: aaron@morsecommand.com
+
+View screenshots of the game and full overview here: https://morsecommand.com
+App Store: https://apps.apple.com/us/app/morse-command-cw-trainer/id6759479305
+Press kit: https://morsecommand.com/press-kit
+
+73,
+Dash @ Morse Command

@@ -1,0 +1,14 @@
+Hi {{name}},
+
+My name is Aaron Williams K1AXP. I just launched Morse Command on the App Store, an iOS game that teaches Morse code via the Koch method. Enemy ships transmit in Morse, you decode and fire back.
+
+Thought it might be worth a mention for your audience. Happy to provide more context, a promo code, or anything else you need.
+
+View screenshots of the game and full overview here: https://morsecommand.com
+App Store: https://apps.apple.com/us/app/morse-command-cw-trainer/id6759479305
+Press kit: https://morsecommand.com/press-kit
+
+73,
+Aaron
+AWILLTO LLC
+dash@morsecommand.com

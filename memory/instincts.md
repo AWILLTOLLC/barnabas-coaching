@@ -27,3 +27,13 @@ _Extracted from sessions. Promote high-confidence ones into SOUL.md / AGENTS.md 
 **Confidence:** medium
 **Evidence:** Aaron asked about VantageOC heartbeat visibility — JSONL file approach was the agreed solution.
 **Context:** Every heartbeat response should append one line.
+### [2026-09-05] show_widget unavailable → board.widget.put RPC
+**Pattern:** When show_widget isn't exposed (no inline-widgets client), author dashboard widgets directly via `openclaw gateway call board.widget.put` with declared capabilities; grants resolve through the normal board flow.
+**Confidence:** medium
+**Evidence:** Fleet recency widget built and granted end-to-end without the agent tool.
+**Context:** Any Control UI dashboard widget request where the tool is missing.
+### [2026-09-05] Verify spawn liveness before yielding
+**Pattern:** sessions_spawn "accepted" ≠ running. Check `subagents list` for status=running before ending the turn; crash-before-boot children only surface later (or not at all).
+**Confidence:** high
+**Evidence:** Two spawns died in <110ms on workspace-migration validation while I waited on a completion event.
+**Context:** Any spawn from worktree sessions or workspaces with legacy setup state.

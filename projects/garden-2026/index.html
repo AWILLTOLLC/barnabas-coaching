@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seattle Garden 2026 — 10×10 Plot</title>
+  <style>
+    :root {
+      --green-dark: #2d6a4f;
+      --green-mid: #40916c;
+      --green-light: #74c69d;
+      --green-pale: #d8f3dc;
+      --soil: #6b4226;
+      --soil-light: #a0522d;
+      --cream: #fefae0;
+      --warm-white: #fffdf5;
+      --text: #1a1a1a;
+      --text-muted: #555;
+      --border: #e0d5c1;
+
+      --march: #a8dadc;
+      --april: #90e0ef;
+      --may: #f4d35e;
+      --june: #f77f00;
+      --july: #d62828;
+      --aug: #e07a5f;
+      --sep: #b5838d;
+      --oct: #6d6875;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--warm-white);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+      color: white;
+      padding: 60px 40px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 40px;
+      background: var(--warm-white);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: normal;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      font-style: italic;
+    }
+    .hero .badges {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    section { margin-bottom: 56px; }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: normal;
+      color: var(--green-dark);
+      border-bottom: 2px solid var(--green-pale);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--soil);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── SEED CARDS ── */
+    .seed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .seed-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: transform 0.15s;
+    }
+    .seed-card:hover { transform: translateY(-2px); }
+    .seed-card .emoji { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .seed-card .name { font-weight: bold; font-size: 0.95rem; color: var(--green-dark); }
+    .seed-card .type { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+    .seed-card .meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px; }
+    .organic-badge {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 0.65rem;
+      font-weight: bold;
+      padding: 2px 7px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .season-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+    }
+    .cool { background: #dff0f8; color: #1a6080; }
+    .warm { background: #fff3cd; color: #856404; }
+
+    /* ── GARDEN MAP ── */
+    .garden-map {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .compass {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+    .plot {
+      display: grid;
+      grid-template-rows: auto auto auto auto auto;
+      gap: 4px;
+      border: 3px solid var(--soil);
+      border-radius: 6px;
+      padding: 8px;
+      background: #f5ebe0;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .plot-row {
+      display: flex;
+      gap: 4px;
+      min-height: 60px;
+    }
+    .plot-zone {
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      text-align: center;
+      padding: 8px 6px;
+      font-weight: bold;
+      color: white;
+      flex: 1;
+      line-height: 1.3;
+    }
+    .zone-peas     { background: #52b788; flex: 1; }
+    .zone-cucumber { background: #f4a261; }
+    .zone-kale     { background: #2d6a4f; }
+    .zone-mix      { background: #90be6d; flex: 1; }
+    .zone-radish   { background: #e63946; }
+    .zone-parsley  { background: #457b9d; }
+    .plot-zone .zone-emoji { font-size: 1.3rem; margin-bottom: 3px; }
+    .plot-zone .zone-size { font-size: 0.65rem; opacity: 0.85; font-weight: normal; margin-top: 2px; }
+    .compass-bottom { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; letter-spacing: 1px; }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .month-block {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0;
+      position: relative;
+    }
+    .month-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .month-dot {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 2;
+    }
+    .month-line {
+      width: 2px;
+      background: var(--border);
+      flex: 1;
+      margin-top: 4px;
+    }
+    .month-block:last-child .month-line { display: none; }
+
+    .month-content {
+      padding: 14px 0 24px 16px;
+      border-left: none;
+    }
+    .month-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .task {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .task-type {
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .type-sow      { background: #d8f3dc; color: #1b4332; }
+    .type-indoor   { background: #fff3cd; color: #664d03; }
+    .type-transplant { background: #fde8d8; color: #7d2d00; }
+    .type-harvest  { background: #ffe0f0; color: #6b0040; }
+    .type-maintain { background: #e8eaf6; color: #283593; }
+    .type-buy      { background: #fce4ec; color: #880e4f; }
+
+    .task-text { line-height: 1.45; color: var(--text); }
+    .task-note { font-size: 0.78rem; color: var(--text-muted); display: block; margin-top: 2px; }
+
+    /* ── ADDS / STARTS ── */
+    .starts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .start-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .start-card .priority {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .priority-high { color: #c0392b; }
+    .priority-med  { color: #e67e22; }
+    .priority-low  { color: #27ae60; }
+    .start-card h4 { font-size: 1rem; color: var(--green-dark); margin-bottom: 4px; }
+    .start-card p  { font-size: 0.83rem; color: var(--text-muted); }
+    .start-card .when {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      font-weight: bold;
+      color: var(--soil);
+      background: var(--cream);
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    /* ── QUICK REF TABLE ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .ref-table th {
+      background: var(--green-dark);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: normal;
+      letter-spacing: 0.5px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+    .ref-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table tr:hover td { background: var(--green-pale); }
+    .ref-table .plant-name { font-weight: bold; color: var(--green-dark); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .month-block { grid-template-columns: 70px 1fr; }
+      .seed-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🌱 Seattle Garden 2026</h1>
+  <p class="subtitle">10 × 10 foot plot &nbsp;·&nbsp; Zone 8b &nbsp;·&nbsp; Spring through Fall</p>
+  <div class="badges">
+    <span class="badge">🌧 Seattle, WA</span>
+    <span class="badge">📐 100 sq ft</span>
+    <span class="badge">🌿 6 Seed Varieties</span>
+    <span class="badge">☀️ Full Season Plan</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SEEDS -->
+  <section>
+    <h2>🪴 Your Seed Inventory</h2>
+    <div class="seed-grid">
+
+      <div class="seed-card">
+        <span class="emoji">🌿</span>
+        <div class="organic-badge">Organic</div>
+        <div class="name">Dark Green Italian Plain</div>
+        <div class="type">Flat-Leaf Parsley</div>
+        <div class="meta">2 grams · 1 packet</div>
+        <span class="season-tag cool">Cool Season</span>
+      </div>
+
+      <div class="seed-card">
+        <span class="emoji">🌱</span>
+        <div class="name">French Breakfast</div>
+        <div class="type">Radish</div>
+        <div class="meta">3 grams · 1 packet · ~150 seeds</div>
+        <span class="season-tag cool">Cool Season</span>
+      </div>
+
+      <div class="seed-card">
+        <span class="emoji">🥬</span>
+        <div class="organic-badge">Organic</div>
+        <div class="name">Nero di Toscana</div>
+        <div class="type">Dinosaur / Lacinato Kale</div>
+        <div class="meta">1 gram · 1 packet</div>
+        <span class="season-tag cool">Cool Season</span>
+      </div>
+
+      <div class="seed-card">
+        <span class="emoji">🌾</span>
+        <div class="name">Provençal Winter Mix</div>
+        <div class="type">Salad / Herb Mix</div>
+        <div class="meta">4 grams · 2 packets</div>
+        <span class="season-tag cool">Cool Season</span>
+      </div>
+
+      <div class="seed-card">
+        <span class="emoji">🥒</span>
+        <div class="name">Dragon Suhyo Cross</div>
+        <div class="type">Asian Cucumber</div>
+        <div class="meta">1 gram · 1 packet</div>
+        <span class="season-tag warm">Warm Season</span>
+      </div>
+
+      <div class="seed-card">
+        <span class="emoji">🫛</span>
+        <div class="organic-badge">Organic</div>
+        <div class="name">Cascadia</div>
+        <div class="type">Snap Pea</div>
+        <div class="meta">1 ounce · 1 packet</div>
+        <span class="season-tag cool">Cool Season</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GARDEN MAP -->
+  <section>
+    <h2>📐 Plot Layout</h2>
+    <div class="garden-map">
+      <div class="compass">↑ NORTH (shade-tolerant crops here)</div>
+      <div class="plot">
+        <div class="plot-row">
+          <div class="plot-zone zone-peas" style="flex:1">
+            <div class="zone-emoji">🫛</div>
+            Cascadia Snap Peas + Trellis
+            <div class="zone-size">2' deep × 10' wide</div>
+          </div>
+        </div>
+        <div class="plot-row">
+          <div class="plot-zone zone-cucumber" style="flex:1">
+            <div class="zone-emoji">🥒</div>
+            Cucumber
+            <div class="zone-size">4' × 3'</div>
+          </div>
+          <div class="plot-zone zone-kale" style="flex:1">
+            <div class="zone-emoji">🥬</div>
+            Nero di Toscana Kale
+            <div class="zone-size">6' × 3'</div>
+          </div>
+        </div>
+        <div class="plot-row">
+          <div class="plot-zone zone-mix" style="flex:1">
+            <div class="zone-emoji">🌾</div>
+            Provençal Winter Mix
+            <div class="zone-size">10' × 2' broadcast strip</div>
+          </div>
+        </div>
+        <div class="plot-row">
+          <div class="plot-zone zone-radish" style="flex:1">
+            <div class="zone-emoji">🌱</div>
+            French Breakfast Radishes
+            <div class="zone-size">5' × 1.5'</div>
+          </div>
+          <div class="plot-zone zone-parsley" style="flex:1">
+            <div class="zone-emoji">🌿</div>
+            Parsley
+            <div class="zone-size">5' × 1.5'</div>
+          </div>
+        </div>
+      </div>
+      <div class="compass-bottom">↓ SOUTH (most sun — put herbs and fast crops here)</div>
+    </div>
+  </section>
+
+  <!-- PLANTING TIMELINE -->
+  <section>
+    <h2>📅 Month-by-Month Schedule</h2>
+    <div class="timeline">
+
+      <!-- MARCH -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--march)">MAR</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">March — Plant Everything Cool</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-sow">Direct Sow</span>
+              <div class="task-text">
+                Cascadia snap peas — 1" deep, 2" apart, north edge with trellis
+                <span class="task-note">Perfect timing. They love cold soil.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Direct Sow</span>
+              <div class="task-text">
+                French Breakfast radishes — ½" deep, 1" apart (thin to 2")
+                <span class="task-note">Sow ⅓ of packet. Keep the rest for succession.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Direct Sow</span>
+              <div class="task-text">
+                Nero di Toscana kale — ¼" deep, 6" apart
+                <span class="task-note">Sow whole packet — small amount, spotty germination.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Direct Sow</span>
+              <div class="task-text">
+                Provençal Winter Mix (packet 1) — broadcast over 2' strip, rake lightly
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Direct Sow</span>
+              <div class="task-text">
+                Parsley — ¼" deep, sow entire packet
+                <span class="task-note">Takes 2–4 weeks to germinate. Be patient.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-indoor">Start Indoors</span>
+              <div class="task-text">
+                Dragon Suhyo cucumber — small pot, warm spot (70°F+ ideal)
+                <span class="task-note">Will stay inside until mid-May.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APRIL -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--april)">APR</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">April — Succession Sowing + First Thinning</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-sow">Succession Sow</span>
+              <div class="task-text">
+                Radishes — row 2 (April 1)
+                <span class="task-note">Every 2 weeks keeps a continuous harvest going.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Maintain</span>
+              <div class="task-text">
+                Check pea germination — resow any bare gaps
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Thin</span>
+              <div class="task-text">
+                Thin kale to 12" spacing once seedlings hit 2" tall (around Apr 7)
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Succession Sow</span>
+              <div class="task-text">
+                Provençal Winter Mix (packet 2) — April 15
+                <span class="task-note">Stagger sowing for continuous salad harvest.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Succession Sow</span>
+              <div class="task-text">
+                Radishes — row 3 (April 15)
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-indoor">Monitor Indoors</span>
+              <div class="task-text">
+                Cucumber seedlings should be 2–3" — pot up if root-bound (April 15)
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-buy">Buy Starts</span>
+              <div class="task-text">
+                Pick up chives + lemon thyme — Urban Earth Nursery (Fremont) or Sky Nursery
+                <span class="task-note">Both are perennials — plant once, harvest for years. Get them in April while selection is good.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAY -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--may)">MAY</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">May — Transition to Warm Season</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-maintain">Harden Off</span>
+              <div class="task-text">
+                Cucumber seedlings — leave outside during the day starting May 1
+                <span class="task-note">Acclimate over 7–10 days before transplanting.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Last Succession Sow</span>
+              <div class="task-text">
+                Radishes — final sowing (May 10)
+                <span class="task-note">After this it gets too warm and they bolt.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-transplant">Transplant</span>
+              <div class="task-text">
+                Cucumber outdoors — May 15 (last frost risk cleared)
+                <span class="task-note">Set up trellis or stake at same time.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Thin</span>
+              <div class="task-text">
+                Parsley should be established — thin to 6–8" spacing
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-buy">Buy Starts</span>
+              <div class="task-text">
+                🍅 Tomatoes (1–2 plants) — <strong>Abundant Greens Urban Farm, 2843 NW 57th St, Ballard</strong>
+                <span class="task-note">Go early May — 100+ varieties, sells out fast. Best picks: Stupice (55–65 days), Siletz (52 days, PNW-bred), or Sungold cherry (57 days). All $4.50. Honor-system self-serve.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-buy">Buy Starts</span>
+              <div class="task-text">
+                🌿 Basil (Genovese) + 🫑 Shishito pepper — Urban Earth Nursery (Fremont) or Abundant Greens
+                <span class="task-note">Don't buy basil or transplant anything warm-season before May 15 — cold stunts them.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-transplant">Transplant</span>
+              <div class="task-text">
+                Tomato starts outdoors (May 15) — cage or stake immediately
+                <span class="task-note">Under 70 days to maturity only. Seattle's summer is short — every day counts.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-transplant">Transplant</span>
+              <div class="task-text">
+                Basil + shishito pepper outdoors (May 15+)
+                <span class="task-note">Basil sulks below 50°F. Wait until nights are reliably warm.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JUNE -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--june)">JUN</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">June — First Major Harvests</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Snap peas hitting peak — pick daily once pods fill
+                <span class="task-note">Don't let them overfill or the vine stops producing.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Maintain</span>
+              <div class="task-text">
+                Pull spent radishes — amend soil, consider succession or give space to tomato
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Monitor</span>
+              <div class="task-text">
+                Peas starting to wind down mid-June (they hate summer heat)
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Cucumber flowering — watch for first small fruits
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Provençal mix — cut-and-come-again, harvest outer leaves regularly
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JULY -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--july)">JUL</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">July — Peak Summer</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Cucumber main window — pick often to keep producing
+                <span class="task-note">Dragon Suhyo: harvest at 8–10". Lets smaller ones size up.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Pull</span>
+              <div class="task-text">
+                Pea vines once fully done — pull and compost
+                <span class="task-note">Freed space: plant a late zucchini start if desired.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Shishito peppers — pick when 3–4" long, before they redden
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Monitor</span>
+              <div class="task-text">
+                Tomatoes — remove suckers, tie to stake, watch for blight
+                <span class="task-note">Seattle summers are short. Every day of growth counts.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Kale — outer leaves. Kale keeps going all summer.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUGUST -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--aug)">AUG</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">August — Tomato Season</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Tomatoes ripening — check daily, harvest as they color up
+                <span class="task-note">Seattle's warmest month. Enjoy it.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Kale flavor peaks after summer heat stress — harvest freely
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Maintain</span>
+              <div class="task-text">
+                Water consistently — August is driest month in Seattle
+                <span class="task-note">Deep watering 2–3x/week better than daily shallow watering.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Plan</span>
+              <div class="task-text">
+                Start thinking about fall crops — order seeds or check nurseries
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEPTEMBER -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--sep)">SEP</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">September — Wind Down + Fall Prep</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Green tomatoes — bring inside to ripen if frost threatens
+                <span class="task-note">First frost in Seattle typically late October, but nights cool fast.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Pull</span>
+              <div class="task-text">
+                Cucumber vines winding down — pull once production stops
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-sow">Direct Sow</span>
+              <div class="task-text">
+                Fall greens if desired — spinach, arugula, more kale survive Seattle winters
+                <span class="task-note">Plant by Sept 15 to establish before days get too short.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Kale — still going. Kale survives Seattle winters just fine.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OCTOBER -->
+      <div class="month-block">
+        <div class="month-label">
+          <div class="month-dot" style="background: var(--oct)">OCT</div>
+          <div class="month-line"></div>
+        </div>
+        <div class="month-content">
+          <div class="month-title">October — Close Out + Kale Forever</div>
+          <div class="tasks">
+            <div class="task">
+              <span class="task-type type-maintain">Clean Up</span>
+              <div class="task-text">
+                Pull finished annuals — tomato, pepper, cucumber, basil
+                <span class="task-note">Compost healthy plants. Bag anything with blight/disease.</span>
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Amend Soil</span>
+              <div class="task-text">
+                Top-dress bed with 2–3" compost — leave it to break down over winter
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-harvest">Harvest</span>
+              <div class="task-text">
+                Kale — still producing. Frost actually sweetens the leaves.
+              </div>
+            </div>
+            <div class="task">
+              <span class="task-type type-maintain">Perennials</span>
+              <div class="task-text">
+                Cut back chives. Lemon thyme stays — hardy through Seattle winters.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NURSERIES -->
+  <section>
+    <h2>🏡 Local Nurseries (Ballard / Fremont)</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; margin-bottom: 0;">
+
+      <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:1.4rem; margin-bottom:6px;">🌿</div>
+        <div style="font-weight:bold; font-size:1rem; color:var(--green-dark); margin-bottom:4px;">Abundant Greens Urban Farm</div>
+        <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">2843 NW 57th St, Seattle (Ballard)<br>2 blocks north of the Ballard Locks</div>
+        <div style="font-size:0.83rem; line-height:1.5; color:var(--text);">
+          <strong>The one.</strong> 100+ heirloom tomato varieties — likely the best selection in Seattle. Self-serve, honor-system payment. Tomatoes, peppers, cukes, herbs, greens.<br><br>
+          <strong>Tomatoes $4.50 · All other starts $4.00</strong><br><br>
+          Season runs <strong>late April – September</strong>. Big tomato sale kicks off early May.
+        </div>
+        <div style="margin-top:12px; font-size:0.75rem; background:var(--green-pale); color:var(--green-dark); padding:5px 10px; border-radius:8px; font-weight:bold;">
+          ⭐ GO HERE FIRST for tomatoes + peppers
+        </div>
+      </div>
+
+      <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:1.4rem; margin-bottom:6px;">🪴</div>
+        <div style="font-weight:bold; font-size:1rem; color:var(--green-dark); margin-bottom:4px;">Urban Earth Nursery</div>
+        <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">Fremont neighborhood, Seattle<br>urbanearthnursery.com</div>
+        <div style="font-size:0.83rem; line-height:1.5; color:var(--text);">
+          The only indoor-outdoor nursery in Fremont. Edible starts, herbs, perennials, seeds. Rotating stock of unusual varieties. Also sells online if you want to browse before visiting.
+        </div>
+        <div style="margin-top:12px; font-size:0.75rem; background:#e8f4f8; color:#1a6080; padding:5px 10px; border-radius:8px; font-weight:bold;">
+          Great for herbs, perennials + unusual finds
+        </div>
+      </div>
+
+      <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:1.4rem; margin-bottom:6px;">🌲</div>
+        <div style="font-weight:bold; font-size:1rem; color:var(--green-dark); margin-bottom:4px;">Sky Nursery</div>
+        <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">North Seattle / Shoreline<br>skynursery.com</div>
+        <div style="font-size:0.83rem; line-height:1.5; color:var(--text);">
+          Large full-service nursery, 15 min north. Best backup for common starts (tomatoes, basil, peppers) if Abundant Greens runs out. Wide selection, reliable stock.
+        </div>
+        <div style="margin-top:12px; font-size:0.75rem; background:#fff3cd; color:#664d03; padding:5px 10px; border-radius:8px; font-weight:bold;">
+          Good backup / one-stop-shop option
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RECOMMENDED STARTS -->
+  <section>
+    <h2>🛒 Recommended Starts to Buy</h2>
+
+    <div style="background:#f0f7f4; border:1px solid #b7d9c8; border-radius:12px; padding:16px 20px; margin-bottom:20px; font-size:0.87rem; line-height:1.6;">
+      <strong>🗓 Buy Schedule Summary:</strong> &nbsp;
+      <strong>April</strong> → chives, lemon thyme (Urban Earth or Sky) &nbsp;|&nbsp;
+      <strong>Early May</strong> → Abundant Greens tomato sale — go early, best varieties sell out fast &nbsp;|&nbsp;
+      <strong>May 15+</strong> → transplant everything warm-season outdoors
+    </div>
+
+    <div class="starts-grid">
+
+      <div class="start-card">
+        <div class="priority priority-high">★ Top Priority</div>
+        <h4>🍅 Tomato (1–2 plants)</h4>
+        <p>
+          <strong>Best for Seattle (early, under 70 days):</strong><br>
+          · <strong>Stupice</strong> — Czech heirloom, 55–65 days, sweet, very reliable in PNW cool summers. Most commonly available.<br>
+          · <strong>Siletz</strong> — bred for the PNW, 52 days, sets fruit even in cool/cloudy weather. Easy to find.<br>
+          · <strong>Sungold</strong> (cherry) — 57 days, incredibly sweet orange cherry. Widely available and incredibly productive.<br>
+          · <strong>Black Krim</strong> — 69 days, rich/smoky flavor, available at Abundant Greens.<br><br>
+          <em>Avoid anything 80+ days — not enough summer heat in Seattle.</em>
+        </p>
+        <span class="when">📍 Abundant Greens, early May · $4.50/plant</span>
+      </div>
+
+      <div class="start-card">
+        <div class="priority priority-high">★ Top Priority</div>
+        <h4>🌿 Basil</h4>
+        <p>
+          <strong>Best varieties:</strong><br>
+          · <strong>Genovese</strong> — the classic, widely available everywhere, big flavorful leaves.<br>
+          · <strong>Italian Large Leaf</strong> — same family, easy to find at any nursery.<br><br>
+          Plant near tomatoes (companion). Hard to grow from seed without steady heat. Cheap start, big payoff.
+        </p>
+        <span class="when">📍 Urban Earth (Fremont) or Sky Nursery · mid-May</span>
+      </div>
+
+      <div class="start-card">
+        <div class="priority priority-med">◆ High Value</div>
+        <h4>🫑 Shishito Pepper</h4>
+        <p>
+          <strong>Variety:</strong> Just labeled "Shishito" — it's a single variety, you won't see sub-varieties at most nurseries.<br><br>
+          Easy, prolific, delicious blistered in a pan with flaky salt. One plant produces all season long in Seattle.
+        </p>
+        <span class="when">📍 Abundant Greens or Urban Earth · mid-May · $4.50</span>
+      </div>
+
+      <div class="start-card">
+        <div class="priority priority-med">◆ High Value</div>
+        <h4>🌱 Lemon Thyme</h4>
+        <p>
+          <strong>Look for:</strong> <em>Thymus citriodorus</em> — sold simply as "Lemon Thyme" at most herb sections.<br><br>
+          Perennial — plant once, harvest forever. Hardy through Seattle winters. Small footprint, huge culinary payoff.
+        </p>
+        <span class="when">📍 Urban Earth Nursery, Fremont · April</span>
+      </div>
+
+      <div class="start-card">
+        <div class="priority priority-med">◆ High Value</div>
+        <h4>🌾 Chives</h4>
+        <p>
+          <strong>Common variety:</strong> Standard chives (<em>Allium schoenoprasum</em>) — available at every nursery in spring.<br><br>
+          Perennial, zero maintenance, comes back every year. Use constantly. Gets pretty purple flowers too.
+        </p>
+        <span class="when">📍 Urban Earth Nursery or Sky · April</span>
+      </div>
+
+      <div class="start-card">
+        <div class="priority priority-low">· Optional</div>
+        <h4>🌸 Nasturtiums</h4>
+        <p>
+          <strong>Look for:</strong> <em>Tropaeolum majus</em> — "Jewel Mix" or "Alaska" (variegated leaf) are common and attractive.<br><br>
+          Edible flowers + leaves, attract pollinators for your cucumber, and they're beautiful. Can direct sow from seed or buy a start.
+        </p>
+        <span class="when">📍 Any nursery · direct sow or start · April</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUICK REFERENCE -->
+  <section>
+    <h2>📋 Quick Reference — All Plants</h2>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Plant</th>
+          <th>Sow / Transplant</th>
+          <th>Spacing</th>
+          <th>Days to Harvest</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="plant-name">🫛 Cascadia Snap Pea</td>
+          <td>Direct sow Mar 19</td>
+          <td>2" apart, 6" rows</td>
+          <td>60–70 days</td>
+          <td>Needs trellis. Done by July.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🌱 French Breakfast Radish</td>
+          <td>Mar 19, Apr 1, Apr 15, May 10</td>
+          <td>Thin to 2"</td>
+          <td>25–30 days</td>
+          <td>Succession sow every 2 weeks.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🥬 Nero di Toscana Kale</td>
+          <td>Direct sow Mar 19</td>
+          <td>12–18" final</td>
+          <td>60–80 days</td>
+          <td>Stays all season. Sweetens with frost.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🌾 Provençal Winter Mix</td>
+          <td>Mar 19, Apr 15</td>
+          <td>Broadcast</td>
+          <td>30–45 days</td>
+          <td>Cut-and-come-again. Two successive sowings.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🌿 Parsley</td>
+          <td>Direct sow Mar 19</td>
+          <td>6–8" final</td>
+          <td>70–90 days</td>
+          <td>Slow germinator. Sow all of it.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🥒 Dragon Suhyo Cucumber</td>
+          <td>Indoors Mar 19 → transplant May 15</td>
+          <td>12–18"</td>
+          <td>55–65 days from transplant</td>
+          <td>Needs trellis. Pick at 8–10".</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🍅 Tomato (buy start)</td>
+          <td>Buy + transplant May 15</td>
+          <td>24–36"</td>
+          <td>55–75 days</td>
+          <td>Stupice, Siletz, or Sungold. Early varieties only.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🌿 Basil (buy start)</td>
+          <td>Buy + transplant May 15</td>
+          <td>10–12"</td>
+          <td>25–30 days</td>
+          <td>Plant near tomato. Frost-sensitive.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🫑 Shishito Pepper (buy start)</td>
+          <td>Buy + transplant May 15</td>
+          <td>18"</td>
+          <td>60–80 days</td>
+          <td>Harvest at 3–4" green.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🌱 Chives (perennial)</td>
+          <td>Buy + plant April</td>
+          <td>6–8" clump</td>
+          <td>30 days (then forever)</td>
+          <td>Cut to 2", regrows. Returns every year.</td>
+        </tr>
+        <tr>
+          <td class="plant-name">🌿 Lemon Thyme (perennial)</td>
+          <td>Buy + plant April</td>
+          <td>12–18"</td>
+          <td>Harvest anytime once established</td>
+          <td>Hardy perennial. Survives Seattle winters.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  Seattle Garden 2026 &nbsp;·&nbsp; Zone 8b &nbsp;·&nbsp; Generated March 2026
+</footer>
+
+</body>
+</html>

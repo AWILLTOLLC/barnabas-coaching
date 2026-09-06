@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Morse Command</title>
+<meta name="description" content="Privacy Policy for Morse Command iOS app and morsecommand.com. We collect no personal data.">
+<link rel="canonical" href="https://morsecommand.com/privacy.html">
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-NFxDEkgyg2K1aPmkmQCcI.js"></script>
+<script>
+ window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+ plausible.init()
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg-deep: #060B18;
+  --bg-card: #111827;
+  --green-primary: #4ADE80;
+  --green-glow: #22C55E;
+  --cyan-primary: #22D3EE;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border-subtle: rgba(148, 163, 184, 0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* NAV */
+nav {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+nav .container { display: flex; align-items: center; justify-content: space-between; }
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800; font-size: 1.1rem;
+  background: linear-gradient(135deg, #4ADE80, #22D3EE);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 2px; text-decoration: none;
+}
+.nav-back {
+  font-size: 0.85rem; color: var(--text-muted);
+  text-decoration: none; transition: color 0.3s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-back:hover { color: var(--green-primary); }
+
+/* CONTENT */
+.page-header {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.page-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--cyan-primary); text-transform: uppercase;
+  letter-spacing: 3px; margin-bottom: 16px;
+}
+.page-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800; margin-bottom: 16px;
+}
+.page-meta {
+  font-size: 0.85rem; color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.content { padding: 48px 0 80px; }
+
+.section-block {
+  margin-bottom: 48px;
+  padding: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+}
+.section-block h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--green-primary);
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.section-block p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.section-block p:last-child { margin-bottom: 0; }
+.section-block ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.section-block ul li {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  padding: 6px 0 6px 20px;
+  position: relative;
+}
+.section-block ul li::before {
+  content: '·';
+  position: absolute; left: 0;
+  color: var(--green-primary);
+  font-weight: 700;
+}
+
+.highlight-box {
+  background: rgba(74, 222, 128, 0.05);
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+.highlight-box p {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+  margin-bottom: 0 !important;
+}
+.highlight-box p strong {
+  color: var(--green-primary);
+}
+
+a { color: var(--green-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* FOOTER */
+footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.footer-content {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800; font-size: 0.9rem;
+  color: var(--text-muted); letter-spacing: 2px;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: var(--text-muted); font-size: 0.82rem; text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--green-primary); }
+.footer-copy { width: 100%; text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="nav-logo">MORSE COMMAND</a>
+    <a href="/" class="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+
+    <div class="page-header">
+      <div class="page-label">// Legal</div>
+      <h1 class="page-title">Privacy Policy</h1>
+      <p class="page-meta">Last updated: March 11, 2026</p>
+    </div>
+
+    <div class="content">
+
+      <div class="section-block">
+        <h2>Overview</h2>
+        <div class="highlight-box">
+          <p><strong>Short version:</strong> Morse Command does not collect, store, or share your personal information. The iOS app collects no data whatsoever. The website collects only standard server logs.</p>
+        </div>
+        <p>This Privacy Policy describes how AWILLTO ("we," "us," or "our") handles information in connection with the Morse Command iOS application and the morsecommand.com website.</p>
+        <p>We believe in privacy by default. We've built our product with that principle in mind — not as an afterthought.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>The iOS App</h2>
+        <p>The Morse Command iOS application collects <strong>no personal data</strong> of any kind.</p>
+        <ul>
+          <li>No account creation or sign-in required</li>
+          <li>No analytics or usage tracking</li>
+          <li>No advertising SDKs or third-party trackers</li>
+          <li>No crash reporting services that transmit data externally</li>
+          <li>No access to your contacts, camera, microphone, or location</li>
+          <li>No data is transmitted from your device to our servers</li>
+        </ul>
+        <p>All game data (progress, settings, scores) is stored locally on your device and never leaves it.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>This Website</h2>
+        <p>The morsecommand.com website is a static informational page. When you visit it, our web server automatically records standard server logs, which may include:</p>
+        <ul>
+          <li>Your IP address</li>
+          <li>The date and time of your request</li>
+          <li>The page or resource you requested</li>
+          <li>Your browser type and operating system</li>
+          <li>The referring page (if you clicked a link to reach us)</li>
+        </ul>
+        <p>These logs are collected automatically by our server (Caddy) for operational purposes only — to monitor uptime, diagnose technical issues, and protect against abuse. We do not use them to identify individuals or track behavior across sessions.</p>
+        <p>Server logs are retained only as long as operationally necessary and are not shared with third parties.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>Third-Party Services</h2>
+        <p>This website loads fonts from Google Fonts. When your browser requests these fonts, Google's servers may log your IP address per their standard practices. You can review Google's privacy policy at <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
+        <p>The iOS app uses no third-party services or SDKs that collect data.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>Cookies & Tracking</h2>
+        <p>We do not use cookies, web beacons, pixels, or any other tracking technologies on this website. No analytics services (Google Analytics, Mixpanel, etc.) are installed. No advertising networks have access to your visit.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>Children's Privacy</h2>
+        <p>Morse Command is suitable for all ages, including children. Because we collect no personal data, there is no special risk to children's privacy. We do not knowingly collect information from anyone, regardless of age.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>Your Rights</h2>
+        <p>Since we don't collect personal data, there is nothing to access, correct, export, or delete. If you have questions about your privacy, you're welcome to contact us — but there is genuinely no data on file about you.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>Changes to This Policy</h2>
+        <p>If we ever change our data practices, we will update this page and revise the "Last updated" date above. We will not retroactively change practices in ways that reduce your privacy without prominent notice.</p>
+      </div>
+
+      <div class="section-block">
+        <h2>Contact</h2>
+        <p>Questions about this privacy policy? Reach us at:</p>
+        <p>
+          <strong>AWILLTO</strong><br>
+          <a href="mailto:support@morsecommand.com">support@morsecommand.com</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-logo">MORSE COMMAND</div>
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/">Home</a>
+      </div>
+    </div>
+    <div class="footer-copy">&copy; 2026 Morse Command. All rights reserved. Published by AWILLTO.</div>
+  </div>
+</footer>
+
+</body>
+</html>
