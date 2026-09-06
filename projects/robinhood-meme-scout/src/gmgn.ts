@@ -94,6 +94,7 @@ export interface TokenStats {
   price: number;
   change_6h_pct: number;
   change_24h_pct: number;
+  liquidity_usd: number | null;
 }
 
 // `gmgn-cli token info` payload: price fields are strings under .price
@@ -103,10 +104,12 @@ export function parseTokenStats(payload: unknown): TokenStats | null {
   const price6h = Number(p?.price_6h);
   const price24h = Number(p?.price_24h);
   if (!isFinite(price) || !isFinite(price6h) || price6h <= 0 || !isFinite(price24h) || price24h <= 0) return null;
+  const liquidity = Number((payload as any)?.liquidity);
   return {
     price,
     change_6h_pct: ((price - price6h) / price6h) * 100,
     change_24h_pct: ((price - price24h) / price24h) * 100,
+    liquidity_usd: isFinite(liquidity) ? liquidity : null,
   };
 }
 

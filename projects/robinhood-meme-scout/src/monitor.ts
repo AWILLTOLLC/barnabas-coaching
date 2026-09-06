@@ -6,6 +6,9 @@ import { evaluate } from './filters.js';
 import { generateThesis } from './thesis.js';
 import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } from './alerts.js';
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
+import { openDb, recordCoin, hasCoin, markAlerted } from './db.js';
+import { captureDueOutcomes } from './outcomes.js';
+import type { DatabaseSync } from 'node:sqlite';
 
 export interface ScanResult {
   scanned: number;
@@ -31,6 +34,7 @@ export class Monitor {
   private thesis: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   private criteria: Criteria;
   private known: Set<string>;
+  readonly db: DatabaseSync;
   private stats: { scanned: number; passed_gates: number; alerted: string[]; best: { ticker: string; score: number } | null; since: Date };
 
   constructor(opts: MonitorOptions) {
@@ -42,6 +46,7 @@ export class Monitor {
     this.criteria = opts.criteria ?? loadCriteria();
     this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria));
     this.known = this.loadKnown();
+    this.db = openDb(path.join(this.dataDir, 'scout.db'));
     this.stats = this.freshStats();
   }
 
@@ -51,10 +56,17 @@ export class Monitor {
 
     for (let c of coins) {
       if (this.known.has(c.address)) continue;
+      const firstSeen = !hasCoin(this.db, c.address);
       let ev = evaluate(c, this.criteria);
-      if (!ev.passed) continue;
-      result.passed_gates++;
-      logEvent({ event: 'evaluated', ticker: c.ticker, address: c.address, score: ev.score, flags: ev.flags });
+      let alerted = false;
+      if (!ev.passed) {
+        if (firstSeen) recordCoin(this.db, c, ev, false, Date.now());
+        continue;
+      }
+      if (firstSeen) {
+        result.passed_gates++;
+        logEvent({ event: 'evaluated', ticker: c.ticker, address: c.address, score: ev.score, flags: ev.flags });
+      }
 
       if (ev.score >= this.criteria.alert_score_threshold) {
         // finalists get a momentum check before alerting: list payloads
@@ -66,6 +78,7 @@ export class Monitor {
             ev = evaluate(c, this.criteria);
             if (!ev.passed || ev.score < this.criteria.alert_score_threshold) {
               logEvent({ event: 'momentum_reject', ticker: c.ticker, address: c.address, change_6h_pct: stats.change_6h_pct });
+              if (firstSeen) recordCoin(this.db, c, ev, false, Date.now());
               continue;
             }
           }
@@ -74,14 +87,20 @@ export class Monitor {
         const dm = await sendDM(formatAlert(c, ev, thesis), { dryRun: this.dryRun });
         logEvent({ event: 'alert', ticker: c.ticker, address: c.address, score: ev.score, success: dm.success, error: dm.error });
         if (dm.success) {
+          alerted = true;
           result.alerted.push(c.ticker);
           this.known.add(c.address);
           this.saveKnown();
+          if (!firstSeen) markAlerted(this.db, c.address, ev.score);
         }
       } else if (!result.best || ev.score > result.best.score) {
         result.best = { ticker: c.ticker, score: ev.score };
       }
+      if (firstSeen) recordCoin(this.db, c, ev, alerted, Date.now());
     }
+
+    // outcome tracking piggybacks on the poll loop, a few fetches per tick
+    await captureDueOutcomes(this.db, this.fetchStats, Date.now(), 5);
 
     this.stats.scanned += result.scanned;
     this.stats.passed_gates += result.passed_gates;
