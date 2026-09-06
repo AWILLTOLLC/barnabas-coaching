@@ -37,7 +37,7 @@ export function formatHeartbeat(s: HeartbeatStats): string {
     `💓 Scout alive — since ${s.since}: scanned ${s.scanned} coins, ${s.passed_gates} passed gates, ${s.alerted.length} alert${s.alerted.length === 1 ? '' : 's'}.`,
   ];
   if (s.alerted.length) lines.push(`Alerted: ${s.alerted.map(t => `$${t}`).join(', ')}`);
-  if (s.best && !s.alerted.length) lines.push(`Best non-alert: $${s.best.ticker} at ${s.best.score}/100`);
+  if (s.best) lines.push(`Best non-alert: $${s.best.ticker} at ${s.best.score}/100`);
   return lines.join('\n');
 }
 
