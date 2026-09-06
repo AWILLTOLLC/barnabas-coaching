@@ -1,0 +1,59 @@
+#!/bin/bash
+# x-eval-capture — send the frontmost browser tab's X post to your OpenClaw
+# agent for evaluation. Bind this to a hotkey (see install.sh output).
+# Env: X_EVAL_DRY_RUN=1 prints the command instead of running it.
+#      X_EVAL_AGENT=<id> selects the agent on multi-agent instances
+#      (otherwise: no --agent flag, falling back to --agent main if needed).
+set -uo pipefail
+
+notify() {
+  /usr/bin/osascript -e "display notification \"$1\" with title \"x-eval\"" >/dev/null 2>&1 || true
+}
+
+front_tab_url() {
+  /usr/bin/osascript <<'APPLESCRIPT' 2>/dev/null
+tell application "System Events" to set frontApp to name of first process whose frontmost is true
+if frontApp is "Safari" then
+  tell application "Safari" to return URL of current tab of front window
+else if frontApp is in {"Google Chrome", "Brave Browser", "Microsoft Edge", "Arc", "Vivaldi", "Chromium", "Dia"} then
+  tell application frontApp to return URL of active tab of front window
+else
+  return ""
+end if
+APPLESCRIPT
+}
+
+URL="$(front_tab_url)"
+
+if [[ -z "$URL" ]]; then
+  notify "Frontmost app isn't a supported browser"
+  echo "x-eval: frontmost app is not a supported browser" >&2
+  exit 1
+fi
+
+if [[ ! "$URL" =~ ^https?://([a-z0-9.-]+\.)?(x|twitter)\.com/[A-Za-z0-9_]+/status(es)?/[0-9]+([/?#]|$) ]]; then
+  notify "Current tab isn't an X post"
+  echo "x-eval: not an X status URL: $URL" >&2
+  exit 1
+fi
+
+# Strip tracking params; keep the canonical status URL.
+CLEAN="${URL%%\?*}"
+
+MSG="Evaluate this X post: $CLEAN"
+AGENT_ARGS=()
+[[ -n "${X_EVAL_AGENT:-}" ]] && AGENT_ARGS=(--agent "$X_EVAL_AGENT")
+
+if [[ "${X_EVAL_DRY_RUN:-0}" = "1" ]]; then
+  echo "openclaw agent ${AGENT_ARGS[*]:-} --deliver -m \"$MSG\""
+  exit 0
+fi
+
+if openclaw agent "${AGENT_ARGS[@]:+${AGENT_ARGS[@]}}" --deliver -m "$MSG" >/dev/null 2>&1 \
+  || { [[ -z "${X_EVAL_AGENT:-}" ]] && openclaw agent --agent main --deliver -m "$MSG" >/dev/null 2>&1; }; then
+  notify "Sent for evaluation ✓"
+else
+  notify "Failed to reach OpenClaw"
+  echo "x-eval: openclaw agent call failed" >&2
+  exit 1
+fi
