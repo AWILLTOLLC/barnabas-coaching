@@ -35,6 +35,22 @@ Then bind it to a hotkey in the Shortcuts app (the installer prints the
 On a phone no extra software is needed: X share sheet → your messaging app →
 your agent.
 
+### Remote gateway
+
+Capture works fine when your Gateway runs on another host — the CLI is just a
+client, and the agent turn executes wherever the Gateway lives. Point the CLI
+at it once:
+
+```bash
+openclaw config set gateway.remote.url wss://your-gateway-host:18789
+openclaw config set gateway.remote.token <token>
+```
+
+Reach the host however you already do (Tailscale, or an SSH tunnel:
+`ssh -N -L 18789:127.0.0.1:18789 user@gateway-host`). Use `config set`, not
+environment variables — the Shortcuts hotkey runs in a bare shell that
+doesn't load your dotfiles.
+
 ## How the evaluation works
 
 The skill fetches author, text, metrics, quote tweet, media and poll data,

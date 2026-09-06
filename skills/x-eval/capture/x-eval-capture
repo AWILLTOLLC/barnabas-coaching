@@ -6,6 +6,10 @@
 #      (otherwise: no --agent flag, falling back to --agent main if needed).
 set -uo pipefail
 
+# Shortcuts/Automator run a bare non-login shell: make sure the openclaw CLI
+# resolves from its common install locations.
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
 notify() {
   /usr/bin/osascript -e "display notification \"$1\" with title \"x-eval\"" >/dev/null 2>&1 || true
 }
