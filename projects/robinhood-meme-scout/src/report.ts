@@ -1,0 +1,130 @@
+import type { DatabaseSync } from 'node:sqlite';
+import type { Criteria } from './config.js';
+import { HORIZONS_H } from './db.js';
+
+export interface BandStat {
+  band: 'alerted' | 'near-miss' | 'passed-low' | 'rejected';
+  horizon_h: number;
+  n: number;
+  median_return_pct: number;
+  best_return_pct: number;
+  worst_return_pct: number;
+}
+
+export interface ReportStats {
+  last24h: { new_coins: number; passed_gates: number; alerts: number };
+  bands: BandStat[];
+  top_rejected: { ticker: string; return_pct: number; reason: string }[];
+  dead_outcomes: number;
+  total_coins: number;
+}
+
+const BAND_SQL: Record<BandStat['band'], string> = {
+  'alerted': 'c.alerted = 1',
+  'near-miss': 'c.alerted = 0 AND c.passed = 1 AND c.score >= 60',
+  'passed-low': 'c.alerted = 0 AND c.passed = 1 AND c.score < 60',
+  'rejected': 'c.passed = 0',
+};
+
+export function computeReport(db: DatabaseSync, now: number): ReportStats {
+  const dayAgo = now - 24 * 3_600_000;
+  const last24h = {
+    new_coins: count(db, 'SELECT COUNT(*) n FROM coins WHERE first_seen_ms >= ?', dayAgo),
+    passed_gates: count(db, 'SELECT COUNT(*) n FROM coins WHERE first_seen_ms >= ? AND passed = 1', dayAgo),
+    alerts: count(db, 'SELECT COUNT(*) n FROM coins WHERE alerted = 1'),
+  };
+
+  const bands: BandStat[] = [];
+  for (const band of Object.keys(BAND_SQL) as BandStat['band'][]) {
+    for (const h of HORIZONS_H) {
+      const rows = db.prepare(`
+        SELECT (o.price - c.price_at_eval) / c.price_at_eval * 100 AS ret
+        FROM outcomes o JOIN coins c ON c.address = o.address
+        WHERE o.status = 'captured' AND o.horizon_h = ? AND c.price_at_eval > 0 AND ${BAND_SQL[band]}
+        ORDER BY ret`).all(h) as unknown as { ret: number }[];
+      if (rows.length === 0) continue;
+      const rets = rows.map(r => r.ret);
+      bands.push({
+        band, horizon_h: h, n: rets.length,
+        median_return_pct: rets[Math.floor(rets.length / 2)],
+        best_return_pct: rets[rets.length - 1],
+        worst_return_pct: rets[0],
+      });
+    }
+  }
+
+  const top_rejected = (db.prepare(`
+    SELECT c.ticker, (o.price - c.price_at_eval) / c.price_at_eval * 100 AS ret, c.reasons
+    FROM outcomes o JOIN coins c ON c.address = o.address
+    WHERE o.status = 'captured' AND o.horizon_h = 24 AND c.passed = 0 AND c.price_at_eval > 0
+    ORDER BY ret DESC LIMIT 3`).all() as unknown as { ticker: string; ret: number; reasons: string }[])
+    .filter(r => r.ret > 0)
+    .map(r => ({ ticker: r.ticker, return_pct: r.ret, reason: (JSON.parse(r.reasons)[0] ?? 'unknown') as string }));
+
+  return {
+    last24h,
+    bands,
+    top_rejected,
+    dead_outcomes: count(db, `SELECT COUNT(*) n FROM outcomes WHERE status = 'dead'`),
+    total_coins: count(db, 'SELECT COUNT(*) n FROM coins'),
+  };
+}
+
+export function formatReport(r: ReportStats): string {
+  const lines = [
+    `📊 Daily scout report`,
+    `Last 24h: ${r.last24h.new_coins} new coins, ${r.last24h.passed_gates} passed gates. Lifetime: ${r.total_coins} tracked, ${r.last24h.alerts} alerts, ${r.dead_outcomes} dead snapshots.`,
+  ];
+  const order: BandStat['band'][] = ['alerted', 'near-miss', 'passed-low', 'rejected'];
+  for (const band of order) {
+    const rows = r.bands.filter(b => b.band === band);
+    if (!rows.length) continue;
+    const cells = rows.map(b => `${b.horizon_h}h: ${fmtPct(b.median_return_pct)} (n=${b.n}, ${fmtPct(b.worst_return_pct)}…${fmtPct(b.best_return_pct)})`);
+    lines.push(`${band}: ${cells.join(' | ')}`);
+  }
+  if (r.top_rejected.length) {
+    lines.push(`Rejects that ran (24h): ${r.top_rejected.map(t => `$${t.ticker} +${t.return_pct.toFixed(0)}% [${t.reason}]`).join(', ')}`);
+  }
+  return lines.join('\n');
+}
+
+/**
+ * Optional Ollama narrative on top of the stats. Fail-soft: null on any error.
+ * Framing rule: it interprets measurements and may suggest which criteria to
+ * REVIEW, but the human changes criteria.json — no trade advice, no auto-tune.
+ */
+export async function narrate(r: ReportStats, criteria: Criteria): Promise<string | null> {
+  const prompt = `You are reviewing the daily performance stats of a meme-coin alerting system. Its criteria: market cap bands ${JSON.stringify(criteria.market_cap_bands)}, age ${criteria.candle_age_hours.min}-${criteria.candle_age_hours.max}h, top10 holders <= ${criteria.max_top10_holder_rate * 100}%, alert threshold ${criteria.alert_score_threshold}.
+
+STATS (median/worst/best % returns if held from first-seen price to each horizon, by band):
+${JSON.stringify(r, null, 1)}
+
+In at most 50 words of plain text: state whether alerted coins are outperforming near-misses and rejects, and name the ONE criteria parameter most worth reviewing based on these numbers (say "sample too small" if any n < 10). No trade advice, no predictions, no invented numbers. Output the summary only.`;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), criteria.ollama.timeout_ms);
+  try {
+    const res = await fetch(`${criteria.ollama.url}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: criteria.ollama.model, prompt, stream: false, think: false, options: { temperature: 0.2, num_predict: 120 } }),
+      signal: controller.signal,
+    });
+    if (!res.ok) return null;
+    const body = await res.json() as { response?: string };
+    const text = body.response?.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    return text || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function count(db: DatabaseSync, sql: string, ...args: unknown[]): number {
+  return ((db.prepare(sql).get(...(args as any)) as any)?.n ?? 0) as number;
+}
+
+function fmtPct(n: number): string {
+  return `${n >= 0 ? '+' : ''}${n.toFixed(0)}%`;
+}
