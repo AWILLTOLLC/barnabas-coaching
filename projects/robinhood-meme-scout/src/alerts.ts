@@ -22,7 +22,7 @@ export function formatAlert(coin: Coin, ev: Evaluation, thesis?: string | null, 
   const lines = [
     `🚀 Robinhood Scout: $${coin.ticker} (${coin.name}) — ${ev.score}/100`,
     `MC $${m(coin.market_cap)} | Vol $${m(coin.volume_24h)} | Liq $${m(coin.liquidity_usd)} | Age ${ageH}h`,
-    `Holders ${coin.holder_count}${coin.top10_rate !== null ? ` (top10 ${(coin.top10_rate * 100).toFixed(0)}%)` : ''}`,
+    `Holders ${coin.holder_count}${coin.top10_rate !== null ? ` (top 10: ${(coin.top10_rate * 100).toFixed(0)}%)` : ''}`,
     `Score: ${ev.reasons.join(', ')}`,
   ];
   if (regime) lines.push(`Chain regime: ${regime}`);

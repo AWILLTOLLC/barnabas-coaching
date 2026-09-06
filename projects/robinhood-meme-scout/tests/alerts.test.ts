@@ -22,6 +22,8 @@ test('formatAlert includes essentials', () => {
   assert.ok(msg.includes('0xdeadbeef'));
   assert.ok(msg.includes('gmgn.ai'));
   assert.ok(msg.includes('8.0M'));
+  // "top10 7%" reads as "top 10.7%" — label must be unambiguous
+  assert.ok(msg.includes('top 10: 15%'));
 });
 
 test('formatHeartbeat includes counts', () => {
