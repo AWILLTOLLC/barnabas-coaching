@@ -8,6 +8,7 @@ import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } f
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
 import { openDb, recordCoin, hasCoin, markAlerted } from './db.js';
 import { captureDueOutcomes } from './outcomes.js';
+import { computeReport, formatReport, narrate } from './report.js';
 import type { DatabaseSync } from 'node:sqlite';
 
 export interface ScanResult {
@@ -118,6 +119,7 @@ export class Monitor {
         const r = await this.scanOnce();
         console.log(`[${new Date().toISOString()}] scanned ${r.scanned}, gates ${r.passed_gates}, alerts ${r.alerted.length}${r.best ? `, best $${r.best.ticker}@${r.best.score}` : ''}`);
         await this.maybeHeartbeat();
+        await this.maybeDailyReport();
         await sleep(this.criteria.poll_interval_seconds * 1000);
       } catch (err) {
         console.error('scan error:', err);
@@ -144,6 +146,23 @@ export class Monitor {
       saveHeartbeatState(stateFile, { date, slot });
       this.stats = this.freshStats();
     }
+  }
+
+  private async maybeDailyReport(): Promise<void> {
+    const stateFile = path.join(this.dataDir, 'report-state.json');
+    const slot = dueSlot(new Date(), loadHeartbeatState(stateFile), [this.criteria.report_hour_pt]);
+    if (slot === null) return;
+    await this.sendDailyReport(false);
+    const { date } = laDate();
+    saveHeartbeatState(stateFile, { date, slot });
+  }
+
+  async sendDailyReport(dryRun: boolean): Promise<void> {
+    const stats = computeReport(this.db, Date.now());
+    const narrative = await narrate(stats, this.criteria);
+    const msg = formatReport(stats) + (narrative ? `\n🧠 ${narrative}` : '');
+    const dm = await sendDM(msg, { dryRun: dryRun || this.dryRun });
+    logEvent({ event: 'daily_report', success: dm.success, error: dm.error });
   }
 
   private freshStats() {

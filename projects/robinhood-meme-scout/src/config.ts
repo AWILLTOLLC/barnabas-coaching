@@ -17,6 +17,7 @@ export interface Criteria {
   alert_score_threshold: number;
   poll_interval_seconds: number;
   heartbeat_hours_pt: number[];
+  report_hour_pt: number;
   chain_context: string;
   ollama: { url: string; model: string; timeout_ms: number };
 }

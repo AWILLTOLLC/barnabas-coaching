@@ -25,6 +25,10 @@ async function main() {
       await new Monitor({ dryRun }).run();
       break;
     }
+    case 'report': {
+      await new Monitor({ dryRun }).sendDailyReport(dryRun);
+      break;
+    }
     case 'heartbeat-test': {
       const msg = formatHeartbeat({ scanned: 0, passed_gates: 0, alerted: [], best: null, since: 'startup (test)' });
       const res = await sendDM(`${msg}\n(test heartbeat)`, { dryRun });
@@ -33,7 +37,7 @@ async function main() {
       break;
     }
     default:
-      console.log('Usage: tsx src/cli.ts <scan|monitor|heartbeat-test> [--dry-run]');
+      console.log('Usage: tsx src/cli.ts <scan|monitor|report|heartbeat-test> [--dry-run]');
   }
 }
 
