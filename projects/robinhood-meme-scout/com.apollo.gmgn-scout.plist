@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.apollo.gmgn-scout</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/tsx</string>
+    <string>/Users/apollo/.openclaw/workspace/projects/robinhood-meme-scout/src/cli.ts</string>
+    <string>monitor</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/apollo/.openclaw/workspace/projects/robinhood-meme-scout</string>
+  <key>KeepAlive</key>
+  <true/>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/apollo/.openclaw/workspace/projects/robinhood-meme-scout/data/monitor.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/apollo/.openclaw/workspace/projects/robinhood-meme-scout/data/monitor.err</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

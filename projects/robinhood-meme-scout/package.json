@@ -9,13 +9,19 @@
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["gmgn", "meme-coin", "robinhood-chain", "alerts"],
+  "keywords": [
+    "gmgn",
+    "meme-coin",
+    "robinhood-chain",
+    "alerts"
+  ],
   "author": "Aaron",
   "license": "MIT",
   "dependencies": {
     "tsx": "^4.0.0"
   },
   "devDependencies": {
+    "@types/node": "^26.4.1",
     "typescript": "^5.0.0"
   }
 }

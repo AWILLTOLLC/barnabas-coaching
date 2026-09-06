@@ -1,234 +1,55 @@
-# TikTok Meme Scout
+# Robinhood Meme Scout
 
-Read-only TikTok API scraper for meme coin intelligence.
+GMGN-powered monitor for Robinhood Chain meme coins. Polls GMGN, applies Aaron's criteria, and DMs alerts + heartbeats to Discord. **v2 (2026-09-05): TikTok scraper removed; GMGN-only rebuild.**
 
-**Based on:** https://tiktok-api.seeksocial.io/
+## What it does
 
----
+Every `poll_interval_seconds` (default 60s):
+1. Fetches Robinhood-chain tokens from `gmgn-cli` — `market trending`, `market trenches`, `market hot-searches` — and normalizes the three payload shapes into one coin type.
+2. Applies **hard gates**: market cap in $500K–$2M or $5M–$25M, age 24–96h, top-10 holders ≤ 40%, no wash-trading flag.
+3. Scores 0–100: base 40 + volume (≥$1M +20 / ≥$500K +10) + liquidity (≥$100K +15 / ≥$50K +10) + top10 ≤20% (+10) + mint & freeze renounced (+10) + LP burned (+5).
+4. Score ≥ 70 → Discord DM with the full breakdown, then the address is added to `data/known.json` (never re-alerts).
+5. Heartbeat DM every 4h at 6am/10am/2pm/6pm/10pm PT (silent overnight): coins scanned, gates passed, alerts sent, best non-alert. Silence outside those = something is wrong.
 
-## What It Does
+All thresholds live in `criteria.json` — edit it, restart, done. Every evaluated coin is logged to `data/alerts.log` (JSON lines) for tuning.
 
-Scrapes TikTok's private mobile API (anonymous, no login) to extract:
-- Trending hashtags and viral videos
-- Coin/ticker mentions with velocity tracking
-- Creator similarity graphs
-- Sound/audio trends
-- Community health scores
-
-**Key insight:** TikTok trends often precede X/Twitter hype. Catch it here first.
-
----
-
-## Installation
+## Commands
 
 ```bash
-cd projects/robinhood-meme-scout
-npm init -y
-npm install typescript tsx
-npx tsc --init
+tsx src/cli.ts scan --dry-run      # one scan, alerts printed not sent
+tsx src/cli.ts monitor             # run forever (live DMs)
+tsx src/cli.ts monitor --dry-run   # run forever, print instead of DM
+tsx src/cli.ts heartbeat-test      # send one heartbeat DM now
+npm test                           # unit tests (tsx --test)
 ```
 
-**tsconfig.json:**
-```json
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "skipLibCheck": true
-  },
-  "include": ["src/**/*"]
-}
-```
+## Setup
 
----
+- `gmgn-cli` installed (`/opt/homebrew/bin/gmgn-cli`), API key in `.env` as `GMGN_API_KEY=...`
+- Discord bot token read from `~/.openclaw/openclaw.json` (`channels.discord.token`); recipient is Aaron's Discord ID in `src/alerts.ts`.
 
-## Usage
+## Run as a service (launchd)
 
-### Check trending coins
+A template is at `com.apollo.gmgn-scout.plist`. To install:
 
 ```bash
-tsx src/cli.ts --mode trending --count 50
+cp com.apollo.gmgn-scout.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.apollo.gmgn-scout.plist
 ```
 
-### Search coin mentions
+Logs go to `data/monitor.log` / `data/monitor.err`. Unload with `launchctl unload ~/Library/LaunchAgents/com.apollo.gmgn-scout.plist`.
 
-```bash
-tsx src/cli.ts --mode search --ticker DOGE
-```
+## Layout
 
-### Monitor hashtag
+- `src/config.ts` — criteria + .env loading
+- `src/gmgn.ts` — gmgn-cli exec + payload normalizer (shapes pinned by `tests/fixtures/`)
+- `src/filters.ts` — gates + scoring
+- `src/heartbeat.ts` — PT slot scheduler
+- `src/alerts.ts` — Discord DM, formatting, JSON log
+- `src/monitor.ts` — loop, dedupe, stats
+- `legacy/` — v1 TikTok-era code, kept for reference only (broken; do not revive the signer)
 
-```bash
-tsx src/cli.ts --mode hashtag --hashtag memecoin --count 100
-```
+## Notes
 
-### Community health check
-
-```bash
-tsx src/cli.ts --mode community --ticker DOGE --compare-twitter
-```
-
-### Test connection
-
-```bash
-tsx src/cli.ts --test
-```
-
----
-
-## Output Format
-
-### Coin Mention
-
-```json
-{
-  "ticker": "DOGE",
-  "mention_count_24h": 1250,
-  "velocity_change": 340,
-  "avg_engagement": 0.07,
-  "top_creators": ["@dogeking", "@memelord"],
-  "videos": [...]
-}
-```
-
-### Community Score
-
-```json
-{
-  "combined": {
-    "overall_score": 75,
-    "trend": "rising",
-    "correlation": 0.82,
-    "recommendation": "buy"
-  }
-}
-```
-
----
-
-## Integration
-
-### With GMGN Monitor
-
-```typescript
-import { TikTokScraper } from './src/tiktok-scraper.js';
-
-const tiktok = new TikTokScraper(config);
-const trending = await tiktok.getTrending(50);
-
-// Cross-check with GMGN
-for (const video of trending) {
-  const ticker = extractTicker(video.description);
-  const gmgnData = await gmgnMonitor.search(ticker);
-  
-  if (gmgnData && gmgnData.mc < 10_000_000) {
-    console.log(`🚀 Early signal: ${ticker} on TikTok at ${gmgnData.mc} MC`);
-  }
-}
-```
-
-### With Community Health Checker
-
-```typescript
-import { CommunityScorer } from './src/community-scoring.js';
-
-const scorer = new CommunityScorer();
-const tiktokData = await tiktok.searchCoinMentions('DOGE', 30);
-
-// Mock X data from your X API
-const xData = await getXData('DOGE');
-
-const score = scorer.calculateCommunityScore(tiktokData, xData);
-
-if (score.combined.overall_score >= 70 && score.combined.trend === 'rising') {
-  console.log('🔥 High-confidence signal');
-}
-```
-
----
-
-## Key Endpoints
-
-| Endpoint | Purpose |
-|----------|---------|
-| `/aweme/v1/trending/list` | Get trending videos |
-| `/aweme/v1/search/general` | Search by keyword/ticker |
-| `/aweme/v1/hashtag/video` | Get hashtag videos |
-| `/aweme/v1/aweme/post` | Get creator videos |
-| `/aweme/v1/comment/list` | Get comments |
-
-**Full list:** 24 endpoints documented at https://tiktok-api.seeksocial.io/
-
----
-
-## Performance
-
-- **Success rate:** 87% with proper signing
-- **Latency:** 200-500ms per request
-- **Throughput:** 100 req/min sustainable
-- **Data freshness:** Real-time
-
----
-
-## Edge Cases
-
-### Silent empty 200
-
-One of 4 things is wrong:
-1. **Device credential expired** → re-register
-2. **Signature invalid** → rebuild query string with exact order
-3. **Wrong regional host** → try SG, US, EU endpoints
-4. **TLS fingerprint mismatch** → use OpenSSL with Android cert chain
-
-### Rate limiting
-
-Max 100 requests/minute. Add 1s delay between calls.
-
-### Version gating
-
-Different `version_code` = different endpoints. Update monthly.
-
----
-
-## Files
-
-- `src/tiktok-scraper.ts` - Core API client
-- `src/signer.ts` - X-Argus, X-Ladon, X-Gorgon generation
-- `src/endpoints.ts` - 24 endpoint definitions
-- `src/velocity-tracker.ts` - Mention velocity calculations
-- `src/community-scoring.ts` - TikTok + X correlation
-- `src/cli.ts` - Command-line interface
-
----
-
-## Testing
-
-```bash
-# Run test mode
-tsx src/cli.ts --test
-
-# Check signing
-npx tsx scripts/test-signing.ts
-
-# Load test
-npx tsx scripts/load-test.ts --concurrency 50 --duration 60
-```
-
----
-
-## References
-
-- **Technical guide:** https://tiktok-api.seeksocial.io/
-- **Dataset:** 4.5B videos on Hugging Face
-- **BKANTHA method:** Tape first, people second, patience third
-
----
-
-## License
-
-MIT (same as BKANTHA's stack)
+- GMGN timestamps are Unix **seconds** (v1 treated them as ms — every age was wrong).
+- Field quirks: trenches uses `volume_24h`, others use `volume`; trenches has no `creation_timestamp` (falls back to `open_timestamp`).
+- No trading of any kind — this repo only watches and alerts.

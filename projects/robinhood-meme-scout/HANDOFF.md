@@ -190,3 +190,9 @@ tsx src/cli.ts --mode community --ticker DOGE
 ---
 
 **Ready to deploy. Test the GMGN monitor, then we're live.** 🚀
+
+---
+
+## ⚠️ SUPERSEDED (2026-09-05)
+
+This handoff describes v1, which never worked (stubbed TikTok signer, broken GMGN parser, mocked diligence). v1 code now lives in legacy/. See README.md and docs/plans/2026-09-05-gmgn-monitor-rebuild.md for the v2 rebuild.
