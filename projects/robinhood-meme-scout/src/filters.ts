@@ -34,6 +34,11 @@ export function evaluate(coin: Coin, c: Criteria, now: number = Date.now()): Eva
     return { passed: false, score: 0, reasons: ['wash trading flagged'], flags };
   }
 
+  if (coin.price_change_6h_pct !== null && coin.price_change_6h_pct < -c.max_drop_6h_pct) {
+    return { passed: false, score: 0, reasons: [`down ${Math.abs(coin.price_change_6h_pct).toFixed(0)}% over 6h (max ${c.max_drop_6h_pct}%)`], flags };
+  }
+  if (coin.price_change_6h_pct === null) flags.push('momentum-unknown');
+
   let score = 40;
   reasons.push('passed gates (+40)');
 

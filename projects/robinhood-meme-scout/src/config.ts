@@ -13,9 +13,12 @@ export interface Criteria {
   strong_volume_24h: number;
   min_liquidity_usd: number;
   strong_liquidity_usd: number;
+  max_drop_6h_pct: number;
   alert_score_threshold: number;
   poll_interval_seconds: number;
   heartbeat_hours_pt: number[];
+  chain_context: string;
+  ollama: { url: string; model: string; timeout_ms: number };
 }
 
 export function loadCriteria(file: string = path.join(PROJECT_ROOT, 'criteria.json')): Criteria {

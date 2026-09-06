@@ -1,8 +1,9 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { loadCriteria, loadEnv, PROJECT_ROOT, type Criteria } from './config.js';
-import { fetchAllCoins, type Coin } from './gmgn.js';
+import { fetchAllCoins, fetchTokenStats, type Coin, type TokenStats } from './gmgn.js';
 import { evaluate } from './filters.js';
+import { generateThesis } from './thesis.js';
 import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } from './alerts.js';
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
 
@@ -17,6 +18,8 @@ export interface MonitorOptions {
   dryRun: boolean;
   dataDir?: string;
   fetch?: () => Promise<Coin[]>;
+  fetchStats?: (address: string) => Promise<TokenStats | null>;
+  thesis?: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   criteria?: Criteria;
 }
 
@@ -24,6 +27,8 @@ export class Monitor {
   private dryRun: boolean;
   private dataDir: string;
   private fetchCoins: () => Promise<Coin[]>;
+  private fetchStats: (address: string) => Promise<TokenStats | null>;
+  private thesis: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   private criteria: Criteria;
   private known: Set<string>;
   private stats: { scanned: number; passed_gates: number; alerted: string[]; best: { ticker: string; score: number } | null; since: Date };
@@ -33,7 +38,9 @@ export class Monitor {
     this.dataDir = opts.dataDir ?? path.join(PROJECT_ROOT, 'data');
     const env = loadEnv();
     this.fetchCoins = opts.fetch ?? (() => fetchAllCoins(env));
+    this.fetchStats = opts.fetchStats ?? ((address) => fetchTokenStats(address, env));
     this.criteria = opts.criteria ?? loadCriteria();
+    this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria));
     this.known = this.loadKnown();
     this.stats = this.freshStats();
   }
@@ -42,15 +49,29 @@ export class Monitor {
     const coins = await this.fetchCoins();
     const result: ScanResult = { scanned: coins.length, passed_gates: 0, alerted: [], best: null };
 
-    for (const c of coins) {
+    for (let c of coins) {
       if (this.known.has(c.address)) continue;
-      const ev = evaluate(c, this.criteria);
+      let ev = evaluate(c, this.criteria);
       if (!ev.passed) continue;
       result.passed_gates++;
       logEvent({ event: 'evaluated', ticker: c.ticker, address: c.address, score: ev.score, flags: ev.flags });
 
       if (ev.score >= this.criteria.alert_score_threshold) {
-        const dm = await sendDM(formatAlert(c, ev), { dryRun: this.dryRun });
+        // finalists get a momentum check before alerting: list payloads
+        // have no 6h change, so enrich from token info and re-evaluate
+        if (c.price_change_6h_pct === null) {
+          const stats = await this.fetchStats(c.address);
+          if (stats) {
+            c = { ...c, price_change_6h_pct: stats.change_6h_pct };
+            ev = evaluate(c, this.criteria);
+            if (!ev.passed || ev.score < this.criteria.alert_score_threshold) {
+              logEvent({ event: 'momentum_reject', ticker: c.ticker, address: c.address, change_6h_pct: stats.change_6h_pct });
+              continue;
+            }
+          }
+        }
+        const thesis = await this.thesis(c, ev);
+        const dm = await sendDM(formatAlert(c, ev, thesis), { dryRun: this.dryRun });
         logEvent({ event: 'alert', ticker: c.ticker, address: c.address, score: ev.score, success: dm.success, error: dm.error });
         if (dm.success) {
           result.alerted.push(c.ticker);

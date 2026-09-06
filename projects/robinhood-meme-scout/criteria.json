@@ -7,7 +7,14 @@
   "strong_volume_24h": 1000000,
   "min_liquidity_usd": 50000,
   "strong_liquidity_usd": 100000,
+  "max_drop_6h_pct": 20,
   "alert_score_threshold": 70,
   "poll_interval_seconds": 60,
-  "heartbeat_hours_pt": [6, 10, 14, 18, 22]
+  "heartbeat_hours_pt": [6, 10, 14, 18, 22],
+  "chain_context": "This coin trades on Robinhood Chain (public mainnet launched July 2026). The chain's flagship memecoin is Cash Cat (~$150M MC, a nod to Robinhood's original company name CashCat), so cat-themed coins are typically derivative plays on that meta. Volume on the chain is dominated by fast-rotating memecoins.",
+  "ollama": {
+    "url": "http://localhost:11434",
+    "model": "hf.co/unsloth/Qwen3.8-27B-GGUF:Q8_0",
+    "timeout_ms": 90000
+  }
 }

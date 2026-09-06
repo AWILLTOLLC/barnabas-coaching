@@ -16,7 +16,7 @@ export interface HeartbeatStats {
   since: string;
 }
 
-export function formatAlert(coin: Coin, ev: Evaluation): string {
+export function formatAlert(coin: Coin, ev: Evaluation, thesis?: string | null): string {
   const ageH = coin.created_at_ms ? ((Date.now() - coin.created_at_ms) / 3_600_000).toFixed(0) : '?';
   const lines = [
     `🚀 Robinhood Scout: $${coin.ticker} (${coin.name}) — ${ev.score}/100`,
@@ -25,6 +25,7 @@ export function formatAlert(coin: Coin, ev: Evaluation): string {
     `Score: ${ev.reasons.join(', ')}`,
   ];
   if (ev.flags.length) lines.push(`⚠️ ${ev.flags.join(', ')}`);
+  if (thesis) lines.push(`📝 ${thesis}`);
   lines.push(`CA: ${coin.address}`);
   lines.push(`https://gmgn.ai/robinhood/token/${coin.address}`);
   if (coin.twitter) lines.push(`X: ${coin.twitter}`);

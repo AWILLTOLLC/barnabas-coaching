@@ -11,6 +11,7 @@ export interface Coin {
   holder_count: number;
   top10_rate: number | null;
   created_at_ms: number | null;
+  price_change_6h_pct: number | null;
   renounced_mint: boolean | null;
   renounced_freeze: boolean | null;
   burn_status: string | null;
@@ -65,6 +66,8 @@ export function parseCoins(payload: unknown, source: string): Coin[] {
         holder_count: t.holder_count ?? 0,
         top10_rate: typeof t.top_10_holder_rate === 'number' ? t.top_10_holder_rate : null,
         created_at_ms: toMs(t.creation_timestamp) ?? toMs(t.open_timestamp),
+        // list payloads only carry 1m/5m/1h changes; 6h comes from enrichment
+        price_change_6h_pct: null,
         renounced_mint: typeof t.renounced_mint === 'boolean' ? t.renounced_mint : null,
         renounced_freeze: typeof t.renounced_freeze_account === 'boolean' ? t.renounced_freeze_account : null,
         burn_status: t.burn_status ?? null,
@@ -85,6 +88,31 @@ export function dedupeCoins(coins: Coin[]): Coin[] {
     if (!seen.has(c.address)) seen.set(c.address, c);
   }
   return [...seen.values()];
+}
+
+export interface TokenStats {
+  price: number;
+  change_6h_pct: number;
+  change_24h_pct: number;
+}
+
+// `gmgn-cli token info` payload: price fields are strings under .price
+export function parseTokenStats(payload: unknown): TokenStats | null {
+  const p = (payload as any)?.price;
+  const price = Number(p?.price);
+  const price6h = Number(p?.price_6h);
+  const price24h = Number(p?.price_24h);
+  if (!isFinite(price) || !isFinite(price6h) || price6h <= 0 || !isFinite(price24h) || price24h <= 0) return null;
+  return {
+    price,
+    change_6h_pct: ((price - price6h) / price6h) * 100,
+    change_24h_pct: ((price - price24h) / price24h) * 100,
+  };
+}
+
+export async function fetchTokenStats(address: string, env: Record<string, string>): Promise<TokenStats | null> {
+  const payload = await execJson(`gmgn-cli token info --chain robinhood --address ${address}`, env);
+  return payload === null ? null : parseTokenStats(payload);
 }
 
 const COMMANDS: [string, string][] = [
