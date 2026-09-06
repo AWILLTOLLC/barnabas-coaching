@@ -6,7 +6,8 @@ import { evaluate } from './filters.js';
 import { generateThesis } from './thesis.js';
 import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } from './alerts.js';
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
-import { openDb, recordCoin, hasCoin, markAlerted } from './db.js';
+import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime } from './db.js';
+import { computeBreadth, labelRegime, RegimeTracker, type RegimeLabel } from './regime.js';
 import { captureDueOutcomes } from './outcomes.js';
 import { computeReport, formatReport, narrate } from './report.js';
 import type { DatabaseSync } from 'node:sqlite';
@@ -36,6 +37,7 @@ export class Monitor {
   private criteria: Criteria;
   private known: Set<string>;
   readonly db: DatabaseSync;
+  readonly regime: RegimeTracker;
   private stats: { scanned: number; passed_gates: number; alerted: string[]; best: { ticker: string; score: number } | null; since: Date };
 
   constructor(opts: MonitorOptions) {
@@ -45,9 +47,10 @@ export class Monitor {
     this.fetchCoins = opts.fetch ?? (() => fetchAllCoins(env));
     this.fetchStats = opts.fetchStats ?? ((address) => fetchTokenStats(address, env));
     this.criteria = opts.criteria ?? loadCriteria();
-    this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria));
+    this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria, this.regime?.current));
     this.known = this.loadKnown();
     this.db = openDb(path.join(this.dataDir, 'scout.db'));
+    this.regime = new RegimeTracker((lastConfirmedRegime(this.db) as RegimeLabel) ?? 'neutral', this.criteria.regime);
     this.stats = this.freshStats();
   }
 
@@ -55,13 +58,19 @@ export class Monitor {
     const coins = await this.fetchCoins();
     const result: ScanResult = { scanned: coins.length, passed_gates: 0, alerted: [], best: null };
 
+    // chain regime: measure-and-stamp only, never gates alerts (yet)
+    const breadth = computeBreadth(coins, Date.now());
+    const raw = labelRegime(breadth, this.criteria.regime);
+    const confirmed = this.regime.update(raw);
+    recordRegimeSnapshot(this.db, Date.now(), breadth, raw, confirmed);
+
     for (let c of coins) {
       if (this.known.has(c.address)) continue;
       const firstSeen = !hasCoin(this.db, c.address);
       let ev = evaluate(c, this.criteria);
       let alerted = false;
       if (!ev.passed) {
-        if (firstSeen) recordCoin(this.db, c, ev, false, Date.now());
+        if (firstSeen) recordCoin(this.db, c, ev, false, Date.now(), confirmed);
         continue;
       }
       if (firstSeen) {
@@ -79,13 +88,13 @@ export class Monitor {
             ev = evaluate(c, this.criteria);
             if (!ev.passed || ev.score < this.criteria.alert_score_threshold) {
               logEvent({ event: 'momentum_reject', ticker: c.ticker, address: c.address, change_6h_pct: stats.change_6h_pct });
-              if (firstSeen) recordCoin(this.db, c, ev, false, Date.now());
+              if (firstSeen) recordCoin(this.db, c, ev, false, Date.now(), confirmed);
               continue;
             }
           }
         }
         const thesis = await this.thesis(c, ev);
-        const dm = await sendDM(formatAlert(c, ev, thesis), { dryRun: this.dryRun });
+        const dm = await sendDM(formatAlert(c, ev, thesis, this.regime.current), { dryRun: this.dryRun });
         logEvent({ event: 'alert', ticker: c.ticker, address: c.address, score: ev.score, success: dm.success, error: dm.error });
         if (dm.success) {
           alerted = true;
@@ -97,7 +106,7 @@ export class Monitor {
       } else if (!result.best || ev.score > result.best.score) {
         result.best = { ticker: c.ticker, score: ev.score };
       }
-      if (firstSeen) recordCoin(this.db, c, ev, alerted, Date.now());
+      if (firstSeen) recordCoin(this.db, c, ev, alerted, Date.now(), confirmed);
     }
 
     // outcome tracking piggybacks on the poll loop, a few fetches per tick
@@ -138,6 +147,7 @@ export class Monitor {
       alerted: this.stats.alerted,
       best: this.stats.best,
       since: this.stats.since.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' }),
+      regime: this.regime.current,
     };
     const dm = await sendDM(formatHeartbeat(hb), { dryRun: this.dryRun });
     logEvent({ event: 'heartbeat', slot, success: dm.success, error: dm.error });

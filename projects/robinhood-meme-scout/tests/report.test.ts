@@ -12,7 +12,7 @@ function coin(address: string, ticker: string, price: number): Coin {
     address, name: ticker, ticker,
     price_usd: price, market_cap: 1_000_000, volume_24h: 600_000,
     liquidity_usd: 60_000, holder_count: 500, top10_rate: 0.2,
-    created_at_ms: NOW - 48 * H, price_change_6h_pct: null,
+    created_at_ms: NOW - 48 * H, price_change_6h_pct: null, price_change_1h_pct: null,
     renounced_mint: null, renounced_freeze: null, burn_status: null,
     wash_trading: false, launchpad: null, twitter: null, website: null,
     source: 'trending',

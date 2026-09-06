@@ -11,7 +11,7 @@ function coin(address: string, overrides: Partial<Coin> = {}): Coin {
     address, name: 'T', ticker: `T${address.slice(-2)}`,
     price_usd: 0.001, market_cap: 8_000_000, volume_24h: 2_000_000,
     liquidity_usd: 200_000, holder_count: 900, top10_rate: 0.1,
-    created_at_ms: Date.now() - 48 * 3_600_000, price_change_6h_pct: null,
+    created_at_ms: Date.now() - 48 * 3_600_000, price_change_6h_pct: null, price_change_1h_pct: null,
     renounced_mint: true, renounced_freeze: true, burn_status: 'yes',
     wash_trading: false, launchpad: null, twitter: null, website: null,
     source: 'trending',

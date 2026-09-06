@@ -18,6 +18,13 @@ export interface Criteria {
   poll_interval_seconds: number;
   heartbeat_hours_pt: number[];
   report_hour_pt: number;
+  regime: {
+    hot_median_1h_pct: number;
+    cold_median_1h_pct: number;
+    hot_green_share: number;
+    cold_green_share: number;
+    confirm_scans: number;
+  };
   chain_context: string;
   ollama: { url: string; model: string; timeout_ms: number };
 }

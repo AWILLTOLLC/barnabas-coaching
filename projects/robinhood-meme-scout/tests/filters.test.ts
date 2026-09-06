@@ -13,7 +13,7 @@ function coin(overrides: Partial<Coin> = {}): Coin {
     address: '0xabc', name: 'Test', ticker: 'TEST',
     price_usd: 0.001, market_cap: 1_000_000, volume_24h: 600_000,
     liquidity_usd: 60_000, holder_count: 500, top10_rate: 0.25,
-    created_at_ms: hoursAgo(48), price_change_6h_pct: -5,
+    created_at_ms: hoursAgo(48), price_change_6h_pct: -5, price_change_1h_pct: null,
     renounced_mint: null, renounced_freeze: null, burn_status: null,
     wash_trading: false, launchpad: null, twitter: null, website: null,
     source: 'trending',

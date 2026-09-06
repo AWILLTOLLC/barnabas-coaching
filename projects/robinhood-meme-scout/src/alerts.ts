@@ -14,9 +14,10 @@ export interface HeartbeatStats {
   alerted: string[];
   best: { ticker: string; score: number } | null;
   since: string;
+  regime?: string;
 }
 
-export function formatAlert(coin: Coin, ev: Evaluation, thesis?: string | null): string {
+export function formatAlert(coin: Coin, ev: Evaluation, thesis?: string | null, regime?: string): string {
   const ageH = coin.created_at_ms ? ((Date.now() - coin.created_at_ms) / 3_600_000).toFixed(0) : '?';
   const lines = [
     `🚀 Robinhood Scout: $${coin.ticker} (${coin.name}) — ${ev.score}/100`,
@@ -24,6 +25,7 @@ export function formatAlert(coin: Coin, ev: Evaluation, thesis?: string | null):
     `Holders ${coin.holder_count}${coin.top10_rate !== null ? ` (top10 ${(coin.top10_rate * 100).toFixed(0)}%)` : ''}`,
     `Score: ${ev.reasons.join(', ')}`,
   ];
+  if (regime) lines.push(`Chain regime: ${regime}`);
   if (ev.flags.length) lines.push(`⚠️ ${ev.flags.join(', ')}`);
   if (thesis) lines.push(`📝 ${thesis}`);
   lines.push(`CA: ${coin.address}`);
@@ -39,6 +41,7 @@ export function formatHeartbeat(s: HeartbeatStats): string {
   ];
   if (s.alerted.length) lines.push(`Alerted: ${s.alerted.map(t => `$${t}`).join(', ')}`);
   if (s.best) lines.push(`Best non-alert: $${s.best.ticker} at ${s.best.score}/100`);
+  if (s.regime) lines.push(`Chain regime: ${s.regime}`);
   return lines.join('\n');
 }
 

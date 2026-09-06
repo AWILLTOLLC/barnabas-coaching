@@ -8,7 +8,7 @@ const coin: Coin = {
   address: '0xdeadbeef', name: 'Test Coin', ticker: 'TEST',
   price_usd: 0.001, market_cap: 8_000_000, volume_24h: 1_500_000,
   liquidity_usd: 120_000, holder_count: 900, top10_rate: 0.15,
-  created_at_ms: Date.now() - 48 * 3_600_000, price_change_6h_pct: 12,
+  created_at_ms: Date.now() - 48 * 3_600_000, price_change_6h_pct: 12, price_change_1h_pct: null,
   renounced_mint: true, renounced_freeze: true, burn_status: 'yes',
   wash_trading: false, launchpad: 'pons_v2',
   twitter: 'https://x.com/test', website: null, source: 'trending',

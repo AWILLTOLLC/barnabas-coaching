@@ -10,7 +10,7 @@ import type { Criteria } from './config.js';
  *   else must trace to a DATA line. Numbers must be copied, not recomputed.
  * - Hard word cap + plain text keeps it DM-sized and stops rambling.
  */
-export function buildThesisPrompt(coin: Coin, ev: Evaluation, chainContext: string): string {
+export function buildThesisPrompt(coin: Coin, ev: Evaluation, chainContext: string, regime?: string): string {
   const ageH = coin.created_at_ms ? ((Date.now() - coin.created_at_ms) / 3_600_000).toFixed(0) : 'unknown';
   const data = [
     `name: ${coin.name}`,
@@ -28,6 +28,7 @@ export function buildThesisPrompt(coin: Coin, ev: Evaluation, chainContext: stri
     `twitter: ${coin.twitter ?? 'none listed'}`,
     `website: ${coin.website ?? 'none listed'}`,
     `scout_score: ${ev.score}/100 (${ev.reasons.join('; ')})`,
+    regime ? `chain_regime_now: ${regime} (breadth of all trending coins, not this coin)` : null,
     ev.flags.length ? `warnings: ${ev.flags.join(', ')}` : null,
   ].filter(Boolean).join('\n');
 
@@ -48,8 +49,9 @@ export async function generateThesis(
   coin: Coin,
   ev: Evaluation,
   criteria: Criteria,
+  regime?: string,
 ): Promise<string | null> {
-  const prompt = buildThesisPrompt(coin, ev, criteria.chain_context);
+  const prompt = buildThesisPrompt(coin, ev, criteria.chain_context, regime);
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), criteria.ollama.timeout_ms);
   try {

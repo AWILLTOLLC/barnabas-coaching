@@ -35,22 +35,47 @@ export function openDb(file: string): DatabaseSync {
       UNIQUE(address, horizon_h)
     );
     CREATE INDEX IF NOT EXISTS idx_outcomes_due ON outcomes(status, due_ms);
+    CREATE TABLE IF NOT EXISTS regime_snapshots (
+      ts INTEGER, n INTEGER, median_1h_pct REAL, green_share REAL,
+      total_volume_24h REAL, new_launches_1h INTEGER,
+      raw_label TEXT, confirmed_label TEXT
+    );
   `);
+  try {
+    db.exec(`ALTER TABLE coins ADD COLUMN regime TEXT DEFAULT 'neutral'`);
+  } catch {
+    // column already exists
+  }
   return db;
+}
+
+export function recordRegimeSnapshot(
+  db: DatabaseSync, ts: number,
+  b: { n: number; median_1h_pct: number; green_share: number; total_volume_24h: number; new_launches_1h: number },
+  raw: string, confirmed: string,
+): void {
+  db.prepare(`INSERT INTO regime_snapshots (ts, n, median_1h_pct, green_share, total_volume_24h, new_launches_1h, raw_label, confirmed_label)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+    .run(ts, b.n, b.median_1h_pct, b.green_share, b.total_volume_24h, b.new_launches_1h, raw, confirmed);
+}
+
+export function lastConfirmedRegime(db: DatabaseSync): string | null {
+  const row = db.prepare('SELECT confirmed_label FROM regime_snapshots ORDER BY ts DESC LIMIT 1').get() as any;
+  return row?.confirmed_label ?? null;
 }
 
 export function hasCoin(db: DatabaseSync, address: string): boolean {
   return db.prepare('SELECT 1 FROM coins WHERE address = ?').get(address) !== undefined;
 }
 
-export function recordCoin(db: DatabaseSync, coin: Coin, ev: Evaluation, alerted: boolean, now: number): void {
+export function recordCoin(db: DatabaseSync, coin: Coin, ev: Evaluation, alerted: boolean, now: number, regime: string = 'neutral'): void {
   if (hasCoin(db, coin.address)) return;
-  db.prepare(`INSERT INTO coins (address, ticker, name, first_seen_ms, price_at_eval, market_cap, liquidity, score, passed, alerted, reasons, flags, snapshot)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+  db.prepare(`INSERT INTO coins (address, ticker, name, first_seen_ms, price_at_eval, market_cap, liquidity, score, passed, alerted, reasons, flags, snapshot, regime)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
     coin.address, coin.ticker, coin.name, now,
     coin.price_usd, coin.market_cap, coin.liquidity_usd,
     ev.score, ev.passed ? 1 : 0, alerted ? 1 : 0,
-    JSON.stringify(ev.reasons), JSON.stringify(ev.flags), JSON.stringify(coin),
+    JSON.stringify(ev.reasons), JSON.stringify(ev.flags), JSON.stringify(coin), regime,
   );
   const ins = db.prepare('INSERT INTO outcomes (address, horizon_h, due_ms) VALUES (?, ?, ?)');
   for (const h of HORIZONS_H) ins.run(coin.address, h, now + h * 3_600_000);

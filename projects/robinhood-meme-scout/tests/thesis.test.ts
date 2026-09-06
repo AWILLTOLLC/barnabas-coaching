@@ -15,7 +15,7 @@ const coin: Coin = {
   address: '0xdeadbeef', name: 'Chrome Cat', ticker: 'CHROME',
   price_usd: 0.001, market_cap: 639_000, volume_24h: 3_100_000,
   liquidity_usd: 208_000, holder_count: 2659, top10_rate: 0.18,
-  created_at_ms: Date.now() - 38 * 3_600_000, price_change_6h_pct: -12.5,
+  created_at_ms: Date.now() - 38 * 3_600_000, price_change_6h_pct: -12.5, price_change_1h_pct: null,
   renounced_mint: null, renounced_freeze: null, burn_status: 'yes',
   wash_trading: false, launchpad: 'longxyz',
   twitter: 'https://x.com/CatOnChrome', website: null, source: 'trending',

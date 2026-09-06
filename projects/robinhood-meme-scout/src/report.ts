@@ -17,6 +17,11 @@ export interface ReportStats {
   top_rejected: { ticker: string; return_pct: number; reason: string }[];
   dead_outcomes: number;
   total_coins: number;
+  regime: {
+    current: string;
+    distribution_24h: Record<string, number>;
+    passed_returns_24h_by_regime: { regime: string; n: number; median_return_pct: number }[];
+  };
 }
 
 const BAND_SQL: Record<BandStat['band'], string> = {
@@ -61,13 +66,35 @@ export function computeReport(db: DatabaseSync, now: number): ReportStats {
     .filter(r => r.ret > 0)
     .map(r => ({ ticker: r.ticker, return_pct: r.ret, reason: (JSON.parse(r.reasons)[0] ?? 'unknown') as string }));
 
+  const distribution_24h: Record<string, number> = {};
+  for (const row of db.prepare(`SELECT confirmed_label l, COUNT(*) n FROM regime_snapshots WHERE ts >= ? GROUP BY confirmed_label`).all(dayAgo) as any[]) {
+    distribution_24h[row.l] = row.n;
+  }
+  const currentRegime = (db.prepare('SELECT confirmed_label l FROM regime_snapshots ORDER BY ts DESC LIMIT 1').get() as any)?.l ?? 'unknown';
+  const passed_returns_24h_by_regime = (db.prepare(`
+    SELECT c.regime, COUNT(*) n, (o.price - c.price_at_eval) / c.price_at_eval * 100 AS ret
+    FROM outcomes o JOIN coins c ON c.address = o.address
+    WHERE o.status = 'captured' AND o.horizon_h = 24 AND c.passed = 1 AND c.price_at_eval > 0
+    GROUP BY c.regime`).all() as any[])
+    .map(r => ({ regime: r.regime as string, n: r.n as number, median_return_pct: medianReturnForRegime(db, r.regime) }));
+
   return {
     last24h,
     bands,
     top_rejected,
     dead_outcomes: count(db, `SELECT COUNT(*) n FROM outcomes WHERE status = 'dead'`),
     total_coins: count(db, 'SELECT COUNT(*) n FROM coins'),
+    regime: { current: currentRegime, distribution_24h, passed_returns_24h_by_regime },
   };
+}
+
+function medianReturnForRegime(db: DatabaseSync, regime: string): number {
+  const rets = (db.prepare(`
+    SELECT (o.price - c.price_at_eval) / c.price_at_eval * 100 AS ret
+    FROM outcomes o JOIN coins c ON c.address = o.address
+    WHERE o.status = 'captured' AND o.horizon_h = 24 AND c.passed = 1 AND c.price_at_eval > 0 AND c.regime = ?
+    ORDER BY ret`).all(regime) as any[]).map(r => r.ret as number);
+  return rets.length ? rets[Math.floor(rets.length / 2)] : 0;
 }
 
 export function formatReport(r: ReportStats): string {
@@ -84,6 +111,11 @@ export function formatReport(r: ReportStats): string {
   }
   if (r.top_rejected.length) {
     lines.push(`Rejects that ran (24h): ${r.top_rejected.map(t => `$${t.ticker} +${t.return_pct.toFixed(0)}% [${t.reason}]`).join(', ')}`);
+  }
+  const dist = Object.entries(r.regime.distribution_24h).map(([l, n]) => `${l} ${n}`).join(', ');
+  lines.push(`Regime: ${r.regime.current} now${dist ? ` (24h scans: ${dist})` : ''}`);
+  if (r.regime.passed_returns_24h_by_regime.length) {
+    lines.push(`Gate-passer 24h returns by regime: ${r.regime.passed_returns_24h_by_regime.map(x => `${x.regime}: ${fmtPct(x.median_return_pct)} (n=${x.n})`).join(' | ')}`);
   }
   return lines.join('\n');
 }

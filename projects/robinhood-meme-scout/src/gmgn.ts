@@ -12,6 +12,7 @@ export interface Coin {
   top10_rate: number | null;
   created_at_ms: number | null;
   price_change_6h_pct: number | null;
+  price_change_1h_pct: number | null;
   renounced_mint: boolean | null;
   renounced_freeze: boolean | null;
   burn_status: string | null;
@@ -68,6 +69,7 @@ export function parseCoins(payload: unknown, source: string): Coin[] {
         created_at_ms: toMs(t.creation_timestamp) ?? toMs(t.open_timestamp),
         // list payloads only carry 1m/5m/1h changes; 6h comes from enrichment
         price_change_6h_pct: null,
+        price_change_1h_pct: typeof t.price_change_percent1h === 'number' ? t.price_change_percent1h : null,
         renounced_mint: typeof t.renounced_mint === 'boolean' ? t.renounced_mint : null,
         renounced_freeze: typeof t.renounced_freeze_account === 'boolean' ? t.renounced_freeze_account : null,
         burn_status: t.burn_status ?? null,
