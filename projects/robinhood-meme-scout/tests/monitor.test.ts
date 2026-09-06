@@ -32,6 +32,7 @@ test('scanOnce evaluates, alerts on high scores, dedupes known addresses', async
   const mon = new Monitor({
     dryRun: true, dataDir: dir, fetch: async () => coins,
     fetchStats: async (address) => { statsCalls.push(address); return { price: 0.001, change_6h_pct: 5, change_24h_pct: 10, liquidity_usd: 50_000 }; },
+    fetchDex: async () => new Map(),
     thesis: async () => 'test thesis',
   });
 
@@ -64,8 +65,56 @@ test('finalist dumping 6h is momentum-rejected, no alert', async (t) => {
   const mon = new Monitor({
     dryRun: true, dataDir: dir, fetch: async () => [coin('0x09')],
     fetchStats: async () => ({ price: 0.001, change_6h_pct: -60, change_24h_pct: -80, liquidity_usd: 10_000 }),
+    fetchDex: async () => new Map(),
     thesis: async () => 'should not be called',
   });
   const r = await mon.scanOnce();
   assert.deepEqual(r.alerted, []);
+});
+
+test('momentum check prefers dex 6h change: dex dump rejects even when gmgn is green', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'scout-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  const mon = new Monitor({
+    dryRun: true, dataDir: dir, fetch: async () => [coin('0x11')],
+    fetchStats: async () => ({ price: 0.001, change_6h_pct: 5, change_24h_pct: 10, liquidity_usd: 200_000 }),
+    fetchDex: async () => new Map([['0x11', { price: 0.001, change_6h_pct: -60, change_24h_pct: -80, liquidity_usd: 200_000, market_cap: 8_000_000, dex_id: 'uniswap' }]]),
+    thesis: async () => 'should not be called',
+  });
+  const r = await mon.scanOnce();
+  assert.deepEqual(r.alerted, []);
+});
+
+test('source divergence is recorded in db, alert still sends (signal, not gate)', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'scout-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  const mon = new Monitor({
+    dryRun: true, dataDir: dir, fetch: async () => [coin('0x12')],
+    fetchStats: async () => ({ price: 0.001, change_6h_pct: 5, change_24h_pct: 10, liquidity_usd: 200_000 }),
+    fetchDex: async () => new Map([['0x12', { price: 0.002, change_6h_pct: 5, change_24h_pct: 10, liquidity_usd: 200_000, market_cap: 8_000_000, dex_id: 'uniswap' }]]),
+    thesis: async () => 'test thesis',
+  });
+  const r = await mon.scanOnce();
+  assert.equal(r.alerted.length, 1);
+  const rows = mon.db.prepare('SELECT address, field FROM divergences').all() as any[];
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].address, '0x12');
+  assert.equal(rows[0].field, 'price');
+});
+
+test('agreeing sources record no divergence', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'scout-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  const mon = new Monitor({
+    dryRun: true, dataDir: dir, fetch: async () => [coin('0x13')],
+    fetchStats: async () => ({ price: 0.001, change_6h_pct: 5, change_24h_pct: 10, liquidity_usd: 200_000 }),
+    fetchDex: async () => new Map([['0x13', { price: 0.00102, change_6h_pct: 5, change_24h_pct: 10, liquidity_usd: 210_000, market_cap: 8_000_000, dex_id: 'uniswap' }]]),
+    thesis: async () => 'test thesis',
+  });
+  const r = await mon.scanOnce();
+  assert.equal(r.alerted.length, 1);
+  assert.equal((mon.db.prepare('SELECT COUNT(*) n FROM divergences').get() as any).n, 0);
 });

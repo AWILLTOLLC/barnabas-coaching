@@ -16,6 +16,7 @@ export interface ReportStats {
   bands: BandStat[];
   top_rejected: { ticker: string; return_pct: number; reason: string }[];
   dead_outcomes: number;
+  source_divergences_24h: number;
   total_coins: number;
   regime: {
     current: string;
@@ -83,6 +84,7 @@ export function computeReport(db: DatabaseSync, now: number): ReportStats {
     bands,
     top_rejected,
     dead_outcomes: count(db, `SELECT COUNT(*) n FROM outcomes WHERE status = 'dead'`),
+    source_divergences_24h: count(db, 'SELECT COUNT(*) n FROM divergences WHERE ts >= ?', dayAgo),
     total_coins: count(db, 'SELECT COUNT(*) n FROM coins'),
     regime: { current: currentRegime, distribution_24h, passed_returns_24h_by_regime },
   };
@@ -111,6 +113,9 @@ export function formatReport(r: ReportStats): string {
   }
   if (r.top_rejected.length) {
     lines.push(`Rejects that ran (24h): ${r.top_rejected.map(t => `$${t.ticker} +${t.return_pct.toFixed(0)}% [${t.reason}]`).join(', ')}`);
+  }
+  if (r.source_divergences_24h > 0) {
+    lines.push(`⚠️ Source divergences (24h): ${r.source_divergences_24h} (DexScreener vs GMGN — check alerts.log)`);
   }
   const dist = Object.entries(r.regime.distribution_24h).map(([l, n]) => `${l} ${n}`).join(', ');
   lines.push(`Regime: ${r.regime.current} now${dist ? ` (24h scans: ${dist})` : ''}`);

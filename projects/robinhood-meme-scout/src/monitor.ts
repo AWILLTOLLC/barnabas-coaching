@@ -6,7 +6,8 @@ import { evaluate } from './filters.js';
 import { generateThesis } from './thesis.js';
 import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } from './alerts.js';
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
-import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime } from './db.js';
+import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime, recordDivergence } from './db.js';
+import { DEX_DEFAULTS, fetchDexStatsBatch, checkDivergence, type DexConfig, type DexStats } from './dexscreener.js';
 import { computeBreadth, labelRegime, RegimeTracker, type RegimeLabel } from './regime.js';
 import { captureDueOutcomes } from './outcomes.js';
 import { computeReport, formatReport, narrate } from './report.js';
@@ -24,6 +25,7 @@ export interface MonitorOptions {
   dataDir?: string;
   fetch?: () => Promise<Coin[]>;
   fetchStats?: (address: string) => Promise<TokenStats | null>;
+  fetchDex?: (addresses: string[]) => Promise<Map<string, DexStats>>;
   thesis?: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   criteria?: Criteria;
 }
@@ -33,6 +35,8 @@ export class Monitor {
   private dataDir: string;
   private fetchCoins: () => Promise<Coin[]>;
   private fetchStats: (address: string) => Promise<TokenStats | null>;
+  private fetchDex?: (addresses: string[]) => Promise<Map<string, DexStats>>;
+  private dexCfg: DexConfig;
   private thesis: (coin: Coin, ev: ReturnType<typeof evaluate>) => Promise<string | null>;
   private criteria: Criteria;
   private known: Set<string>;
@@ -47,6 +51,8 @@ export class Monitor {
     this.fetchCoins = opts.fetch ?? (() => fetchAllCoins(env));
     this.fetchStats = opts.fetchStats ?? ((address) => fetchTokenStats(address, env));
     this.criteria = opts.criteria ?? loadCriteria();
+    this.dexCfg = { ...DEX_DEFAULTS, ...(this.criteria.dexscreener ?? {}) };
+    this.fetchDex = opts.fetchDex ?? (this.dexCfg.enabled ? (addresses) => fetchDexStatsBatch(addresses, this.dexCfg) : undefined);
     this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria, this.regime?.current));
     this.known = this.loadKnown();
     this.db = openDb(path.join(this.dataDir, 'scout.db'));
@@ -79,15 +85,26 @@ export class Monitor {
       }
 
       if (ev.score >= this.criteria.alert_score_threshold) {
-        // finalists get a momentum check before alerting: list payloads
-        // have no 6h change, so enrich from token info and re-evaluate
+        // finalists get a momentum check before alerting: list payloads have
+        // no 6h change. DexScreener is primary, GMGN token info is fallback
+        // and cross-check — a divergence is recorded, never gates the alert.
         if (c.price_change_6h_pct === null) {
+          const dex = this.fetchDex ? (await this.fetchDex([c.address])).get(c.address.toLowerCase()) : undefined;
           const stats = await this.fetchStats(c.address);
-          if (stats) {
-            c = { ...c, price_change_6h_pct: stats.change_6h_pct };
+          if (dex && stats) {
+            const field = checkDivergence(dex, stats, this.dexCfg.divergence_pct);
+            if (field) {
+              const [dv, gv] = field === 'price' ? [dex.price, stats.price] : [dex.liquidity_usd, stats.liquidity_usd];
+              recordDivergence(this.db, Date.now(), c.address, field, dv, gv);
+              logEvent({ event: 'source_divergence', ticker: c.ticker, address: c.address, field, dex_value: dv, gmgn_value: gv });
+            }
+          }
+          const change6h = dex?.change_6h_pct ?? stats?.change_6h_pct ?? null;
+          if (change6h !== null) {
+            c = { ...c, price_change_6h_pct: change6h };
             ev = evaluate(c, this.criteria);
             if (!ev.passed || ev.score < this.criteria.alert_score_threshold) {
-              logEvent({ event: 'momentum_reject', ticker: c.ticker, address: c.address, change_6h_pct: stats.change_6h_pct });
+              logEvent({ event: 'momentum_reject', ticker: c.ticker, address: c.address, change_6h_pct: change6h });
               if (firstSeen) recordCoin(this.db, c, ev, false, Date.now(), confirmed);
               continue;
             }
@@ -109,8 +126,9 @@ export class Monitor {
       if (firstSeen) recordCoin(this.db, c, ev, alerted, Date.now(), confirmed);
     }
 
-    // outcome tracking piggybacks on the poll loop, a few fetches per tick
-    await captureDueOutcomes(this.db, this.fetchStats, Date.now(), 5);
+    // outcome tracking piggybacks on the poll loop: one DexScreener batch
+    // covers the whole due set, GMGN fills misses (budget-capped in outcomes.ts)
+    await captureDueOutcomes(this.db, this.fetchStats, Date.now(), this.fetchDex ? this.dexCfg.batch_size : 5, this.fetchDex);
 
     this.stats.scanned += result.scanned;
     this.stats.passed_gates += result.passed_gates;

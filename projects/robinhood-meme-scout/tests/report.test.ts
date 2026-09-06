@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { openDb, recordCoin, captureOutcome, dueOutcomes, markDead } from '../src/db.js';
+import { openDb, recordCoin, captureOutcome, dueOutcomes, markDead, recordDivergence } from '../src/db.js';
 import { computeReport, formatReport } from '../src/report.js';
 import type { Coin } from '../src/gmgn.js';
 
@@ -68,4 +68,21 @@ test('computeReport: bands, returns, top rejected gainer, dead count', () => {
   const text = formatReport(r);
   assert.ok(text.includes('MISS'));
   assert.ok(text.includes('400'));
+});
+
+test('report counts source divergences from the last 24h and formats a line', () => {
+  const db = openDb(':memory:');
+  recordDivergence(db, NOW - 2 * H, '0xA', 'price', 0.002, 0.001);
+  recordDivergence(db, NOW - 3 * H, '0xB', 'liquidity', 100_000, 300_000);
+  recordDivergence(db, NOW - 30 * H, '0xC', 'price', 1, 2); // stale, outside window
+  const r = computeReport(db, NOW);
+  assert.equal(r.source_divergences_24h, 2);
+  assert.ok(formatReport(r).includes('Source divergences (24h): 2'));
+});
+
+test('report omits divergence line when there are none', () => {
+  const db = openDb(':memory:');
+  const r = computeReport(db, NOW);
+  assert.equal(r.source_divergences_24h, 0);
+  assert.ok(!formatReport(r).includes('Source divergences'));
 });

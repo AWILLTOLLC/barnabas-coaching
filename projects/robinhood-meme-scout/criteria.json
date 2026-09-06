@@ -24,5 +24,12 @@
     "url": "http://localhost:11434",
     "model": "hf.co/unsloth/Qwen3.8-27B-GGUF:Q8_0",
     "timeout_ms": 90000
+  },
+  "dexscreener": {
+    "enabled": true,
+    "base_url": "https://api.dexscreener.com",
+    "batch_size": 30,
+    "timeout_ms": 5000,
+    "divergence_pct": 25
   }
 }

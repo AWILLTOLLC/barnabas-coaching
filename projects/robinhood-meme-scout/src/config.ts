@@ -27,6 +27,13 @@ export interface Criteria {
   };
   chain_context: string;
   ollama: { url: string; model: string; timeout_ms: number };
+  dexscreener?: {
+    enabled: boolean;
+    base_url?: string;
+    batch_size?: number;
+    timeout_ms?: number;
+    divergence_pct?: number;
+  };
 }
 
 export function loadCriteria(file: string = path.join(PROJECT_ROOT, 'criteria.json')): Criteria {

@@ -4,6 +4,8 @@
 **Date:** 2026-09-05  
 **Author:** Dru
 
+> **Note (2026-09-06):** Everything from here down to "DexScreener Integration (v2.3)" is the v1 plan, kept for history. TikTok, FOMO.Family, and iMessage are gone; README.md describes the system as actually built (v2: GMGN-only, Discord, feedback loop, regime tracker). New work is specced at the bottom of this file.
+
 ---
 
 ## Objective
@@ -370,3 +372,69 @@ projects/robinhood-meme-scout/
 ---
 
 **Status:** 🚀 Building GMGN Monitor next
+
+---
+
+# DexScreener Integration (v2.3)
+
+**Status:** ✅ Built 2026-09-06 (TDD, 53 tests green, live dry-run verified)
+**Author:** research session 2026-09-06 (Claude, approved by Aaron)
+
+## Why
+
+Two problems in v2.1/v2.2 that DexScreener's free API solves cheaply:
+
+1. **Outcome capture is GMGN-throttled.** `outcomes.ts` snapshots tracked coins at +1h/6h/24h/72h/168h via GMGN `token info`, capped at ≤5 fetches per tick. As the tracked set grows, captures queue up and slip past their windows.
+2. **Single-source risk.** Every number in the pipeline comes from GMGN. v1's timestamp bug (seconds-as-ms) shows what one bad payload assumption costs. No independent cross-check exists.
+
+## Verified facts (probed 2026-09-06)
+
+- Chain ID is `robinhood` on DexScreener's public API. Confirmed live via `/latest/dex/search?q=CASHCAT`: pairs return with `marketCap`, `volume.{m5,h1,h6,h24}`, `priceChange` windows, `liquidity.usd`, `txns` buys/sells, `pairCreatedAt`.
+- `GET /tokens/v1/robinhood/{addr1,...,addr30}` — up to 30 token addresses per call, 300 req/min, no API key.
+- One token can have several pairs (CASHCAT showed uniswap, giga, and "up" DEX pools). Rule: use the pair with the highest `liquidity.usd`.
+- Boost/profile endpoints (60 req/min) expose paid promotion — recorded as a signal, not a gate.
+
+## Phase 1 — batch outcome capture (build first)
+
+Replace per-coin GMGN `token info` calls in `outcomes.ts` with one DexScreener batch call per tick:
+
+- Collect all due-for-capture addresses (up to 30), hit `tokens/v1/robinhood/…`, map: price ← `priceUsd`, liquidity ← `liquidity.usd`, mc ← `marketCap`, using the deepest-liquidity pair per token.
+- Record the source (`dexscreener`) on each outcome row in `scout.db` so mixed-source medians in the daily report are auditable.
+- **Fallback:** on HTTP error, rate-limit, or a token missing from the response, fall back to the existing GMGN path for that token. Token absent from both → counts toward the existing 3-strikes dead-coin rule.
+- Net effect: 5-fetch cap goes away; a full tracked set snapshots in 1 request.
+
+## Phase 2 — momentum cross-check
+
+- The score-≥70 momentum check (`max_drop_6h_pct`) reads `priceChange.h6` from DexScreener first; GMGN `token info` becomes the fallback instead of the primary.
+- When both sources respond and disagree by >25% relative on price or >2x on liquidity, log a `source_divergence` line to `alerts.log` and stamp the alert. Divergence itself is a data-quality signal; the daily report should count them.
+
+## Config (`criteria.json` additions)
+
+```json
+"dexscreener": {
+  "enabled": true,
+  "base_url": "https://api.dexscreener.com",
+  "batch_size": 30,
+  "timeout_ms": 5000,
+  "divergence_pct": 25
+}
+```
+
+## Files
+
+- `src/dexscreener.ts` (new) — fetch + pair-selection (deepest liquidity) + normalizer, shapes pinned by `tests/fixtures/dexscreener-*.json`
+- `src/outcomes.ts` — batch capture path + per-token GMGN fallback
+- `src/monitor.ts` — momentum check reads DexScreener first
+- `src/report.ts` — divergence count in the daily report
+- `src/config.ts` — new config block
+
+## Acceptance
+
+- Unit tests: normalizer against fixtures (multi-pair token picks deepest pool; missing `pairCreatedAt` tolerated), fallback triggers on simulated 429/timeout.
+- 7 days dry-run: zero missed capture windows, divergence rate known, no change to alert criteria.
+
+## Explicitly out of scope (decided 2026-09-06)
+
+- **pump.fun** — skip. Trades RH-chain tokens but launches remain Solana-side; Pons is the chain's actual launchpad. No coin universe GMGN + DexScreener don't cover.
+- **Pons on-chain indexer** — deferred, revisit with outcome data. Pons (ponsfamily.com) has no API; data means indexing `TokenLaunched`/graduation events over RPC. Worth building only if daily reports show (a) alerts fire too late relative to graduation, or (b) losses cluster on repeat deployers (creator-wallet history is the unique signal). Bitquery sells a hosted Pons/Robinhood API as a build-vs-buy alternative.
+- DexScreener boosts as a *gate* — record only, until the feedback loop says otherwise.

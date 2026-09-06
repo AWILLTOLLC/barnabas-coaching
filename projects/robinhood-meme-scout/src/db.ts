@@ -46,6 +46,14 @@ export function openDb(file: string): DatabaseSync {
   } catch {
     // column already exists
   }
+  try {
+    db.exec(`ALTER TABLE outcomes ADD COLUMN source TEXT`);
+  } catch {
+    // column already exists
+  }
+  db.exec(`CREATE TABLE IF NOT EXISTS divergences (
+    ts INTEGER, address TEXT, field TEXT, dex_value REAL, gmgn_value REAL
+  )`);
   return db;
 }
 
@@ -86,9 +94,14 @@ export function dueOutcomes(db: DatabaseSync, now: number, limit: number): DueOu
     WHERE status = 'pending' AND due_ms <= ? ORDER BY due_ms LIMIT ?`).all(now, limit) as unknown as DueOutcome[];
 }
 
-export function captureOutcome(db: DatabaseSync, id: number, price: number, liquidity: number | null, now: number): void {
-  db.prepare(`UPDATE outcomes SET status = 'captured', price = ?, liquidity = ?, captured_ms = ? WHERE id = ?`)
-    .run(price, liquidity, now, id);
+export function captureOutcome(db: DatabaseSync, id: number, price: number, liquidity: number | null, now: number, source: string = 'gmgn'): void {
+  db.prepare(`UPDATE outcomes SET status = 'captured', price = ?, liquidity = ?, captured_ms = ?, source = ? WHERE id = ?`)
+    .run(price, liquidity, now, source, id);
+}
+
+export function recordDivergence(db: DatabaseSync, ts: number, address: string, field: string, dexValue: number | null, gmgnValue: number | null): void {
+  db.prepare('INSERT INTO divergences (ts, address, field, dex_value, gmgn_value) VALUES (?, ?, ?, ?, ?)')
+    .run(ts, address, field, dexValue, gmgnValue);
 }
 
 export function bumpAttempts(db: DatabaseSync, id: number): number {
