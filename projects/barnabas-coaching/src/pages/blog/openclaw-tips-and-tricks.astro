@@ -1,0 +1,183 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const postSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'OpenClaw Tips and Tricks',
+  description:
+    'Practical notes from running OpenClaw agents every day. First up: a cron backup that runs outside OpenClaw, so it works when the gateway is the thing that is down.',
+  author: {
+    '@type': 'Person',
+    name: 'Aaron Williams',
+    url: 'https://barnabas.coach/about',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Barnabas Coaching',
+    url: 'https://barnabas.coach',
+  },
+  datePublished: '2026-09-08',
+  url: 'https://barnabas.coach/blog/openclaw-tips-and-tricks',
+};
+---
+
+<Layout
+  title="OpenClaw Tips and Tricks"
+  description="Practical notes from running OpenClaw agents every day. First up: a cron backup that runs outside OpenClaw, so it works when the gateway is the thing that is down."
+  schema={postSchema}
+>
+  <!-- Post header -->
+  <section style="background:#0E1F3D" class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <a
+          href="/blog"
+          class="text-xs font-semibold uppercase tracking-widest mb-6 inline-block transition-colors"
+          style="color:#C08B3A"
+          onmouseover="this.style.color='#D4A254'"
+          onmouseout="this.style.color='#C08B3A'"
+        >
+          ← Blog
+        </a>
+        <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white mb-5 leading-tight">
+          OpenClaw Tips and Tricks
+        </h1>
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+              style="background:#C08B3A"
+            >
+              AW
+            </div>
+            <span class="text-sm font-medium" style="color:#8fa6c4">Aaron Williams</span>
+          </div>
+          <span style="color:#1a3358">·</span>
+          <span class="text-sm" style="color:#8fa6c4">September 8, 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post body -->
+  <section class="py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <div class="prose prose-slate prose-lg max-w-none">
+
+          <p>
+            I've been running OpenClaw agents every day for over 200 days now
+            (<a href="/agent-notes-200-days.html">the story so far</a>). This post collects the
+            practical things I wish someone had written down when I started. Only stuff I actually
+            run. One tip at a time, as they earn their place.
+          </p>
+
+          <hr style="border-color:#e5e7eb; margin: 2.5rem 0;" />
+
+          <h2>Back up the whole setup from outside OpenClaw</h2>
+
+          <p>
+            My first instinct was to schedule backups as an OpenClaw automation. Wrong tool. The
+            reason you need a backup is that the thing you're backing up might be the thing that's
+            down, so the backup can't live inside it. Mine runs from the system crontab, in a plain
+            shell script. Same logic as keeping agent memory in files on disk: the important stuff
+            stays outside the blast radius.
+          </p>
+
+          <p>Every night the cron fires a script that does four things:</p>
+
+          <ol>
+            <li>
+              Stages the SQLite databases with <code>sqlite3 .backup</code>, which produces a
+              consistent copy while the live files are mid-write. Tar a database that's being
+              written and you will eventually archive a half-written page.
+            </li>
+            <li>Tars all of <code>~/.openclaw</code>, staged copies included.</li>
+            <li>
+              Keeps 7 daily copies. Sunday's run gets flagged as the weekly archive set and kept
+              for 30 days.
+            </li>
+            <li>
+              Writes a line to <code>backup.log</code> every run. When something goes wrong, the
+              log is the postmortem.
+            </li>
+          </ol>
+
+          <p>
+            Then the step everyone skips: I did a restore from the tarball before trusting any of
+            it. Backups you haven't tested are hopes, not backups.
+          </p>
+
+          <p>
+            I wrote about the night a session reset took the gateway down and the files on disk
+            saved it (<a href="/bits-hit-the-fan.html">When bits hit the fan</a>). This covers the
+            failure one level up: the machine itself. Total cost is a shell script, one crontab
+            line, and about a minute a night. Cheap insurance for months of memory files, session
+            history, and configuration.
+          </p>
+
+        </div>
+
+        <!-- CTA box -->
+        <div class="mt-12 rounded-lg p-8 border" style="background:#0E1F3D; border-color:#1a3358">
+          <h3 class="font-serif text-xl font-bold text-white mb-2">Book a free discovery call</h3>
+          <p class="text-sm mb-6 leading-relaxed" style="color:#8fa6c4">
+            No pitch, no agenda. Just a real conversation about where you are and whether it makes
+            sense to go further together.
+          </p>
+          <a
+            href="/contact"
+            class="inline-block px-5 py-2.5 rounded text-sm font-semibold text-white transition-colors"
+            style="background:#C08B3A"
+            onmouseover="this.style.background='#D4A254'"
+            onmouseout="this.style.background='#C08B3A'"
+          >
+            Book at barnabas.coach →
+          </a>
+        </div>
+
+        <!-- Author bio -->
+        <div class="mt-10 pt-10 border-t border-gray-200 flex items-start gap-4">
+          <div
+            class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+            style="background:#C08B3A"
+          >
+            AW
+          </div>
+          <div>
+            <p class="font-semibold text-slate-900 text-sm mb-1">Aaron Williams</p>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Aaron runs OpenClaw agents in production and writes about what actually works. He is
+              Principal Consultant at Merkle & Bloom, doing embedded IT for labs and regulated
+              teams, and founder of Barnabas Coaching, where he helps individuals and small
+              businesses get more out of their agents.
+            </p>
+            <a
+              href="/about"
+              class="text-sm font-semibold mt-2 inline-block transition-colors"
+              style="color:#0E1F3D"
+              onmouseover="this.style.color='#C08B3A'"
+              onmouseout="this.style.color='#0E1F3D'"
+            >
+              Read Aaron's full story →
+            </a>
+          </div>
+        </div>
+
+        <!-- Back to blog -->
+        <div class="mt-12">
+          <a
+            href="/blog"
+            class="text-sm font-semibold transition-colors"
+            style="color:#0E1F3D"
+            onmouseover="this.style.color='#C08B3A'"
+            onmouseout="this.style.color='#0E1F3D'"
+          >
+            ← Back to Blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
