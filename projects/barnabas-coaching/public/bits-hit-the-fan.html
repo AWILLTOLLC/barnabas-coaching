@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Behind the scenes: When bits hit the fan</title>
-<meta name="description" content="A real 48-hour incident on my OpenClaw agent setup: what broke, what the logs actually said, and why the file-on-disk architecture is what saved it.">
+<meta name="description" content="A real incident on my OpenClaw agent setup: what broke, what the logs actually said, and why the file-on-disk architecture is what saved it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -68,7 +68,7 @@
 <header class="mast">
   <p class="eyebrow">Aaron Williams · Merkle &amp; Bloom / Barnabas Coaching</p>
   <h1>Behind the scenes: When bits hit the fan</h1>
-  <p class="lede">A real 48-hour incident on my agent setup. What broke, what the logs actually said, and why the boring file-on-disk decision from my 200-day post is what saved it.</p>
+  <p class="lede">A real hour of chaos on my agent setup. What broke, what the logs actually said, and why the boring file-on-disk decision from my 200-day post is what saved it.</p>
 </header>
 
 <p>This past Tuesday at 7:14pm I sent my agent a message and then watched a spinner for twenty minutes. By the time it stopped, the gateway behind it had restarted twice, four subagents had refused to spawn, and the main session was gone. Everything that mattered survived. This is the post-mortem, with the error strings left exactly as I found them.</p>
@@ -83,7 +83,7 @@
 
 <h2>Then it got worse</h2>
 
-<p>A session reset is supposed to be the recovery. This one started the messiest stretch of the two days.</p>
+<p>A session reset is supposed to be the recovery. This one started the messiest stretch of the evening.</p>
 
 <p>The model came back up and began emitting malformed tool calls, over forty in a row, each rejected with <code>message required raw_params</code>. The transcript layer threw <code>transcript projection rebuilding</code> errors while it tried to make sense of its own state. And every attempt to spawn a subagent came back with the same refusal:</p>
 
