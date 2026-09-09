@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Foundations Working Session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fafaf9; --panel:#ffffff; --ink:#111827; --muted:#4b5563;
+    --line:#e5e7eb; --accent:#b07f2e; --accent-soft:#eef2f9;
+    --navy:#0e1f3d; --navy-soft:#eef1f6;
+    --warn:#a8452a; --warn-soft:#fdefe9;
+    --good:#166b52; --good-soft:#e6f2ee;
+    --code-bg:#eef1f6; --code-fg:#1a3a6b;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  html[data-theme="dark"]{
+    --bg:#0e1f3d; --panel:#172c4e; --ink:#f6f2ea; --muted:#a6b4cb;
+    --line:#2c4166; --accent:#e3b76f; --accent-soft:#1d3763;
+    --navy:#0a1730; --navy-soft:#152845;
+    --warn:#f2a184; --warn-soft:#3a2b3d;
+    --good:#7fd3ad; --good-soft:#153730;
+    --code-bg:#0c1c38; --code-fg:#e0c391;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  #deck{height:100vh;display:flex;align-items:center;justify-content:center;padding:2.5vh 3vw}
+  .slide{display:none;width:100%;max-width:1200px;max-height:95vh;overflow-y:auto}
+  .slide.on{display:block;animation:in .16s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+  .kicker{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .85rem}
+  h1,h2{font-family:var(--serif);font-weight:700}
+  h1{font-size:clamp(2.1rem,4.6vw,3.5rem);line-height:1.08;letter-spacing:-.015em;margin:0 0 1rem}
+  h2{font-size:clamp(1.55rem,3.1vw,2.4rem);line-height:1.15;letter-spacing:-.01em;margin:0 0 1.2rem}
+  h3{font-size:1rem;margin:0 0 .45rem;font-weight:640;font-family:var(--sans)}
+  p{font-size:clamp(.97rem,1.4vw,1.14rem);line-height:1.58;color:var(--muted);margin:0 0 .95rem;max-width:64ch}
+  .lead{color:var(--ink);font-size:clamp(1.06rem,1.7vw,1.32rem)}
+  strong{color:var(--ink);font-weight:640}
+  em{color:var(--ink);font-style:italic}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+
+  .grid{display:grid;gap:.9rem}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.05rem 1.15rem}
+  .card p{font-size:.92rem;margin:0;line-height:1.5}
+  .card p+p{margin-top:.55rem}
+  .card .num{font-family:var(--mono);font-size:.67rem;color:var(--accent);letter-spacing:.1em;display:block;margin-bottom:.5rem;text-transform:uppercase}
+  .card.hi,.card.warn,.card.good,.card.deep{border-color:var(--accent);background:var(--accent-soft)}
+  .card.warn h3,.card.good h3,.card.deep h3{color:var(--ink)}
+  .card.warn .num,.card.good .num,.card.deep .num{color:var(--accent)}
+
+  ul{margin:0 0 .9rem;padding-left:1.1rem}
+  li{font-size:clamp(.94rem,1.3vw,1.05rem);line-height:1.55;color:var(--muted);margin-bottom:.4rem;max-width:62ch}
+  li strong{color:var(--ink)}
+  .card ul{margin:0} .card li{font-size:.88rem;margin-bottom:.32rem}
+
+  table{width:100%;border-collapse:collapse;font-size:.84rem}
+  th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:.65rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  td{color:var(--muted);line-height:1.4}
+  td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+  tr.pick td,tr.flag td{background:var(--accent-soft)}
+  .tw{overflow-x:auto}
+
+  .tag{display:inline-block;font-family:var(--mono);font-size:.65rem;padding:.12rem .4rem;border-radius:4px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .tag.y{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+  .tag.n{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+
+  .stack{display:flex;flex-direction:column;gap:.4rem;margin:1.1rem 0}
+  .layer{border:1px solid var(--line);border-radius:9px;padding:.8rem 1rem;background:var(--panel);display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap}
+  .layer .lbl{font-family:var(--mono);font-size:.67rem;letter-spacing:.1em;color:var(--accent);flex:0 0 100px}
+  .layer .nm{font-weight:660;font-size:.98rem;flex:0 0 auto}
+  .layer .ds{color:var(--muted);font-size:.88rem;line-height:1.42}
+  .layer.top{border-color:var(--accent);background:var(--accent-soft)}
+
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.05rem}
+  .big{font-family:var(--serif);font-size:clamp(1.8rem,3.6vw,2.7rem);color:var(--accent);line-height:1;font-weight:700}
+  .big.w,.big.g{color:var(--accent)}
+  .stat .lab{font-size:.83rem;color:var(--muted);margin-top:.45rem;line-height:1.42}
+
+  code{font-family:var(--mono);font-size:.85em;background:var(--code-bg);color:var(--code-fg);padding:.08rem .32rem;border-radius:4px}
+  pre{font-family:var(--mono);font-size:.8rem;background:var(--navy);color:#f5f3ef;padding:.8rem 1rem;border-radius:8px;overflow-x:auto;line-height:1.5;margin:.6rem 0 0}
+  html[data-theme="dark"] pre{background:#081228}
+  .ask{border-left:3px solid var(--accent);padding:.5rem 0 .5rem .9rem;margin:1.1rem 0 0;color:var(--ink);font-size:1.02rem;font-weight:560}
+  .ask::before{content:"ASK THEM";display:block;font-family:var(--mono);font-size:.61rem;letter-spacing:.12em;color:var(--accent);font-weight:400;margin-bottom:.25rem}
+
+  #bar{position:fixed;left:0;right:0;bottom:0;height:2px;background:var(--line);z-index:20}
+  #fill{height:100%;background:var(--accent);width:0;transition:width .2s}
+  #hud{position:fixed;bottom:.85rem;right:1rem;display:flex;gap:.45rem;align-items:center;z-index:21;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+  #hud button{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:.26rem .5rem;cursor:pointer;font-family:var(--mono);font-size:.7rem}
+  #hud button:hover{color:var(--ink);border-color:var(--accent)}
+  #notes{position:fixed;left:0;right:0;bottom:0;max-height:46vh;overflow-y:auto;background:var(--panel);border-top:2px solid var(--accent);padding:1rem 1.3rem 2.2rem;z-index:19;font-size:.88rem;line-height:1.55;color:var(--muted)}
+  #notes h4{margin:0 0 .45rem;font-size:.65rem;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  #notes ul{margin:0;padding-left:1.05rem}
+  #notes li{font-size:.88rem;margin-bottom:.3rem;max-width:none}
+  #notes .anton{color:var(--accent)}
+  #notes[hidden]{display:none}
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- 1 -->
+<section class="slide" data-notes="<li>Don't present this. Say hello, pour coffee, put it up while people settle.</li><li>Runway 2-3 hrs. Five blocks. Break after block C.</li>">
+  <p class="kicker">Working session</p>
+  <h1>Agents, harnesses,<br>and how to actually run them</h1>
+  <p class="lead">What the pieces are, which ones matter, and what to do first.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes="<li>Set the interaction contract out loud. If nobody interrupts in the first 20 minutes it's become a lecture and you've lost.</li><li>Name the gap directly: 'Anton, you're well ahead on this. Jump in, and I'll ask you things.' Naming it defuses it.</li>">
+  <p class="kicker">How this works</p>
+  <h2>Five blocks, and you interrupt whenever</h2>
+  <div class="grid g2">
+    <div class="card"><span class="num">A · 35 min</span><h3>The stack</h3><p>LLM, chatbot, agent, harness, session. What the words mean and why one distinction does all the work.</p></div>
+    <div class="card"><span class="num">B · 35 min</span><h3>The landscape</h3><p>The things people call harnesses, where they actually differ, and how memory decides whether any of it holds up.</p></div>
+    <div class="card"><span class="num">C · 20 min</span><h3>Channels</h3><p>How you reach an agent, and and why that choice quietly shapes what it can do.</p></div>
+    <div class="card"><span class="num">D · 35 min</span><h3>Orchestration</h3><p>One front door or ten agents. When to build a domain owner. How to let it delegate without it running away.</p></div>
+    <div class="card" style="grid-column:1/-1"><span class="num">E · 30 min</span><h3>Making one behave</h3><p>Skills, identity files, and the difference between a rule an agent follows and one it can't break.</p></div>
+  </div>
+  <p class="ask">Before we start: what do you want to hand off in 90 days that you're doing by hand today?</p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes="<li>Draw this on the whiteboard. Leave it up all session and point back at it constantly.</li><li>Key line: everyone argues about layer 1. The money is in layer 3.</li><li class='anton'>ANTON: ask which layer took him longest when he set up Sam. It's always 3.</li>">
+  <p class="kicker">Block A</p>
+  <h2>Four layers, and only one is unfamiliar</h2>
+  <div class="stack">
+    <div class="layer"><span class="lbl">Layer 1</span><span class="nm">The model</span><span class="ds">A text predictor. GPT, Claude, Grok, Llama, Qwen. Raw capability, zero ability to do anything.</span></div>
+    <div class="layer"><span class="lbl">Layer 2</span><span class="nm">The chatbot</span><span class="ds">A model plus a text box. You type, it answers, it forgets. Nothing persists.</span></div>
+    <div class="layer top"><span class="lbl">Layer 3</span><span class="nm">The harness</span><span class="ds">Triggers, tools, memory, scheduler, identity, guardrails, logs. The part that turns a predictor into a worker.</span></div>
+    <div class="layer"><span class="lbl">Layer 4</span><span class="nm">The agent</span><span class="ds">One job, one identity, running in a harness, on your accounts, without you.</span></div>
+  </div>
+  <p>Two years of headlines went to layer 1 getting better. Almost everything that changed what's possible in a business happened at layer 3.</p>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-notes="<li>Live demo: fresh chat, ask what time it is. Let it guess or refuse.</li><li>Don't explain tokens. Give the shape.</li><li>The hallucination reframe matters. It isn't lying, it has no mechanism for checking. That stops people thinking the fix is 'a better model.'</li>">
+  <p class="kicker">Layer 1</p>
+  <h2>What the model actually does</h2>
+  <p class="lead">It predicts the next chunk of text. That's the whole trick. It's also enough to be useful.</p>
+  <div class="grid g3" style="margin-top:1.3rem">
+    <div class="card warn"><h3>No memory</h3><p>Close the tab and it's gone. Every conversation starts from zero.</p></div>
+    <div class="card warn"><h3>No hands</h3><p>It can describe sending an email perfectly. It cannot send one.</p></div>
+    <div class="card warn"><h3>No clock, no trigger</h3><p>It does nothing until a human types. It has no idea what time it is.</p></div>
+  </div>
+  <p style="margin-top:1.2rem"><strong>It makes things up with total confidence because plausible-sounding is the only target it was ever given.</strong> Nothing inside it checks. A better model just misses less often (and misses more convincingly). Catching it is layer 3's job.</p>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes="<li>CORE SLIDE OF THE SESSION. Slow down.</li><li>Everything on the market calls itself an agent. This table is how Jeff tells them apart at a glance.</li><li>Point at the last row hardest.</li>">
+  <p class="kicker">Block A · the distinction that matters</p>
+  <h2>A chatbot "agent" and a harness agent are different animals</h2>
+  <div class="tw">
+  <table>
+    <thead><tr><th></th><th>Chatbot with agent features</th><th>Agent in a harness</th></tr></thead>
+    <tbody>
+      <tr><td>Who starts it</td><td>You. Always.</td><td>An event, a schedule, an inbound message</td></tr>
+      <tr><td>Exists when you're away</td><td><span class="tag n">no</span></td><td><span class="tag y">yes</span>, it's a running process</td></tr>
+      <tr><td>Identity</td><td>A prompt you paste in</td><td>Files on disk. Name, values, rules, memory.</td></tr>
+      <tr><td>Memory</td><td>This conversation</td><td>Persistent, searchable, accrues over months</td></tr>
+      <tr><td>Reachable</td><td>In one app</td><td>Telegram, Slack, Discord, email, webhook</td></tr>
+      <tr><td>Tools</td><td>What the vendor shipped</td><td>Whatever you give it, scoped per agent</td></tr>
+      <tr><td>Failure</td><td>Bad answer, you ignore it</td><td>Bad action, already happened, in the log</td></tr>
+      <tr class="pick"><td>The test</td><td colspan="2"><strong>Can it act when nobody is typing? If no, it's layer 2 with a costume.</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="ask">Which AI tools you're paying for right now would pass that test?</p>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes="<li>Six parts. Ask which one they'd have forgotten. It's always guardrails or logs.</li><li>The last two are what you sell. Anyone can wire the first four.</li>">
+  <p class="kicker">Block A · layer 3</p>
+  <h2>What's actually in a harness</h2>
+  <div class="grid g3">
+    <div class="card"><span class="num">01</span><h3>Trigger</h3><p>What wakes it. A message, a schedule, a webhook, another agent.</p></div>
+    <div class="card"><span class="num">02</span><h3>Tools</h3><p>What it can do. Read a calendar, send a message, hit an API, run a script.</p></div>
+    <div class="card"><span class="num">03</span><h3>Memory</h3><p>What survives the session. Facts, procedures, transcripts, search over all of it.</p></div>
+    <div class="card"><span class="num">04</span><h3>Identity</h3><p>Who it is. Name, voice, values, standing instructions. Files, not vibes.</p></div>
+    <div class="card hi"><span class="num">05</span><h3>Guardrails</h3><p>What it cannot do, enforced outside the model's judgment.</p></div>
+    <div class="card hi"><span class="num">06</span><h3>Logs</h3><p>Every action, timestamped, readable later. Without this you have a rumor.</p></div>
+  </div>
+  <p style="margin-top:1.2rem">Same model in two harnesses, wildly different outcomes. Which is why we're all sitting here.</p>
+</section>
+
+<!-- 7 · SESSIONS -->
+<section class="slide" data-notes="<li>This has to come before any talk of memory or retrieval, or none of that has anything to stand on.</li><li>Analogy that works: a session is a working relationship. Opening a new one is a new hire who read the handbook and knows nothing about the job.</li><li>The compaction point is the one people miss. It's lossy AND silent. Nobody tells you what got dropped, including the agent.</li><li>Ask both of them how they currently deal with a chat that's gone vague. Everyone starts over. Nobody thinks of it as a problem with a fix.</li><li class='anton'>ANTON: how old is your oldest live session, and what do you do when it degrades? Sets up his demo perfectly.</li>">
+  <p class="kicker">Block A · the unit of work</p>
+  <h2>What a session is, and why old ones are worth protecting</h2>
+  <p class="lead">A session is one continuous thread with its own running history. Everything said in it is available to the agent without being looked up. A new session is a competent stranger.</p>
+  <div class="grid g3" style="margin-top:1.2rem">
+    <div class="card"><span class="num">Why long is better</span><h3>You stop re-briefing</h3><p>A months-old session knows the project, the constraints, what you already tried and rejected, and how you like things phrased. None of that has to be retrieved because it's simply present.</p></div>
+    <div class="card warn"><span class="num">Why it's hard</span><h3>Compaction is lossy and quiet</h3><p>A session fills up. The harness then summarizes the middle to make room. Detail goes. You aren't told what went, and the agent doesn't know either. Enough rounds of that and the thread is a shadow of itself.</p></div>
+    <div class="card warn"><span class="num">The usual outcome</span><h3>People start over</h3><p>The session gets vague, so you open a fresh one and re-explain everything. Most people live in that loop. It's why agents feel like they never quite learn you.</p></div>
+  </div>
+  <p style="margin-top:1.2rem"><strong>Keeping a session alive takes three things:</strong> keep the always-loaded context small so you compact less often, write things to disk on a schedule rather than hoping the agent remembers to, and keep everything searchable so what compaction drops is still recoverable. Hold onto those three. Everything in the next block is about doing them well.</p>
+</section>
+
+<!-- 8 · ANTON DEMO -->
+<section class="slide" data-notes="<li>Hand it to Anton. Ask him beforehand so he arrives ready.</li><li>What to show: how he talks to Sam, what Sam does unprompted, what Sam knows that he never re-types, and one thing Sam got wrong.</li><li>The last one matters most. Jeff needs to see a system with edges on it. Miracles teach nobody anything.</li><li class='anton'>Follow-up in front of Jeff: 'what did you have to fix in the first month?'</li>">
+  <p class="kicker">Live</p>
+  <h2>Anton's Chief of Staff</h2>
+  <p class="lead">Ten minutes on a real one that's been running a while.</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card deep"><h3>What to show</h3><ul><li>How you talk to Sam and from where</li><li>Something it does without being asked</li><li>Something it knows that you never re-type</li><li>One thing it got wrong</li></ul></div>
+    <div class="card deep"><h3>Why this beats my slides</h3><p>Everything before this was a diagram. This is the thing existing in the world, demoed by someone who isn't selling you anything.</p></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes="<li>This slide keeps the rest of the session from being confusing. People lump all three together and then can't work out why the advice contradicts itself.</li><li>Define 'rented vertical agent' properly. Jeff brought CloseBot, so name it and Meta's Business AI directly.</li><li>Walled garden is the phrase that sticks.</li>">
+  <p class="kicker">Block B</p>
+  <h2>Three different products get called the same thing</h2>
+  <div class="grid g3">
+    <div class="card hi"><span class="num">Category 1</span><h3>Personal agent harnesses</h3><p><strong>OpenClaw, Hermes</strong></p><p>You run them, on your hardware. Always listening, own their memory and identity, reachable on any channel, any model including ones running on your own machine.</p></div>
+    <div class="card"><span class="num">Category 2</span><h3>Assistant apps growing agent features</h3><p><strong>Claude Desktop, Codex, Grok Bot</strong></p><p>Someone else runs them. Scheduled tasks, memory, connectors. Capable and improving fast, but you're a tenant.</p></div>
+    <div class="card"><span class="num">Category 3</span><h3>Rented vertical agents</h3><p><strong>CloseBot, Meta's Business AI</strong></p><p>An agent built for one industry job, sold as a subscription. It lives entirely inside its provider's walled garden: their channels, their model, their logs. Very good at the narrow thing, incapable of anything else.</p></div>
+  </div>
+  <p style="margin-top:1.3rem">These aren't competing. Most people who run agents seriously end up with all three: a rented one for the high-volume job, an assistant app for daily work, and a harness for anything they want to own.</p>
+  <p class="ask">Where does the thing you named at the start actually live?</p>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes="<li>Walk the columns, not the rows. 'Who runs it' first, then 'always listening.'</li><li>Don't turn this into a feature bake-off. The point is the shape of the tradeoff.</li>">
+  <p class="kicker">Block B</p>
+  <h2>The five, side by side</h2>
+  <div class="tw">
+  <table>
+    <thead><tr><th></th><th>Who runs it</th><th>Models</th><th>Always listening</th><th>The real tradeoff</th></tr></thead>
+    <tbody>
+      <tr><td>OpenClaw 2.0</td><td>You</td><td>Any, incl. local</td><td><span class="tag y">yes, widest channel support</span></td><td>Largest ecosystem, strongest scheduler, most room to extend. More configuration surface, which is both the power and the work.</td></tr>
+      <tr><td>Hermes</td><td>You</td><td>Any, incl. local</td><td><span class="tag y">yes, many channels</span></td><td>Fewer moving parts, tight and opinionated by design. Needs 64K context minimum. Younger, so fewer people to ask.</td></tr>
+      <tr><td>Grok Bot</td><td>xAI</td><td><span class="tag n">Grok only</span></td><td>Scheduled, not inbound</td><td>Slickest onboarding. One vendor for model and runtime. ~$200/mo, early beta.</td></tr>
+      <tr><td>Claude Desktop</td><td>Anthropic</td><td><span class="tag n">Claude only</span></td><td>Cloud schedules, no inbound</td><td>Scheduled tasks run with your machine off. Real memory and connectors. No agent you can message.</td></tr>
+      <tr><td>Codex</td><td>OpenAI</td><td><span class="tag n">OpenAI only</span></td><td>Scheduled + event triggers</td><td>Strong at code in isolated cloud containers. Nothing persists between runs. No access to your machine.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:1.1rem">Column three decides it for most people. The rest is taste.</p>
+  <p>Both self-hosted options hand you the security posture. Same deal either way. Owning it means owning that.</p>
+</section>
+
+<!-- 10 · MEMORY, NEUTRAL -->
+<section class="slide" data-notes="<li>Anton runs Hermes. Stay neutral here. Neither design is better in the abstract, they optimize for different operators.</li><li>The claim going around is 'Hermes memory is limited, OpenClaw's tiers win long-term.' Both halves are wrong, and correcting it is where you gain credibility.</li><li>Say plainly: which one is right depends on whether you'd rather the system tell you no, or let you keep going.</li><li class='anton'>ANTON: ask which failure he'd rather have. It's a real question and he'll have an opinion.</li>">
+  <p class="kicker">Block B · memory</p>
+  <h2>Two philosophies, neither one wrong</h2>
+  <p class="lead">The take going around is that Hermes has weak memory and OpenClaw's tiers run away with it over time. Both halves of that are wrong. They're multi-tiered systems that made opposite bets.</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card"><h3>Hermes bets on constraint</h3><ul><li>Small always-loaded tier, enforced by hard character caps</li><li>Over the cap, a write is <strong>refused</strong> until the agent consolidates</li><li>Unlimited searchable session archive underneath it</li><li>Skills the agent writes for itself act as procedural memory</li><li>Eight pluggable external memory providers</li></ul></div>
+    <div class="card"><h3>OpenClaw bets on capture</h3><ul><li>Hybrid keyword and vector search across everything</li><li>Nightly consolidation pass promotes notes into long-term memory</li><li>Daily working notes, indexed automatically</li><li>Origin tracking on every chunk</li><li>Same external providers available</li></ul></div>
+  </div>
+  <div class="card" style="margin-top:1.2rem"><h3>Which is better depends entirely on you</h3><p>Constraint means the system tells you no and makes you tidy up. Capture means it keeps everything and trusts retrieval to sort it out. Neither recalls reliably across many months on built-in memory alone, and both fix that the same way, by adding an external provider.</p><p>If you'd rather be forced to prune, Hermes. If you'd rather keep everything and sort through noise, OpenClaw. Pick the one that matches how you work.</p></div>
+</section>
+
+<!-- 11 · TWO GAPS, CONCRETE -->
+<section class="slide" data-notes="<li>Make both gaps concrete. Give them a scene each. Principles bounce off.</li><li>Gap 1: the memory is there, the reflex isn't. Great search nobody runs is worth nothing.</li><li>Gap 2 is the one nobody notices. Both systems learn what you TOLD them. Neither learns from what you DID.</li><li class='anton'>ANTON: he'll recognize gap 1 immediately. Let him say it before you do.</li>">
+  <p class="kicker">Block B</p>
+  <h2>Two things neither one does out of the box</h2>
+  <div class="grid g2" style="margin-top:1.1rem">
+    <div class="card warn"><span class="num">Gap 1</span><h3>It has to think to go looking</h3><p>Ask OpenClaw about a decision you made in April. The notes are on disk and the search index is fine. You'll get the answer only if the agent decides to search, and only if your words are close enough to the words it wrote down.</p><p>Nothing prods it to check. It answers from whatever's in front of it, which feels exactly like forgetting.</p></div>
+    <div class="card warn"><span class="num">Gap 2</span><h3>It never writes down how it did</h3><p>Hermes will faithfully remember that you prefer short emails. Neither Hermes nor OpenClaw records that its last three drafts got rewritten, that you asked the same question four ways before giving up, or that delegating that task was a mistake.</p><p>Perfect recall of your preferences. No record at all of its own performance. It'll make the same mistake next month, and the month after.</p></div>
+  </div>
+  <p style="margin-top:1.3rem" class="lead">Everything you can learn from documentation stops here. Past this point you're building.</p>
+</section>
+
+<!-- 13 · WHAT I RUN -->
+<section class="slide" data-notes="<li>Full disclosure, as agreed. Walk the three columns, don't read the file names.</li><li>Lead with 153 days and connect it straight back to the previous slide.</li><li>Be clear which column is the actual idea: column two. The rest is plumbing.</li><li class='anton'>ANTON: he'll want thresholds and extraction prompts. Give them. The structure took a weekend, the tuning took months, and that's the honest split.</li>">
+  <p class="kicker">Block B · what I actually run</p>
+  <h2>The layer I built on top</h2>
+  <p class="lead">Those three things from block A, built out. Stock OpenClaw underneath, plus a tiering scheme, five logs, and three scheduled loops. My main session is <strong>153 days old</strong> and still sharp.</p>
+  <div class="grid g3" style="margin-top:1.2rem">
+    <div class="card"><span class="num">Tiering</span><h3>Index before detail</h3><ul><li><code>MEMORY-L0.md</code>: one line per topic, ~20 lines, always loaded</li><li><code>memory/topics/*.md</code>: full context, loaded only when L0 says it's relevant</li><li>Keeps the hot context small, which is what keeps compaction rare</li><li>L0 through L2 never load in shared contexts. Discord and group chats get nothing.</li></ul></div>
+    <div class="card hi"><span class="num">The actual idea</span><h3>Logs that record performance</h3><ul><li><code>DECISIONS.md</code>: alternatives considered, trade-offs accepted</li><li><code>ERRORS.md</code>: root cause plus a prevention rule per mistake</li><li><code>instincts.md</code>: patterns with confidence scores; high needs two-plus sessions of evidence</li><li><code>signals.jsonl</code>: re-queries, corrections, approvals, task outcomes</li><li><code>orchestration-log.jsonl</code>: every delegate-or-not call and how it went</li></ul></div>
+    <div class="card"><span class="num">Loops</span><h3>Scheduled, not hoped for</h3><ul><li>Nightly consolidation, 11pm, catching anything the session-end hook missed</li><li>Weekly signal compression, Sunday 10pm, promoting patterns into instincts</li><li>Dreaming running underneath, promoting into long-term memory</li></ul></div>
+  </div>
+  <p style="margin-top:1.2rem">Also in there: a wiki vault, a searchable knowledge database, ByteRover's context tree, per-agent workspaces, and a <code>REVIEW:</code> protocol for anything pasted in that might be hostile. Ask me about any of it.</p>
+</section>
+
+<!-- 14 · GENERAL LESSON -->
+<section class="slide" data-notes="<li>Reworked into a general lesson. The old version was a tour of my install's bugs.</li><li>The lesson: the moment you have two places that can answer the same question, you need a rule for which wins. Nobody plans for this and everybody hits it.</li><li>Do the arithmetic out loud. It's the part people remember.</li><li>Land on the practical answer: make the agent SEE where an answer came from rather than silently resolving it.</li>">
+  <p class="kicker">Block B · the lesson</p>
+  <h2>Two sources, one question</h2>
+  <p class="lead">Every memory system that gets used eventually has more than one place an answer could come from. A notes file and a wiki. A database and an imported archive. The moment that's true, two of them can disagree.</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card warn"><h3>The default is not a rule</h3><p>Out of the box, whichever source the search ranks highest wins. Ranking is about phrasing, so the stalest thing in the pile can win because it happened to use your exact words.</p></div>
+    <div class="card"><h3>The obvious fix, and its limit</h3><p>Score each source by how much you trust it and fold that into ranking. Owner-written highest, ingested lower, auto-generated lowest.</p><p>It helps. It doesn't settle anything:</p><pre>0.95 relevance × 0.5 trust = 0.475
+0.45 relevance × 1.0 trust = 0.450</pre></div>
+  </div>
+  <p style="margin-top:1.2rem">A strong match from a source you barely trust still beats a weak match from one you wrote yourself. <strong>Weighting tilts a ranking. It doesn't decide a conflict.</strong> Those are separate jobs and most systems only do the first.</p>
+  <p><strong>What to actually do:</strong> label every source with where it came from and how much it's worth, and make the agent see that label alongside the answer. You're not resolving the conflict automatically. You're making it visible so it gets weighed instead of guessed.</p>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes="<li>Stops Jeff wasting money. Someone will tell him Claude Desktop can run his business unattended.</li><li>The connector bug is real and current: cloud scheduled tasks can't reach connectors when they start on their own, but one message into the same session fixes it.</li><li>THE LOCAL MODEL POINT IS FOR JEFF. He's privacy-focused. None of these will ever use hardware he owns. Mention the M5 Max running a capable model with nothing leaving the house.</li>">
+  <p class="kicker">Block B</p>
+  <h2>How close are the assistant apps?</h2>
+  <p class="lead">Closer than most people think. The gap is somewhere odd.</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card good"><h3>What they do now</h3><ul><li>Claude Desktop's scheduled tasks run on Anthropic's infrastructure, with your laptop asleep and the app closed</li><li>Memory that persists across chat and work sessions</li><li>MCP servers, connectors, skills, plugins</li><li>Codex runs delegated work in cloud containers on Gmail, Slack and GitHub events</li></ul></div>
+    <div class="card warn"><h3>The gaps that still matter</h3><ul><li><strong>Nothing can message them.</strong> No Telegram, no Signal, no inbound anything. Pull-and-schedule only.</li><li><strong>No local models, ever.</strong> Every request leaves your building. If you own hardware that can run a capable model at home, none of these will touch it.</li><li>No durable per-agent workspace or identity</li><li>Anything needing local files still needs the machine awake</li></ul></div>
+  </div>
+  <div class="card warn" style="margin-top:1.1rem"><h3>The thing that isn't on the marketing page</h3><p>There's a documented, reproducible bug where cloud scheduled tasks can't reach their connectors when they start on their own. Send one message into the same session and everything works. Open for months, across many connectors. Unattended and <em>reliably</em> unattended are two different claims.</p></div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-notes="<li>Jeff brought CloseBot. Place it properly rather than dismissing it.</li><li>Honest framing: renting for a high-volume single job is a good decision. It teaches you nothing and extends nowhere, which is why it isn't the whole answer.</li>">
+  <p class="kicker">Block B</p>
+  <h2>Where a rented vertical agent fits</h2>
+  <div class="grid g2">
+    <div class="card good"><h3>What you get</h3><p>One job done properly on day one. No infrastructure, no model selection, no security posture to maintain, and someone else's phone rings at 2am. For a single high-volume job with a clear shape, this is usually the right call.</p></div>
+    <div class="card warn"><h3>What you give up</h3><p>You configure inside their box. Their channels, their logging, their model, their roadmap. Nothing you learn transfers out. When the second job comes along, you rent again.</p></div>
+  </div>
+  <div class="card good" style="margin-top:1.2rem"><h3>They can hand off, and that's the bridge</h3><p>Most vertical agents can fire a webhook out when something happens. CloseBot and Meta's Business Agent both do. That means the rented agent doesn't have to be a dead end: it works the narrow job inside its walled garden, then hands the result to an agent you own, which can do everything the rented one can't.</p><p>Booked call goes out as a webhook, your agent picks it up, updates your records, preps the brief, tells you what it knows about them. The two categories work together rather than replacing each other.</p></div>
+  <div class="card" style="margin-top:.9rem"><h3>The pattern that works</h3><p>Rent the vertical agent for the one job that pays for itself immediately. Build in a harness for work that's specific to you, changes often, or touches things you'd rather not put in someone else's system. Wire the first into the second.</p></div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-notes="<li>Break before this block if energy is dropping.</li><li>Frame: people pick a channel by habit and then fight its limitations for a year.</li>">
+  <p class="kicker">Block C</p>
+  <h2>The channel is an architecture decision</h2>
+  <p class="lead">How you reach your agent determines what it can be. Most people pick by habit and then spend a year working around it.</p>
+  <div class="grid g4" style="margin-top:1.3rem">
+    <div class="card"><h3>Threading</h3><p>Can it hold several parallel workstreams without them bleeding together?</p></div>
+    <div class="card"><h3>Privacy</h3><p>Who else can read the transcript. Your agent's log is a record of your business.</p></div>
+    <div class="card"><h3>Reliability</h3><p>Some channels go quiet and stay quiet. You won't get an alert.</p></div>
+    <div class="card"><h3>Reach</h3><p>Files, voice, images, groups. Not every channel carries everything.</p></div>
+  </div>
+</section>
+
+<!-- 18 · CHANNEL TABLE, iMESSAGE FIXED -->
+<section class="slide" data-notes="<li>Don't read the table. Point out the footguns: Teams threads but won't carry files, SMS is text only, and email is not private no matter how much it feels like it is.</li><li>iMessage IS end-to-end encrypted between Apple devices. The nuance is that the harness reads it at the endpoint through a Mac bridge, so the encryption protects it in transit and your Mac is the trust boundary.</li><li>WhatsApp support is reverse-engineered, so it breaks when Meta changes something and carries account-ban risk.</li>">
+  <p class="kicker">Block C</p>
+  <h2>What each channel actually gives you</h2>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Channel</th><th>Threads</th><th>Files</th><th>Privacy</th><th>Setup</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td>Telegram</td><td><span class="tag y">yes</span></td><td><span class="tag y">yes</span></td><td>Not end-to-end</td><td>~5 min</td><td>The consensus starting point. Works from a home server with no public IP. Voice included.</td></tr>
+      <tr class="pick"><td>Discord</td><td><span class="tag y">native</span></td><td><span class="tag y">yes</span></td><td>Server-visible</td><td>~30 min</td><td>Best structure for multiple agents. Buttons, forms, voice, presence.</td></tr>
+      <tr><td>Slack</td><td><span class="tag y">yes</span></td><td><span class="tag y">yes</span></td><td>Workspace-visible</td><td>Medium</td><td>Threading plus a built-in audit trail. Right answer if the team already lives there.</td></tr>
+      <tr><td>Signal</td><td><span class="tag n">no</span></td><td><span class="tag y">yes</span></td><td><span class="tag y">end-to-end</span></td><td>Hard</td><td>Private by default. Painful setup, weak voice.</td></tr>
+      <tr><td>iMessage</td><td><span class="tag n">no</span></td><td><span class="tag y">yes</span></td><td><span class="tag y">end-to-end</span></td><td>Medium</td><td>Encrypted Apple device to Apple device. The bridge runs on your Mac, so that Mac is the trust boundary, not Apple.</td></tr>
+      <tr class="flag"><td>WhatsApp</td><td><span class="tag n">no</span></td><td><span class="tag y">yes</span></td><td>Meta</td><td>Hard</td><td>Reverse-engineered. Breaks when Meta changes things. Account-ban risk.</td></tr>
+      <tr class="flag"><td>MS Teams</td><td><span class="tag y">yes</span></td><td><span class="tag n">no files</span></td><td>Tenant</td><td>Medium</td><td>Threads but won't carry attachments. Surprising and annoying.</td></tr>
+      <tr><td>SMS</td><td><span class="tag n">no</span></td><td><span class="tag n">no</span></td><td>Carrier</td><td>Medium</td><td>Maximum reach, minimum capability.</td></tr>
+      <tr class="flag"><td>Email</td><td><span class="tag y">yes</span></td><td><span class="tag y">yes</span></td><td>Provider reads it</td><td>Easy</td><td>Underrated for anything that isn't urgent. Not private: most providers openly scan inboxes for ad targeting and training unless you self-host or pay for one that doesn't.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 19 · THREADING + WEB UI -->
+<section class="slide" data-notes="<li>Non-obvious and worth the time.</li><li>In OpenClaw, DMs share one session by default. Fine solo, wrong the moment two people message it. The setting is dmScope.</li><li>THE WEB UI POINT: both harnesses ship one, and it's what serious operators use for heavy input. Long pastes, file drops, config, reading back transcripts. Chat apps are for the quick stuff.</li><li class='anton'>ANTON: ask what proportion of his Sam time is the web UI versus a chat app. Bet it's higher than Jeff expects.</li>">
+  <p class="kicker">Block C</p>
+  <h2>Threading, and the interface people forget</h2>
+  <p class="lead">One agent, three things in flight. On a threading channel each is its own conversation with its own context. On a non-threading channel they're one long argument.</p>
+  <div class="grid g3" style="margin-top:1.2rem">
+    <div class="card good"><h3>Threads: Slack, Discord, Telegram topics</h3><p>Each thread gets its own session. Ask about the listing in one and the ad account in another, and neither contaminates the other.</p></div>
+    <div class="card warn"><h3>No threads: WhatsApp, Signal, SMS, iMessage</h3><p>Everything lands in one stream. You end up managing named sessions by hand, running separate chats, or accepting the bleed.</p></div>
+    <div class="card hi"><h3>The web UI, which is not a fallback</h3><p>Both OpenClaw and Hermes ship a browser interface, and it's where most heavy work happens. Long pastes, file drops, editing config, reading back a transcript, running several sessions side by side.</p><p>Chat apps are for reaching the agent from your pocket. The web UI is for actually working with it.</p></div>
+  </div>
+  <div class="card" style="margin-top:1.2rem"><h3>Check how your sessions are scoped</h3><p>Every harness has a setting for whether conversations share a session or get their own, and the defaults differ by channel. It's worth finding that setting on day one rather than the day a second person messages your agent and lands in the middle of your context.</p></div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-notes="<li>Block D is the intellectual core for Anton and the governance lesson for Jeff.</li><li>Open by asking Anton how many agents he has and how he decides which to talk to.</li>">
+  <p class="kicker">Block D</p>
+  <h2>You will end up with more than one agent</h2>
+  <p class="lead">Then the question stops being "can it do the task" and becomes "who's in charge."</p>
+  <div class="grid g3" style="margin-top:1.3rem">
+    <div class="card"><span class="num">Option A</span><h3>Talk to all of them</h3><p>You're the router. You remember which agent does what, which has the calendar, which one you told about the thing last week.</p></div>
+    <div class="card hi"><span class="num">Option B</span><h3>One Chief of Staff</h3><p>You talk to one. It knows the others, holds the context, and routes. You stop being the switchboard.</p></div>
+    <div class="card"><span class="num">Option C</span><h3>Chief of Staff spawns whatever</h3><p>No standing agents. The orchestrator creates helpers on demand, they work, they disappear.</p></div>
+  </div>
+  <p class="ask">Anton, how many do you have, and how do you decide which one to talk to?</p>
+</section>
+
+<!-- 21 -->
+<section class="slide" data-notes="<li>Option A stops scaling around three agents, and the bottleneck is you, not the agents.</li><li>Worth building even for two, because the value isn't routing, it's that context lands in one place.</li>">
+  <p class="kicker">Block D</p>
+  <h2>Why a Chief of Staff beats ten agents</h2>
+  <div class="grid g2">
+    <div class="card warn"><h3>What talking to ten costs you</h3><ul><li>You hold the routing table in your head</li><li>Context splits ten ways and none has the whole picture</li><li>You repeat yourself constantly</li><li>You forget which one you told</li><li>Each needs its own attention to stay useful</li></ul></div>
+    <div class="card good"><h3>What one front door buys</h3><ul><li>One place to talk, from one channel</li><li>Context accrues somewhere singular</li><li>It knows what the others are for and when to involve them</li><li>You describe outcomes instead of choosing tools</li><li>One relationship to maintain instead of ten</li></ul></div>
+  </div>
+  <p style="margin-top:1.2rem">The real win is where things land. Everything you say goes into one memory instead of scattering across ten.</p>
+</section>
+
+<!-- 22 -->
+<section class="slide" data-notes="<li>The insight of the block. Nobody arrives at this on their own.</li><li>In OpenClaw, routing is config: channel X goes to agent Y, most specific match wins. No model decides.</li><li>An orchestrator deciding at runtime adds a guess to every request. Config can't mis-route. A model can.</li><li class='anton'>ANTON: does Sam route by config or by judgment? Most people build judgment first and regret it.</li>">
+  <p class="kicker">Block D</p>
+  <h2>Who decides where a request goes?</h2>
+  <div class="grid g2">
+    <div class="card good"><h3>Config decides</h3><p>You write down that messages from this channel go to that agent. Most specific rule wins. Same result every time, costs nothing.</p><p><strong>Cannot mis-route.</strong></p></div>
+    <div class="card warn"><h3>A model decides</h3><p>The orchestrator reads the request and picks a specialist. Flexible, handles things you didn't anticipate.</p><p><strong>Adds a guess and a token charge to every request, and it will occasionally pick wrong.</strong></p></div>
+  </div>
+  <p style="margin-top:1.3rem">Most people build the second because it feels smarter. The harnesses that have been around longest default to the first, and let the model decide only when config runs out.</p>
+</section>
+
+<!-- 23 · DOMAIN OWNERS, COUNTERPOINT FIXED -->
+<section class="slide" data-notes="<li>Why you build a standing domain owner rather than letting the CoS conjure helpers.</li><li>The memory and credential arguments are the ones that land.</li><li>For Jeff, make it concrete: a Leads agent, an Ads agent, a Listings agent, each with its own logins. If one gets confused it can't touch the ad account.</li><li>The last card is a cost. Frame it as one. It is not a weakness in the design.</li>">
+  <p class="kicker">Block D</p>
+  <h2>Why you build a domain owner on purpose</h2>
+  <p class="lead">A standing agent that owns one area of your work, with its own identity, memory, credentials and history.</p>
+  <div class="grid g3" style="margin-top:1.2rem">
+    <div class="card"><span class="num">01</span><h3>Learning compounds</h3><p>A spawned helper does the job and evaporates. Everything it worked out is gone. A standing agent gets better at its domain every week.</p></div>
+    <div class="card"><span class="num">02</span><h3>Credentials stay scoped</h3><p>Your Leads agent has the inbox. Your Ads agent has the ad account. Neither has the other. A spawned helper inherits whatever its parent had.</p></div>
+    <div class="card"><span class="num">03</span><h3>Cost is knowable</h3><p>Five agents is five. Unbounded spawning is unbounded until someone caps it.</p></div>
+    <div class="card"><span class="num">04</span><h3>You can debug it</h3><p>Open its history and read what it did. Spawned children are harder to find and sometimes still running.</p></div>
+    <div class="card"><span class="num">05</span><h3>It has a voice</h3><p>A standing agent develops a way of working you come to trust. It's how you notice when something's off.</p></div>
+    <div class="card hi"><span class="num">The cost</span><h3>Memory has to be managed</h3><p>Persistent state needs looking after, and memory that sticks around can be fed something wrong and keep it. That's one maintenance job with known fixes, the same ones from block B: provenance on every entry, scheduled review, and confidence that can be demoted. It's a maintenance job, and one you already know how to do.</p></div>
+  </div>
+</section>
+
+<!-- 24 · SPAWNING, REWORKED -->
+<section class="slide" data-notes="<li>REWORKED. Ground it, explain why, give the answer.</li><li>Start with what spawning is FOR, or the caps sound arbitrary. Parallel work and keeping a messy subtask out of the main context are both real wins.</li><li>The evidence: Claude Code shipped three separate caps in one week last July and briefly turned nesting off entirely. OpenClaw ships depth and per-agent child caps. Caps exist because it wasn't bounded.</li><li>Land on the answer, not the horror story.</li>">
+  <p class="kicker">Block D</p>
+  <h2>Delegation is good. Unbounded delegation is the problem.</h2>
+  <div class="grid g2">
+    <div class="card good"><h3>What spawning buys you</h3><p>Two real wins. You get parallel work, so five things get researched at once instead of in sequence. And a messy subtask runs in its own context, so a thousand lines of noisy output never lands in the conversation you care about.</p><p>Delegation earns its place. The shape of it is the whole question.</p></div>
+    <div class="card warn"><h3>What goes wrong without limits</h3><p>Nothing tells a helper it can't create its own helpers. Two becomes six becomes twenty, each one paying for its own context. Work runs that you can't see, can't stop, and find out about on the bill.</p><p>It leaks instead of crashing. Nobody notices until the bill.</p></div>
+  </div>
+  <div class="card" style="margin-top:1.2rem"><h3>How we know this is real</h3><p>Claude Code shipped three separate limits in a single week last July: how many helpers at once, how many per session, and how deep the nesting can go. Nesting was switched off entirely for four days before coming back capped. OpenClaw ships its own depth and per-agent child limits. Those caps exist because the behavior wasn't bounded and it cost people money.</p></div>
+  <div class="card good" style="margin-top:.9rem"><h3>The setup that keeps the upside</h3><p>Let your domain owners delegate, and put a ceiling on it: two or three helpers at a time, one level deep, helpers cannot create helpers, and every run has a timeout. You keep the parallel work and the clean context, and you lose the runaway.</p></div>
+</section>
+
+<!-- 25 · WHERE PEOPLE LAND, WITH CAPPED SPAWNING -->
+<section class="slide" data-notes="<li>Land the block on the shape that works, including capped spawning from domain owners.</li><li>The shared-files pattern is the practical part: goal, plan, status, and an append-only log that doubles as your audit trail.</li><li>Ask what three domain owners each of them would build.</li>">
+  <p class="kicker">Block D</p>
+  <h2>Where people land</h2>
+  <div class="grid g2">
+    <div class="card good"><h3>The shape that holds up</h3><ul><li>One persistent coordinator holding memory and routing</li><li>A small number of persistent domain owners, each with scoped credentials</li><li>Each domain owner can spin up <strong>two or three helpers</strong> for parallel work in its own area</li><li>Helpers can't create helpers. One level, always.</li><li>Cheap model for routing, expensive model for thinking</li></ul></div>
+    <div class="card"><h3>How they coordinate</h3><p>Shared files in a common workspace rather than agents messaging each other. A goal file, a plan, a status, and an append-only log.</p><p>That log is your audit trail, and it's what makes the whole arrangement debuggable instead of mysterious.</p></div>
+  </div>
+  <p style="margin-top:1.2rem">Capped delegation from a standing owner is the sweet spot. The owner keeps the memory and the keys, and borrows hands when it needs them.</p>
+  <p class="ask">If you built three domain owners this month, what would they own?</p>
+</section>
+
+<!-- 26 -->
+<section class="slide" data-notes="<li>Block E is practical. Jeff can act on this even if he never installs a harness.</li><li>Progressive disclosure is the useful mental model: skills stay out of the way until needed.</li>">
+  <p class="kicker">Block E</p>
+  <h2>Skills: capability without bloat</h2>
+  <p class="lead">A skill is a folder with instructions in it. The agent sees a one-line description of every skill it has, and reads the full thing only when it's relevant.</p>
+  <div class="grid g3" style="margin-top:1.2rem">
+    <div class="card"><span class="num">Tier 1</span><h3>The list</h3><p>Every skill's name and one-line description. Always loaded, costs almost nothing.</p></div>
+    <div class="card"><span class="num">Tier 2</span><h3>The instructions</h3><p>Loaded only when the agent decides the skill applies.</p></div>
+    <div class="card"><span class="num">Tier 3</span><h3>The references</h3><p>Deeper files, pulled in only if the instructions call for them.</p></div>
+  </div>
+  <p style="margin-top:1.3rem">Fifty skills can sit installed and cost you almost nothing until one is needed. It's also why <strong>a skill's description matters more than its contents</strong>: the description is the only part that decides whether it ever gets opened.</p>
+</section>
+
+<!-- 27 -->
+<section class="slide" data-notes="<li>Hermes ships one in the default bundle. That's the strongest evidence it's considered essential.</li><li>Honest note: none of them claim to beat AI detectors. They fix how it reads.</li>">
+  <p class="kicker">Block E</p>
+  <h2>Humanizer</h2>
+  <p class="lead">Strips the tells out of AI-written text. Roughly thirty patterns: inflated significance, vague attribution, hedging, the rule-of-three rhythm, "I hope this helps."</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card"><h3>Why it's on every essentials list</h3><p>Your agents draft most of what goes out under your name, and the default register is recognizable at a glance. It needs no API key and no account, so there's no reason not to run it.</p><p>Hermes ships one in the default bundle, which tells you how settled the question is.</p></div>
+    <div class="card warn"><h3>Two honest caveats</h3><p>There are several credible versions and no canonical one, so "install humanizer" is ambiguous advice. Pick one and stick with it.</p><p>None of them claim to beat AI detectors and there's no evidence they do. They fix how it reads, not whether a classifier flags it.</p></div>
+  </div>
+</section>
+
+<!-- 28 · PONYTAIL, SIMPLIFIED -->
+<section class="slide" data-notes="<li>Simplified. Just what it is and why to use it.</li><li>The demo that lands: an agent writing 400 lines of custom date picker when the browser has had one built in for a decade.</li><li>One practical note: invoke it. Say 'ponytail' or 'simplest thing that works'. Installed and idle is the normal state for a behavioral skill.</li>">
+  <p class="kicker">Block E</p>
+  <h2>Ponytail</h2>
+  <p class="lead">Stops an agent overbuilding. Left alone, agents write far more than the job needs, because more code looks like more effort.</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card"><h3>What it does</h3><p>Makes the agent walk a ladder before writing anything, and stop at the first rung that works.</p><ul style="margin-top:.5rem"><li>Does this need to exist at all?</li><li>Is it in the standard library?</li><li>Is it already a built-in feature?</li><li>Is it in something you already installed?</li><li>Is it a one-liner?</li><li>Only then, write something new.</li></ul></div>
+    <div class="card good"><h3>Why you want it</h3><p>Less code to read and less to pay for. The demo everyone quotes is an agent knocking out four hundred lines of custom date picker when browsers have shipped one for a decade.</p><p>It carves out safety, validation and anything you explicitly asked for, so it won't quietly simplify away something that mattered.</p></div>
+  </div>
+  <p style="margin-top:1.2rem"><strong>Invoke it.</strong> Say "ponytail" or "give me the simplest thing that works." Installing a behavioral skill and never mentioning it usually means it just sits there.</p>
+</section>
+
+<!-- 29 · PERSONALITY + CONFIGURATOR -->
+<section class="slide" data-notes="<li>Most people dump everything into one file and wonder why nothing sticks.</li><li>Clean formulation: SOUL answers 'who is talking right now.' AGENTS answers 'how does work get done here.'</li><li>SOUL started in OpenClaw and Hermes adopted it. In Hermes it loads only from home, never the working directory, so personality stays constant across projects.</li><li>PLUG THE BUILDER. It's yours, it's free, and handing Jeff a tool he can open tonight is worth more than the slide.</li>">
+  <p class="kicker">Block E</p>
+  <h2>Where the agent's personality lives</h2>
+  <div class="tw">
+  <table>
+    <thead><tr><th>File</th><th>Answers</th><th>Scope</th><th>What goes in</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td>SOUL.md</td><td>Who is talking?</td><td>Global, always</td><td>Values, tone, boundaries, how it handles being wrong. Two or three hundred words.</td></tr>
+      <tr><td>IDENTITY.md</td><td>What do people see?</td><td>Global</td><td>Name, avatar, how it presents itself externally.</td></tr>
+      <tr class="pick"><td>AGENTS.md</td><td>How does work get done?</td><td>Per project</td><td>Procedures, commands, output format, hard rules for this context.</td></tr>
+      <tr><td>USER.md</td><td>Who am I?</td><td>Global</td><td>Durable facts about you it shouldn't need told twice.</td></tr>
+      <tr><td>TOOLS.md</td><td>What may it use?</td><td>Global</td><td>Tool policy, what needs approval, cost and frequency limits.</td></tr>
+      <tr><td>MEMORY.md</td><td>What has it learned?</td><td>Global</td><td>Facts that accrued. Usually written by the agent, not you.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:1rem">The standard mistake is workflow steps in SOUL and personal preferences in AGENTS. Identity travels everywhere. Rules are scoped to where the work is.</p>
+  <div class="card hi" style="margin-top:1rem"><h3>Don't write these from a blank page</h3><p>I built a tool for exactly this. It walks you through the questions and hands you the files.</p><p style="margin-top:.4rem"><a href="http://barnabas.coach/agent-configurator.html">barnabas.coach → AI Agent Builder</a></p></div>
+</section>
+
+<!-- 30 -->
+<section class="slide" data-notes="<li>Most actionable thing in Block E and it's counterintuitive.</li><li>Anthropic's own guidance: bloated instruction files cause the model to ignore your actual instructions. Their test: would removing this cause a mistake? If not, cut it.</li><li>The two diagnostics are gold. Say them slowly.</li>">
+  <p class="kicker">Block E</p>
+  <h2>Shorter files work better</h2>
+  <div class="grid g3">
+    <div class="stat"><div class="big g">300</div><div class="lab">Words. Roughly where well-performing instruction files cluster.</div></div>
+    <div class="stat"><div class="big w">500+</div><div class="lab">Words. Diminishing returns start here.</div></div>
+    <div class="stat"><div class="big w">1000+</div><div class="lab">Words. Now working against you.</div></div>
+  </div>
+  <p style="margin-top:1.4rem" class="lead">The test for every line: <strong>would removing this cause a mistake?</strong> If not, cut it.</p>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card good"><h3>Two diagnostics worth memorizing</h3><p><strong>It keeps breaking a rule you wrote?</strong> The file is too long and the rule is getting lost in it.</p><p><strong>It asks things the file already answers?</strong> The wording is ambiguous, not missing.</p></div>
+    <div class="card warn"><h3>What not to put in</h3><ul><li>Anything it could work out by looking</li><li>Standard conventions it already follows</li><li>Anything that changes often</li><li>"Write clean code"</li><li>Someone else's file, unedited</li></ul></div>
+  </div>
+</section>
+
+<!-- 31 -->
+<section class="slide" data-notes="<li>Most important concept for anyone about to point an agent at something that matters.</li><li>There is no RULES.md convention. People keep looking for one.</li><li>Layer 1 is advisory. The model weighs it against everything else in context, and as context fills your rules get deprioritized.</li>">
+  <p class="kicker">Block E</p>
+  <h2>A rule it follows, and a rule it can't break</h2>
+  <p class="lead">There's no RULES file. People go looking for one. Hard constraints don't live in markdown, and understanding why is the difference between an agent you trust and one you hope about.</p>
+  <div class="stack" style="margin-top:1.2rem">
+    <div class="layer"><span class="lbl">Layer 1</span><span class="nm">Instruction files</span><span class="ds">SOUL, AGENTS, TOOLS. <strong>Advisory.</strong> Competes for attention with everything else. Buried rules get deprioritized as context fills.</span></div>
+    <div class="layer top"><span class="lbl">Layer 2</span><span class="nm">Tool gates &amp; hooks</span><span class="ds"><strong>Deterministic.</strong> Code that runs before the tool does and can cancel it. The model never gets a chance to reason around it.</span></div>
+    <div class="layer"><span class="lbl">Layer 3</span><span class="nm">Harness &amp; sandbox</span><span class="ds"><strong>Hardest.</strong> Permission modes, allow-lists, filesystem and network isolation. The check happens outside the agent entirely.</span></div>
+    <div class="layer"><span class="lbl">Layer 4</span><span class="nm">Governance</span><span class="ds">Policy, human checkpoints, audit. More a discipline than a product, and the weakest layer in practice.</span></div>
+  </div>
+</section>
+
+<!-- 32 · PROOF + PRACTICAL -->
+<section class="slide" data-notes="<li>Close Block E with the demo and then show them how to actually build one.</li><li>Same agent, same tasks. Prompts-only failed 2 of 3. With a tool gate: 3 of 3 blocked, zero false positives.</li><li>The mechanism is the point: the gate replaces the tool result before the model sees anything, so there's nothing to argue with.</li><li>WALK THE EXAMPLE. Ten lines of Python is the whole thing, and seeing that it's small is what makes people build one.</li>">
+  <p class="kicker">Block E · the proof</p>
+  <h2>The same agent, twice</h2>
+  <div class="grid g2">
+    <div class="card warn"><h3>Rules written in the instruction file</h3><div class="big w" style="margin:.5rem 0">2 of 3 failed</div><p>Confirmed a booking with no payment verified. Accepted 15 guests against a stated maximum of 10. The rules were right there in the file.</p></div>
+    <div class="card good"><h3>Same rules as a tool gate</h3><div class="big g" style="margin:.5rem 0">3 of 3 blocked</div><p>Zero false positives. The gate cancels the call and substitutes the result before the model sees anything, so there's nothing to reason around.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:1.2rem">
+    <div class="card"><h3>Where the gate goes in each harness</h3><ul><li><strong>Claude Code / Desktop:</strong> a <code>PreToolUse</code> hook in <code>.claude/settings.json</code>, pointing at a script</li><li><strong>OpenClaw:</strong> per-agent tool deny lists, permission modes, sandbox on, then <code>openclaw security audit</code> after any config change</li><li><strong>Hermes:</strong> <code>write_approval</code> on memory and skills, plus tool policy in <code>TOOLS.md</code></li></ul></div>
+    <div class="card hi"><h3>A gate is about ten lines</h3><p>"Never message anyone outside my contact list." The hook reads the pending call, checks the recipient, exits non-zero to block.</p><pre>tool = json.load(sys.stdin)
+if tool["name"] == "send_message":
+    to = tool["input"]["recipient"]
+    if to not in ALLOWED:
+        print(f"blocked: {to}")
+        sys.exit(2)   # 2 = deny</pre></div>
+  </div>
+  <p style="margin-top:1.1rem"><strong>Instruction files are for preferences. The harness is for constraints.</strong> Writing a hard constraint into markdown and trusting it is the most common way people get surprised.</p>
+</section>
+
+<!-- 33 -->
+<section class="slide" data-notes="<li>Don't let them leave without one concrete action each. Write them down.</li><li>Jeff's should be small: one agent, one channel, one job he can check in a week.</li><li class='anton'>Anton: an external memory provider, moving Sam's routing from judgment to config, or turning one standing instruction into a real tool gate.</li>">
+  <p class="kicker">Close</p>
+  <h2>One thing each, this week</h2>
+  <div class="grid g3">
+    <div class="card hi"><h3>Jeff</h3><p>One agent, one channel, one job you can check on in a week. Telegram, something low stakes, something you'd notice if it got wrong.</p></div>
+    <div class="card deep"><h3>Anton</h3><p>Pick one: an external memory provider, moving Sam's routing from judgment to config, or turning one standing instruction into an actual tool gate.</p></div>
+    <div class="card"><h3>Me</h3><p>Whatever unblocks either of the above, plus the reading list.</p></div>
+  </div>
+  <p style="margin-top:1.4rem" class="lead">The trap right now is designing a nine-agent system before running one. Run one badly first. You'll learn more in a week of that than from another afternoon like this.</p>
+</section>
+
+</div>
+
+<div id="bar"><div id="fill"></div></div>
+<div id="hud">
+  <span id="clock">0:00</span><span id="pos"></span>
+  <button id="nbtn" title="Notes (N)">notes</button>
+  <button id="tbtn" title="Theme (T)">theme</button>
+</div>
+<div id="notes" hidden><h4>Facilitator notes</h4><ul id="nlist"></ul></div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,notesOn=false;
+  var fill=document.getElementById('fill'),pos=document.getElementById('pos');
+  var notes=document.getElementById('notes'),nlist=document.getElementById('nlist');
+  function render(){
+    slides.forEach(function(s,n){s.classList.toggle('on',n===i)});
+    pos.textContent=(i+1)+' / '+slides.length;
+    fill.style.width=((i+1)/slides.length*100)+'%';
+    nlist.innerHTML=slides[i].getAttribute('data-notes')||'<li>No notes.</li>';
+    document.getElementById('deck').scrollTop=0;
+  }
+  function go(d){i=Math.max(0,Math.min(slides.length-1,i+d));render()}
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(1)}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(-1)}
+    else if(e.key==='Home'){i=0;render()} else if(e.key==='End'){i=slides.length-1;render()}
+    else if(e.key==='n'||e.key==='N'){toggleNotes()} else if(e.key==='t'||e.key==='T'){toggleTheme()}
+  });
+  function toggleNotes(){notesOn=!notesOn;notes.hidden=!notesOn}
+  function toggleTheme(){var d=document.documentElement.getAttribute('data-theme')==='dark';
+    document.documentElement.setAttribute('data-theme',d?'light':'dark')}
+  document.getElementById('nbtn').onclick=toggleNotes;
+  document.getElementById('tbtn').onclick=toggleTheme;
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(e.target.closest('#hud')||e.target.closest('#notes')||e.target.tagName==='A')return;
+    go(e.clientX>window.innerWidth/2?1:-1)});
+  var t0=Date.now(),clock=document.getElementById('clock');
+  setInterval(function(){var s=Math.floor((Date.now()-t0)/1000);
+    clock.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')},1000);
+  render();
+})();
+</script>
+</body>
+</html>
