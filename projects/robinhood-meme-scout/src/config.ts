@@ -26,6 +26,7 @@ export interface Criteria {
     confirm_scans: number;
   };
   chain_context: string;
+  metas?: { keywords: string[]; note: string }[];
   ollama: { url: string; model: string; timeout_ms: number };
   dexscreener?: {
     enabled: boolean;

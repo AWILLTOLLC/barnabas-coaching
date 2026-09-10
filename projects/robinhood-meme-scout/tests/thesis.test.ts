@@ -48,8 +48,9 @@ test('momentum gate: dumping coin rejected, mild dip passes, unknown flagged', (
 });
 
 test('buildThesisPrompt contains facts, rules, and chain context', () => {
-  const ev = evaluate(coin, loadCriteria());
-  const prompt = buildThesisPrompt(coin, ev, loadCriteria().chain_context);
+  const c = loadCriteria();
+  const ev = evaluate(coin, c);
+  const prompt = buildThesisPrompt(coin, ev, c);
   assert.ok(prompt.includes('CHROME'));
   assert.ok(prompt.includes('Chrome Cat'));
   assert.ok(prompt.includes('longxyz'));
@@ -58,4 +59,36 @@ test('buildThesisPrompt contains facts, rules, and chain context', () => {
   assert.ok(/no invented facts/i.test(prompt));
   assert.ok(/no buy\/sell advice/i.test(prompt));
   assert.ok(prompt.includes('Robinhood Chain'));
+});
+
+test('meta note appears only for coins whose name/ticker matches a meta keyword', () => {
+  const c = loadCriteria();
+  const ev = evaluate(coin, c);
+  // "Chrome Cat" matches the cat meta
+  assert.ok(buildThesisPrompt(coin, ev, c).includes('Cash Cat'));
+  // a non-cat coin never sees the cat narrative
+  const dark = { ...coin, name: 'DarkRoute', ticker: 'DARK', twitter: null };
+  assert.ok(!buildThesisPrompt(dark, evaluate(dark, c), c).includes('Cash Cat'));
+});
+
+test('launch venue is labeled shared infrastructure and score marked not-evidence', () => {
+  const c = loadCriteria();
+  const prompt = buildThesisPrompt(coin, evaluate(coin, c), c);
+  assert.ok(prompt.includes('shared launch infrastructure'));
+  assert.ok(/never use it as evidence/i.test(prompt));
+  assert.ok(/Never cite scout_score/.test(prompt));
+});
+
+test('liquidity peer verdict line drives the liquidity rule', () => {
+  const c = loadCriteria();
+  const ev = evaluate(coin, c);
+  const withPeers = buildThesisPrompt(coin, ev, c, {
+    liqPeers: { n: 59, ratio_pct: 6.9, p25_pct: 7.9, median_pct: 10.6, p75_pct: 14.9, verdict: 'below typical' },
+  });
+  assert.ok(withPeers.includes('verdict: below typical'));
+  assert.ok(withPeers.includes('peer median 10.6%'));
+  assert.ok(/MUST NOT be described as thin/.test(withPeers));
+
+  const without = buildThesisPrompt(coin, ev, c);
+  assert.ok(without.includes('liquidity_vs_band_peers: unknown'));
 });

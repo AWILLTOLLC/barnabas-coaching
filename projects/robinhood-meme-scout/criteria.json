@@ -19,7 +19,13 @@
     "cold_green_share": 0.35,
     "confirm_scans": 5
   },
-  "chain_context": "This coin trades on Robinhood Chain (public mainnet launched July 2026). The chain's flagship memecoin is Cash Cat (~$150M MC, a nod to Robinhood's original company name CashCat), so cat-themed coins are typically derivative plays on that meta. Volume on the chain is dominated by fast-rotating memecoins.",
+  "chain_context": "This coin trades on Robinhood Chain (public mainnet launched July 2026). Volume on the chain is dominated by fast-rotating memecoins.",
+  "metas": [
+    {
+      "keywords": ["cat"],
+      "note": "The chain's flagship memecoin is Cash Cat (~$150M MC, a nod to Robinhood's original company name CashCat), so cat-themed coins are typically derivative plays on that meta."
+    }
+  ],
   "ollama": {
     "url": "http://localhost:11434",
     "model": "hf.co/unsloth/Qwen3.8-27B-GGUF:Q8_0",

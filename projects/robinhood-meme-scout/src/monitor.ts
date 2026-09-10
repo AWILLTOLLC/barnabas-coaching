@@ -4,6 +4,7 @@ import { loadCriteria, loadEnv, PROJECT_ROOT, type Criteria } from './config.js'
 import { fetchAllCoins, fetchTokenStats, type Coin, type TokenStats } from './gmgn.js';
 import { evaluate } from './filters.js';
 import { generateThesis } from './thesis.js';
+import { liquidityBaseline } from './peers.js';
 import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } from './alerts.js';
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
 import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime, recordDivergence } from './db.js';
@@ -64,7 +65,10 @@ export class Monitor {
     this.fetchHolders = opts.fetchHolders ?? (this.bsCfg.enabled ? (a, ts, dec) => fetchHolderCheck(a, ts, dec, this.bsCfg) : undefined);
     this.duneCfg = { ...DUNE_DEFAULTS, ...(this.criteria.dune ?? {}) };
     this.duneKey = env.DUNE_API_KEY ?? '';
-    this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria, this.regime?.current));
+    this.thesis = opts.thesis ?? ((coin, ev) => generateThesis(coin, ev, this.criteria, {
+      regime: this.regime?.current,
+      liqPeers: liquidityBaseline(this.db, coin, this.criteria.market_cap_bands, Date.now()),
+    }));
     this.known = this.loadKnown();
     this.db = openDb(path.join(this.dataDir, 'scout.db'));
     this.regime = new RegimeTracker((lastConfirmedRegime(this.db) as RegimeLabel) ?? 'neutral', this.criteria.regime);
