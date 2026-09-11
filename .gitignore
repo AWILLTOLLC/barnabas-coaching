@@ -4,3 +4,30 @@ __pycache__/
 dist/
 .env
 *.log
+
+# --- 2026-09-11 triage: ephemeral agent artifacts (never commit) ---
+# Dreaming/dream consolidation dumps (distilled output gets promoted to memory/ manually)
+**/memory/dreaming/
+**/memory/.dreams/
+agents/fern/
+channels/barnabas-coaching/drafts/
+channels/scout/
+# Transient
+tmp/
+tmp-shots/
+context-offloads/
+handoffs/
+.DS_Store
+# Build artifacts & state
+*.bak
+projects/barnabas-coaching/public/vendor/
+projects/robinhood-meme-scout/data/*.db
+projects/robinhood-meme-scout/data/heartbeat.json
+projects/robinhood-meme-scout/data/known.json
+projects/robinhood-meme-scout/data/report-state.json
+projects/robinhood-meme-scout/data/monitor.err
+# Dead/retired projects (deleted from disk)
+projects/buzz-offering/
+projects/safeharbor/
+vantage-oc/
+openclaw-src/
