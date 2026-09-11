@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw User Guide — Essential `/` Commands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      line-height: 1.6;
+      color: #2d3748;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+      padding: 40px 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: #718096;
+      font-weight: 500;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px 28px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-left: 4px solid #667eea;
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f0f4f8;
+    }
+    
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 1.5rem;
+      color: white;
+      font-weight: 600;
+    }
+    
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .command-list {
+      list-style: none;
+    }
+    
+    .command-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f4f8;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .command-item:last-child {
+      border-bottom: none;
+    }
+    
+    .command {
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      background: #f7fafc;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-right: 12px;
+      white-space: nowrap;
+    }
+    
+    .description {
+      color: #4a5568;
+      line-height: 1.5;
+    }
+    
+    .highlight-section {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8eaf6 100%);
+      border-radius: 16px;
+      padding: 40px 32px;
+      margin-top: 40px;
+      border: 2px solid #667eea;
+    }
+    
+    .highlight-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    
+    .highlight-item {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .highlight-command {
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .highlight-desc {
+      font-size: 0.9rem;
+      color: #718096;
+      line-height: 1.4;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 30px;
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2.2rem;
+      }
+      
+      .card {
+        padding: 24px 20px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">OpenClaw User Guide</h1>
+      <p class="subtitle">Essential `/` Commands</p>
+    </div>
+    
+    <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">🔄</div>
+          <h3 class="card-title">Session Control</h3>
+        </div>
+        <ul class="command-list">
+          <li class="command-item">
+            <span class="command">/reset</span>
+            <span class="description">Start fresh. Clears current context, keeps conversation history.</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/compact</span>
+            <span class="description">Compresses conversation to fit model context limits.</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/new</span>
+            <span class="description">Creates a brand new session from scratch.</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/status</span>
+            <span class="description">Shows current session: model, token usage, time elapsed, cost.</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">🧠</div>
+          <h3 class="card-title">Memory & Context</h3>
+        </div>
+        <ul class="command-list">
+          <li class="command-item">
+            <span class="command">/memory</span>
+            <span class="description">Opens your memory workspace (MEMORY.md, daily notes, decisions, errors).</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/search</span>
+            <span class="description">Search past sessions for specific topics or decisions.</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/log</span>
+            <span class="description">View recent session history and logs.</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">🛠️</div>
+          <h3 class="card-title">Deployment & Tools</h3>
+        </div>
+        <ul class="command-list">
+          <li class="command-item">
+            <span class="command">/approve</span>
+            <span class="description">Grant elevated permissions (file edits, shell commands, config changes).</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/deploy</span>
+            <span class="description">Trigger deployment of workspace changes (if configured).</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">⚙️</div>
+          <h3 class="card-title">Model & Runtime</h3>
+        </div>
+        <ul class="command-list">
+          <li class="command-item">
+            <span class="command">/model</span>
+            <span class="description">Show current model; use `/model &lt;name&gt;` to switch models.</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/reasoning</span>
+            <span class="description">Toggle reasoning mode on/off (hidden until enabled).</span>
+          </li>
+          <li class="command-item">
+            <span class="command">/cost</span>
+            <span class="description">Show current session token cost.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="highlight-section">
+      <h3 class="highlight-title">Most Used in Practice</h3>
+      <div class="highlight-grid">
+        <div class="highlight-item">
+          <span class="highlight-command">/reset</span>
+          <span class="highlight-desc">When stuck in a context loop</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-command">/status</span>
+          <span class="highlight-desc">Check model usage and cost</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-command">/compact</span>
+          <span class="highlight-desc">When hitting context limits</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-command">/approve</span>
+          <span class="highlight-desc">Before big changes</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-command">/model</span>
+          <span class="highlight-desc">Switch between local/cloud models</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>Generated by OpenClaw • For Aaron Williams</p>
+    </div>
+  </div>
+</body>
+</html>

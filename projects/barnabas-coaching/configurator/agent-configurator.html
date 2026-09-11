@@ -7,8 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="vendor/jszip.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -738,6 +737,117 @@
     .command-copy:hover { border-color: var(--gold); color: var(--gold); }
     .command-copy.copied { color: #6ee7b7; border-color: rgba(110,231,183,0.3); }
 
+    /* ─── SETUP GUIDE (Step 3) ─── */
+    .guide-block {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+    .guide-block:last-child { border-bottom: none; }
+    .guide-block h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .guide-block p { margin-bottom: 8px; }
+    .guide-block p:last-child { margin-bottom: 0; }
+    .guide-block code {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--gold-light);
+    }
+    .guide-list { list-style: none; margin: 0; padding: 0; }
+    .guide-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+    .guide-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+    .command-row-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin: 2px 0 10px;
+      line-height: 1.55;
+    }
+    .command-verify {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--blue-muted);
+      margin-top: 8px;
+    }
+    .command-verify .verify-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6ee7b7;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+    .command-verify strong { color: var(--blue-muted); font-weight: 600; }
+    .harness-note {
+      font-size: 12px;
+      color: var(--text-dim);
+      border-left: 2px solid var(--border-gold);
+      padding-left: 12px;
+      margin-top: 10px;
+    }
+    .harness-picker {
+      padding: 22px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .harness-picker-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .harness-btns { display: flex; gap: 12px; }
+    .harness-btn {
+      flex: 1;
+      max-width: 220px;
+      background: var(--navy);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+    }
+    .harness-btn small {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+    .harness-btn:hover { border-color: var(--border-gold); color: var(--text-primary); }
+    .harness-btn.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-dim);
+    }
+    .harness-btn.active small { color: var(--gold-light); }
+    .harness-panel { display: none; }
+    .harness-panel.visible { display: block; }
+
     /* ─── DIVIDER ─── */
     .divider {
       height: 1px;
@@ -1035,12 +1145,12 @@
       <div class="prog-line"></div>
       <div class="prog-step" id="prog3">
         <div class="prog-dot">3</div>
-        <span class="prog-label">Preview</span>
+        <span class="prog-label">Export</span>
       </div>
       <div class="prog-line"></div>
       <div class="prog-step" id="prog4">
         <div class="prog-dot">4</div>
-        <span class="prog-label">Export</span>
+        <span class="prog-label">Preview</span>
       </div>
     </div>
   </div>
@@ -1116,9 +1226,103 @@
 
 <div class="divider"></div>
 
-<!-- STEP 3+4: PREVIEW + EXPORT -->
+<!-- STEP 3: EXPORT · HOOK IT UP TO YOUR AGENT -->
+<div class="command-section" id="commandSection">
+  <div class="section-label" style="margin-bottom:16px">Step 3 · Hook it up to your agent</div>
+  <div class="command-card">
+    <div class="command-header">
+      <h3>Install your agent's personality</h3>
+      <p>You've built two files. Now put them where your agent platform reads them. Pick where this agent will run — the page shows only that platform's setup.</p>
+    </div>
+
+    <div class="harness-picker">
+      <div class="harness-picker-label">Where is this agent going to run?</div>
+      <div class="harness-btns">
+        <button type="button" class="harness-btn" id="harnessBtnOpenclaw" data-harness="openclaw" onclick="selectHarness('openclaw')">OpenClaw<small>self-hosted gateway agent</small></button>
+        <button type="button" class="harness-btn" id="harnessBtnHermes" data-harness="hermes" onclick="selectHarness('hermes')">Hermes<small>Nous Research agent</small></button>
+      </div>
+    </div>
+
+    <!-- ── OPENCLAW PANEL ── -->
+    <div class="harness-panel" id="openclawPanel">
+      <div class="guide-block">
+        <h4>What you just built</h4>
+        <p><strong>SOUL.md</strong> is your agent's personality and values — how it thinks, speaks, and behaves. <strong>IDENTITY.md</strong> is its name, emoji, and role description. Together they're the difference between a generic chatbot and <em>your</em> agent.</p>
+      </div>
+
+      <div class="guide-block">
+        <h4>Where these files go</h4>
+        <p>OpenClaw reads both files from the agent's workspace folder: <code>~/.openclaw/workspace/channels/your-agent-name/</code>. The steps below create that folder and install the files.</p>
+      </div>
+
+      <div class="guide-block" style="padding-bottom:16px">
+        <h4>Setup steps</h4>
+        <p>Run these in order. Click <strong>Copy</strong> on each box, paste it into your terminal, and press Enter.</p>
+      </div>
+      <div class="command-block" id="commandBlock">
+        <!-- injected by JS -->
+      </div>
+
+      <div class="guide-block">
+        <h4>Verify it worked</h4>
+        <ul class="guide-list">
+          <li>Your agent greets you in the voice you picked — that's your SOUL.md talking.</li>
+          <li>Ask it "who are you?" — it should describe itself using the identity you built (name, role, personality), not a generic assistant answer.</li>
+          <li>Run <code>openclaw agents list</code> — your agent's name appears with a workspace path.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h4>Troubleshooting</h4>
+        <ul class="guide-list">
+          <li><strong>Agent still sounds generic.</strong> The file didn't land where OpenClaw reads it. Double-check the path — <code>~/.openclaw/workspace/channels/your-agent-name/SOUL.md</code> — then restart the gateway.</li>
+          <li><strong>"command not found: openclaw"</strong> — the OpenClaw CLI isn't installed or isn't on your PATH. Install OpenClaw first (see openclaw.ai/docs).</li>
+          <li><strong>Copy button pastes the wrong thing.</strong> Some terminals paste on right-click, others with Cmd+V (Mac) or Ctrl+V (Windows/Linux). Paste into a plain text editor first to check what you got.</li>
+          <li><strong>You edited the files in Step 4 but the agent didn't change.</strong> The copy buttons always grab your latest edits, but the agent only re-reads files on restart. Copy again and restart the gateway.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── HERMES PANEL ── -->
+    <div class="harness-panel" id="hermesPanel">
+      <div class="guide-block">
+        <h4>What you just built</h4>
+        <p><strong>SOUL.md</strong> is your agent's personality and values — how it thinks, speaks, and behaves. Hermes uses a single SOUL.md as the agent's complete identity — there's no separate identity file, so we've folded your agent's name and emoji into the top of the file for you.</p>
+      </div>
+
+      <div class="guide-block" style="padding-bottom:16px">
+        <h4>Put it into Hermes Desktop</h4>
+      </div>
+      <div class="command-block" id="hermesBlock">
+        <!-- injected by JS -->
+      </div>
+
+      <div class="guide-block">
+        <h4>Verify it worked</h4>
+        <ul class="guide-list">
+          <li>Start a new session in the Hermes Desktop app — the very first reply should match the personality you chose.</li>
+          <li>Ask it "who are you?" — it should describe itself using the name and role you built, not the default "You are Hermes Agent" answer.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h4>Troubleshooting</h4>
+        <ul class="guide-list">
+          <li><strong>Agent still sounds like default Hermes.</strong> The SOUL field is empty or the save didn't take — an empty SOUL makes Hermes fall back to its built-in identity. Reopen the agent's profile, confirm your text is there, then start a new chat.</li>
+          <li><strong>Edits in Step 4 aren't showing up.</strong> Your agent reads its SOUL when a chat starts, so start a new chat after saving changes.</li>
+          <li><strong>Hermes scans the SOUL file for prompt-injection patterns.</strong> Keep it focused on personality and voice — meta-instructions about tools or files belong elsewhere and may be flagged.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="divider"></div>
+
+<!-- STEP 4: PREVIEW & EXPORT -->
 <div class="preview-section" id="previewSection">
-  <div class="section-label" style="margin-bottom:16px">Step 3 · Preview &amp; Export</div>
+  <div class="section-label" style="margin-bottom:16px">Step 4 · Preview &amp; Export</div>
   <div class="preview-card">
     <div class="preview-top">
       <div class="preview-identity">
@@ -1154,23 +1358,6 @@
     </div>
   </div>
 </div>
-
-<div class="divider"></div>
-
-<!-- STEP 5: OPENCLAW COMMANDS -->
-<div class="command-section" id="commandSection">
-  <div class="section-label" style="margin-bottom:16px">Step 4 · Deploy to OpenClaw</div>
-  <div class="command-card">
-    <div class="command-header">
-      <h3>Gateway Commands</h3>
-      <p>Copy these commands into your OpenClaw gateway to create and configure your agent. Run them in order.</p>
-    </div>
-    <div class="command-block" id="commandBlock">
-      <!-- injected by JS -->
-    </div>
-  </div>
-</div>
-
 
 <!-- NAMES DIALOG -->
 <div class="dialog-overlay" id="namesDialog" onclick="closeNamesDialog(event)">
@@ -2118,6 +2305,7 @@ let activeCat = 'Agents';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let selectedSoul = null;
+let selectedHarness = null;
 let selectedIdentity = null;
 let activeTab = 'soul';
 // track user edits to file content
@@ -2126,6 +2314,9 @@ let editedIdentityContent = null;
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 function init() {
+  // always start at the top — don't let the browser restore a stale scroll position
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
   renderSoulCards();
   renderIdentityCards();
   renderEmojiPicker();
@@ -2218,7 +2409,7 @@ function selectIdentity(id) {
   updateProgress();
   updatePreview();
   setTimeout(() => {
-    document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('commandSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 200);
 }
 
@@ -2279,9 +2470,9 @@ function updateProgress() {
 function updatePreview() {
   const preview = document.getElementById('previewSection');
   const cmdSection = document.getElementById('commandSection');
-  if (!selectedSoul || !selectedIdentity) {
+  if (!selectedSoul || !selectedIdentity || !selectedHarness) {
     preview.classList.remove('visible');
-    cmdSection.classList.remove('visible');
+    updateCommands();  // Step 3 only needs soul + identity — keep it independent of harness
     return;
   }
   preview.classList.add('visible');
@@ -2359,49 +2550,93 @@ function updateCommands() {
   block.innerHTML = `
     <div class="command-row">
       <div class="command-row-label">1 · Add the agent to OpenClaw</div>
+      <div class="command-row-desc">Registers your new agent with the OpenClaw gateway and gives it a workspace.</div>
       <div class="command-code" style="position:relative">
 <span class="cmd-key">openclaw</span> agents add <span class="cmd-val">${slug}</span> --model <span class="cmd-val">anthropic/claude-sonnet-4-6</span> --workspace <span class="cmd-val">~/.openclaw/workspace/channels/${slug}</span>
         <button class="command-copy" onclick="copyCommand(this, \`openclaw agents add ${slug} --model anthropic/claude-sonnet-4-6 --workspace ~/.openclaw/workspace/channels/${slug}\`)">Copy</button>
       </div>
+      <div class="command-verify"><span class="verify-dot"></span><strong>You'll know it worked when:</strong>&nbsp;the command finishes without an error and mentions the workspace path.</div>
     </div>
     <div class="command-row">
-      <div class="command-row-label">2 · Create the agent workspace directory (if not auto-created)</div>
+      <div class="command-row-label">2 · Create the agent workspace directory</div>
+      <div class="command-row-desc">Makes the folder where your agent's personality files will live. Harmless if it already exists.</div>
       <div class="command-code" style="position:relative">
 <span class="cmd-key">mkdir</span> -p <span class="cmd-val">~/.openclaw/workspace/channels/${slug}</span>
         <button class="command-copy" onclick="copyCommand(this, 'mkdir -p ~/.openclaw/workspace/channels/${slug}')">Copy</button>
       </div>
+      <div class="command-verify"><span class="verify-dot"></span><strong>You'll know it worked when:</strong>&nbsp;the command runs silently — no output and no error means success.</div>
     </div>
     <div class="command-row">
-      <div class="command-row-label">3 · Write SOUL.md to the agent workspace</div>
+      <div class="command-row-label">3 · Save SOUL.md into the workspace</div>
+      <div class="command-row-desc">Click <strong>Copy content</strong> — it grabs your exact SOUL.md, including any edits you made in Step 4. Paste it into a new file at the path shown and save it as SOUL.md.</div>
       <div class="command-code" style="position:relative">
-<span class="cmd-comment"># Copy SOUL.md to your agent's workspace folder:</span>
+<span class="cmd-comment"># Save this content as:</span>
 <span class="cmd-val">~/.openclaw/workspace/channels/${slug}/SOUL.md</span>
         <button class="command-copy" onclick="copyCommand(this, getSoulContent())">Copy content</button>
       </div>
+      <div class="command-verify"><span class="verify-dot"></span><strong>You'll know it worked when:</strong>&nbsp;opening the file shows your agent's personality text.</div>
     </div>
     <div class="command-row">
-      <div class="command-row-label">4 · Write IDENTITY.md to the agent workspace</div>
+      <div class="command-row-label">4 · Save IDENTITY.md into the workspace</div>
+      <div class="command-row-desc">Same idea: copy this content and save it as IDENTITY.md next to SOUL.md. This file carries the agent's name, emoji, and role.</div>
       <div class="command-code" style="position:relative">
-<span class="cmd-comment"># Copy IDENTITY.md to your agent's workspace folder:</span>
+<span class="cmd-comment"># Save this content as:</span>
 <span class="cmd-val">~/.openclaw/workspace/channels/${slug}/IDENTITY.md</span>
         <button class="command-copy" onclick="copyCommand(this, getIdentityContent())">Copy content</button>
       </div>
+      <div class="command-verify"><span class="verify-dot"></span><strong>You'll know it worked when:</strong>&nbsp;the file opens and shows the name and emoji you picked in Step 2.</div>
     </div>
     <div class="command-row">
-      <div class="command-row-label">5 · Load IDENTITY.md into agent config</div>
+      <div class="command-row-label">5 · Load IDENTITY.md into the agent config</div>
+      <div class="command-row-desc">Tells OpenClaw to read the IDENTITY.md you just saved and apply it to the agent.</div>
       <div class="command-code" style="position:relative">
 <span class="cmd-key">openclaw</span> agents set-identity --agent <span class="cmd-val">${slug}</span> --from-identity
         <button class="command-copy" onclick="copyCommand(this, \`openclaw agents set-identity --agent ${slug} --from-identity\`)">Copy</button>
       </div>
+      <div class="command-verify"><span class="verify-dot"></span><strong>You'll know it worked when:</strong>&nbsp;the command confirms the identity was set for “${slug}”.</div>
     </div>
     <div class="command-row">
       <div class="command-row-label">6 · Restart the gateway to activate</div>
+      <div class="command-row-desc">Your agent re-reads its personality files on startup, so this last step switches it on.</div>
       <div class="command-code" style="position:relative">
 <span class="cmd-key">openclaw</span> <span class="cmd-flag">gateway</span> restart
         <button class="command-copy" onclick="copyCommand(this, 'openclaw gateway restart')">Copy</button>
       </div>
+      <div class="command-verify"><span class="verify-dot"></span><strong>You'll know it worked when:</strong>&nbsp;the gateway comes back up and your agent greets you in the voice you chose — see “Verify it worked” below.</div>
     </div>
   `;
+
+  renderHermesBlock();
+}
+
+function getHermesSoulContent() {
+  const name = document.getElementById('agentName').value.trim() || 'My Agent';
+  const emoji = selectedEmoji || '🤖';
+  return `# ${name} ${emoji}\n\n` + getSoulContent();
+}
+
+function renderHermesBlock() {
+  const block = document.getElementById('hermesBlock');
+  if (!block) return;
+  block.innerHTML = `
+    <ol class="guide-list" style="margin:0;padding-left:22px;line-height:2">
+      <li>Open the <strong>Hermes Desktop app</strong> and find your agent in the sidebar roster.</li>
+      <li>Open the agent's edit pane and expand the <strong>Advanced</strong> section — its SOUL file is there.</li>
+      <li>Select everything in the SOUL field, paste your content over it (copy it from the preview in Step 4 below), and save.</li>
+      <li>Start a new chat with the agent — it now speaks with the personality you built.</li>
+    </ol>
+  `;
+}
+
+function selectHarness(harness) {
+  selectedHarness = harness;
+  document.querySelectorAll('.harness-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.harness === harness);
+  });
+  document.getElementById('openclawPanel').classList.toggle('visible', harness === 'openclaw');
+  document.getElementById('hermesPanel').classList.toggle('visible', harness === 'hermes');
+  if (harness === 'hermes') renderHermesBlock();
+  updatePreview();
 }
 
 function switchTab(tab) {
