@@ -566,7 +566,9 @@ Signal types tracked: re_query (-0.8), correction (-1.0), approval (+1.0), tool_
 
 At task start, in the SAME tool-call block as the first tool call, append one JSON line to `memory/orchestration-log.jsonl`:
 
-{"ts":"...","task_type":"...","decision":"inline|subagent|domain-agent","model":"...","rationale":"≤1 line"}
+{"ts":"...","task_type":"...","decision":"inline|subagent|domain-agent","model":"...","declared_deviation":false,"rationale":"≤1 line"}
+
+The `model` field is the enforcement mechanism for the model-deviation rule: any model other than the q8 default must have `declared_deviation: true` AND a declared line in the user-facing reply. Weekly consolidation greps for `declared_deviation:true` and surfaces them to Aaron.
 
 At task end, append a second line with the same fields plus `outcome`, `turns_needed` (log is append-only; never edit earlier lines). ALL tasks are logged, inline included — inline is what must be audited. If a session ends and the log has no line for work you did, the session failed this rule.
 
