@@ -37,3 +37,43 @@ _Extracted from sessions. Promote high-confidence ones into SOUL.md / AGENTS.md 
 **Confidence:** high
 **Evidence:** Two spawns died in <110ms on workspace-migration validation while I waited on a completion event.
 **Context:** Any spawn from worktree sessions or workspaces with legacy setup state.
+### [2026-09-08] Missed Aaron's email despite search hit <!-- user-level -->
+**Trigger:** About to ask Aaron for a factual detail (address, email, phone, handle).
+**Action:** Assume it exists somewhere in memory files — grep for the exact value pattern (@, phone digits) across MEMORY.md/USER.md/memory/ before asking; a hit framed as plumbing (allowlist, CalDAV) may still BE the fact.
+**Confidence:** 0.5
+**Evidence:** Asked Aaron for his email; mac@kaw.cc appeared in MEMORY.md#L139 as "to Aaron's mac@kaw.cc" and I dismissed it as iMessage config.
+
+### [2026-09-08] Two-pass local vendor research
+**Trigger:** Researching local service vendors (haulers, contractors, trades) for a recommendation.
+**Action:** Run two differently-shaped search passes — category+town ("dumpster rental Mukilteo") AND nearby-town service search ("junk removal Lynnwood pricing") — and actively hunt small operators with published flat pricing before recommending quote-by-phone incumbents; big names dominate category searches and hide exactly the local operators the user wants.
+**Confidence:** 0.5
+**Evidence:** Mukilteo dumpster research (2026-09-08) missed P&T Industries (Lynnwood, $340-400 published) — surfaced only when Aaron named it; the research agent's "local operators" filter caught only established directory-listed haulers.
+
+### [2026-09-08] Local previews bind to Tailscale, never localhost
+**Trigger:** Any request for a local dev/preview server or "pop a node server" for Aaron.
+**Action:** Kill any localhost-bound instance; serve with --host on the gateway Tailscale IP (100.65.203.16). His daily-driver M1 is on the tailnet and cannot reach localhost. Standing order, his words: "Always do this any time I ask for a local node."
+**Confidence:** 0.9
+**Evidence:** 2026-09-08 portal preview session; he corrected mid-session and restated as standing rule.
+
+### [2026-09-08] Incremental requests are one task — run a cumulative counter
+**Trigger:** User feeds a task in small steps (look → read → edit → commit → push); each step alone stays under the delegation thresholds.
+**Action:** Treat the whole sequence as one task with a running tool-call counter from the first message; when any Orchestral Rule threshold fires (>6 tool calls, >2 writes, any commit/push/build/deploy, second repo), stop at the next clean checkpoint and hand off to a subagent with a handoff note. Log every task to orchestration-log.jsonl in the first tool block, and state any non-q8 subagent model as `model deviation: <model> — <reason>`.
+**Confidence:** 0.5
+**Evidence:** 2026-09-08 Barnabas site work ran inline as ~5 sequential "small" steps and became a 30+ tool-call project (html pull, repo check, commit, Cloudflare push) with zero orchestration-log entries and an undeclared GLM Flash subagent model.
+### [2026-09-09] Bind local servers to tailscale IP
+**Trigger:** Standing up any local web server / node / dev server for Aaron.
+**Action:** Always bind to 100.65.203.16 (tailscale), never localhost-only; his M1 MacBook reaches this host only via tailnet.
+**Confidence:** 0.5
+**Evidence:** Aaron corrected twice (Sep 1 and Sep 8, 2026 sessions) after localhost-bound servers were unreachable from his MacBook; second time he said "Always do this any time I ask for a local node."
+
+### [2026-09-10] Write topic file at task end, not session end
+**Trigger:** Any task that creates or changes a runnable artifact (script, cron, service, config, deploy).
+**Action:** Write/update the L2 topic file and L0/L1 index entries immediately at task end, before ending the turn — sessions die mid-flight too often to trust the end-of-session pass.
+**Confidence:** 0.5
+**Evidence:** Sep 5 meme-scout/GMGN session never reached durable memory; only nightly-cron notes survived (dreaming audit 2026-09-10).
+
+### [2026-09-10] Unknown-name = mandatory memory_search <!-- project: github.com/AWILLTOLLC/barnabas-coaching -->
+**Trigger:** User asks about a named business/person/project/thing that I cannot currently define from loaded context — even if the question feels conversational and I have "related" context (e.g. other businesses).
+**Action:** Run memory_search on the name BEFORE answering. Never substitute adjacent entities for the one asked about. If the name appears in injected context (repo tags, project markers), follow the pointer instead of treating it as plumbing.
+**Confidence:** 0.6
+**Evidence:** Tweet asked about Barnabas; I answered for Black Raven + Glimmer because they were in-context and Barnabas wasn't. Repo tag with Barnabas was literally in front of me, unfollowed. Root cause: retrieval protocol skipped because question felt conversational; high confidence, low information.
