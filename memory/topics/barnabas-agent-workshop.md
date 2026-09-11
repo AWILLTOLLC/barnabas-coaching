@@ -62,3 +62,13 @@ Source: https://barnabas.coach/agent-foundations-workshop.html (read 2026-09-10)
 ## Cross-links to my own setup
 - The deck describes the actual architecture I run (tiers, supersede rule, instincts gating, orchestration rule) — the workshop is Aaron teaching his own house style.
 - The Barnabas mistake (2026-09-10, answered Black Raven/Glimmer instead of Barnabas) is literally deck Gap 1: "searched or could have, answered from what was in front of it anyway." Instinct written: unknown-name = mandatory memory_search.
+
+## Sources
+
+Raw sources backing this page's claims (wiki/raw/ is immutable; fetched 2026-09-11):
+
+- `wiki/raw/2026-09-10-barnabas-homepage.md` — homepage
+- `wiki/raw/2026-09-10-barnabas-services.md` — services page
+- `wiki/raw/2026-09-10-barnabas-agent-workshop.md` — the workshop deck page itself (primary source)
+- `wiki/raw/2026-09-10-barnabas-agent-configurator.md` — companion configurator tool
+- `wiki/raw/2026-04-04-karpathy-llm-wiki.md` — Karpathy's llm-wiki gist (created 2026-04-04); the raw-sources → compiled-wiki → schema pattern related to this deck's memory material
