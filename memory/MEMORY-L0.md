@@ -1,16 +1,11 @@
 # MEMORY-L0 — Quick Index
 <!-- Dru: Chief of Staff (promoted 2026-09-08) -->
 
-## Right now (updated 2026-09-09)
-<!-- 3-6 lines of current focus; refresh during nightly consolidation -->
-- **Chief template product: droplet deployed & hardened.** Jeff's DO droplet (134.209.217.142) running OpenClaw 2026.9.3 with sanitized Chief workspace; all DO-image pitfalls fixed & encoded in first-run.sh. Full log: `memory/topics/chief-template-droplet.md`. Open: model/API-key per customer, Jeff pairing, first-boot message.
-- Barnabas agent-configurator: Steps 3/4 swapped + verified (17/17 jsdom checks); NOT deployed — Aaron/Barrett deploys.
-- Buzz offering: pitch approved & emailed to Aaron (Posteo SMTP works); next: local Mac test env (`projects/buzz-offering/TEST-ENV.md`).
-- Loop engineering plan drafted (`tasks/loop-engineering-plan.md`) — awaiting Aaron's go on phases.
-- Graph engineering digest saved (`memory/topics/graph-engineering.md`) — revisit flagged.
-
-_Scan this first. Expand to `MEMORY.md` (L1) or `memory/topics/<name>.md` (L2) only for relevant topics._
-
+## Right now (updated 2026-09-11)
+- Aaron moving: Mukilteo house clearing + 20yd dumpster today (Sep 11). Rambo droplet live under Aaron's DO acct (invoice Jeff); awaiting Jeff: WhatsApp QR, Tailscale, Control UI — call Sun/Mon.
+- Wiki raw-sources layer live (wiki/raw/ + SCHEMA.md); 30+ sources across all 6 businesses. Barnabas site: Creel page removed.
+- gmgn-signal-relay duplicates deleted; meme-scout alert path fully local (Qwen thesis → Quinn bot DM).
+- Open: local nightly-memory-consolidation delivery fix; wiki lint cadence; Tello SIM arriving.
 ## 🔴 Urgent / Watch
 
 | Topic | One-liner | Expand |

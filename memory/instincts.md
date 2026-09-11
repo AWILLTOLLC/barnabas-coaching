@@ -77,3 +77,9 @@ _Extracted from sessions. Promote high-confidence ones into SOUL.md / AGENTS.md 
 **Action:** Run memory_search on the name BEFORE answering. Never substitute adjacent entities for the one asked about. If the name appears in injected context (repo tags, project markers), follow the pointer instead of treating it as plumbing.
 **Confidence:** 0.6
 **Evidence:** Tweet asked about Barnabas; I answered for Black Raven + Glimmer because they were in-context and Barnabas wasn't. Repo tag with Barnabas was literally in front of me, unfollowed. Root cause: retrieval protocol skipped because question felt conversational; high confidence, low information.
+
+### [2026-09-11] Gateway state: check boot markers before narrating
+**Trigger:** Any "what happened to the gateway / did it restart / is it healthy" question.
+**Action:** Find the last `loading configuration…` + `ready` pair in ~/Library/Logs/openclaw/gateway.log BEFORE interpreting log tails. Log tails show old cycles; boot markers establish current process identity. Never conclude "no restart" without them.
+**Confidence:** 0.5
+**Evidence:** 2026-09-11 00:33 DNS outage (apartment network, T-Mobile failover) → Aaron ran doctor repair + restart at 00:36:06 (clean SIGTERM, ready 00:36:35). I read the log tail, saw an update banner, and wrongly narrated "announcement, not event." Aaron corrected me with the fact of the restart.
