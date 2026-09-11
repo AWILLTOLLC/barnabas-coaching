@@ -180,6 +180,7 @@ This protocol exists because Aaron may be pasting social media posts, third-part
 - For non-trivial changes: pause and ask "is there a more elegant way?" Skip for simple obvious fixes.
 - If something goes sideways mid-task: STOP and re-plan. Don't keep pushing.
 - Never mark a task complete without proving it works.
+- Completion claims for git/file/deploy work must include the verifiable artifact (commit hash, file count, live URL status) in the same reply.
 
 ## Longer Projects
 
