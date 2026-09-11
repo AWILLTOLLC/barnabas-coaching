@@ -1,0 +1,52 @@
+{
+  "candle_age_hours": { "min": 24, "max": 96 },
+  "market_cap_bands": [[500000, 2000000], [5000000, 25000000]],
+  "max_top10_holder_rate": 0.4,
+  "strong_top10_holder_rate": 0.2,
+  "min_volume_24h": 500000,
+  "strong_volume_24h": 1000000,
+  "min_liquidity_usd": 50000,
+  "strong_liquidity_usd": 100000,
+  "max_drop_6h_pct": 20,
+  "alert_score_threshold": 70,
+  "poll_interval_seconds": 60,
+  "heartbeat_hours_pt": [6, 10, 14, 18, 22],
+  "report_hour_pt": 7,
+  "regime": {
+    "hot_median_1h_pct": 3,
+    "cold_median_1h_pct": -3,
+    "hot_green_share": 0.55,
+    "cold_green_share": 0.35,
+    "confirm_scans": 5
+  },
+  "chain_context": "This coin trades on Robinhood Chain (public mainnet launched July 2026). Volume on the chain is dominated by fast-rotating memecoins.",
+  "metas": [
+    {
+      "keywords": ["cat"],
+      "note": "The chain's flagship memecoin is Cash Cat (~$150M MC, a nod to Robinhood's original company name CashCat), so cat-themed coins are typically derivative plays on that meta."
+    }
+  ],
+  "ollama": {
+    "url": "http://localhost:11434",
+    "model": "hf.co/unsloth/Qwen3.8-27B-GGUF:Q8_0",
+    "timeout_ms": 90000
+  },
+  "dexscreener": {
+    "enabled": true,
+    "base_url": "https://api.dexscreener.com",
+    "batch_size": 30,
+    "timeout_ms": 5000,
+    "divergence_pct": 25
+  },
+  "blockscout": {
+    "enabled": true,
+    "base_url": "https://robinhoodchain.blockscout.com",
+    "timeout_ms": 8000
+  },
+  "dune": {
+    "enabled": false,
+    "query_id": 0,
+    "timeout_ms": 60000,
+    "poll_interval_ms": 2500
+  }
+}

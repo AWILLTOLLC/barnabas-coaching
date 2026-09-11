@@ -29,3 +29,10 @@
 ## [2026-09-11] ingest | 2026-09-10-glimmer-homepage.md | Glimmer Cards homepage — glimmer concept, 3-step ritual, Core Pack $9.99, Shambala/Illenium story
 ## [2026-09-11] ingest | 2026-09-10-glimmer-content-formats.md | Glimmer content formats — brand voice, platform priorities, what never to do
 ## [2026-09-11] ingest | 2026-09-10-glimmer-product-brief.md | Glimmer product brief — USER.md product description of record (empty source, placeholder)
+## [2026-09-11] ingest | 2026-09-04-memescout-README.md | Robinhood Meme Scout README — v2 system spec (GMGN-only, Discord, feedback loop, regime tracker)
+## [2026-09-11] ingest | 2026-09-04-memescout-HANDOFF.md | Robinhood Meme Scout HANDOFF — v1 handoff (TikTok-era, superseded)
+## [2026-09-11] ingest | 2026-09-04-memescout-BUILD-PLAN.md | Robinhood Meme Scout BUILD-PLAN — ponytail build plan for 3 core files
+## [2026-09-11] ingest | 2026-09-04-memescout-PLAN.md | Robinhood Meme Scout PLAN — initial v1 plan (TikTok, FOMO.Family, iMessage)
+## [2026-09-11] ingest | 2026-09-04-memescout-criteria.json | Robinhood Meme Scout criteria.json — thresholds, Ollama config, DexScreener/Blockscout/Dune settings
+## [2026-09-11] ingest | 2026-09-10-memescout-lessons.md | Robinhood Meme Scout lessons — LLM thesis quality corrections (Sep 10 user feedback)
+## [2026-09-11] ingest | 2026-09-04-memescout-thesis-prompt.ts | Robinhood Meme Scout thesis prompt — Ollama prompt source spec for alert summaries
