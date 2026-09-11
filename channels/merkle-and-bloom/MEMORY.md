@@ -1,6 +1,32 @@
-# MEMORY.md — Merkle and Bloom
+# MEMORY.md
+
+## Ownership (2026-09-08)
+
+- **Vera owns the Merkle & Bloom website/domain admin** — assigned directly by Aaron. Domain, hosting, deploys, site content updates. (Avery remains analyst/sparring partner only.) — Merkle and Bloom
 
 _Current state of all active work. Update this as things change._
+
+---
+
+## Web Stack Inventory (2026-09-08)
+
+_Inventoried live via API. Credentials: `~/.openclaw/credentials/cloudflare.json` (api_token) and `~/.openclaw/credentials/github.json` (org,token,username). Never echo values._
+
+### Cloudflare — account "Github@erasei.com's Account" (id 5c68e7493917ba789644831da2432fdb)
+- **Zone merkleandbloom.com: PENDING, 0 DNS records.** Created 2026-09-02. Nameservers never pointed at Cloudflare; nothing resolves yet.
+- **Pages project `merkleandbloom`:** serves merkleandbloom.pages.dev + www.merkleandbloom.com. Production branch main. Source: null → **direct upload, no git integration.**
+- Pages project `glimmer-cards-web`: letsgoglimmer.com — Glimmer Cards (Lily's business), adjacent, not M&B core.
+- No Workers. **barnabas.coach and morsecommand.com are NOT in Cloudflare** — still on their own hosts with rsync/Caddy deploys.
+
+### GitHub — user AugustCrane, org AWILLTOLLC
+- AWILLTOLLC/barnabas-coaching — public, active (pushed 2026-09-06) <!-- project: github.com/AWILLTOLLC/barnabas-coaching -->
+- AWILLTOLLC/glimmer-cards-web — private, static since Mar 2026
+- No repo exists for the merkleandbloom.com site.
+
+### Flags (need Aaron decisions)
+1. **merkleandbloom.com is not live:** zone pending, no DNS records, registrar for the domain unknown. To go live: confirm registrar → change nameservers to Cloudflare → create root/www records → bind Pages domain.
+2. **M&B site has no git repo:** Pages deploys are direct upload, unversioned. Recommend a repo in AWILLTOLLC.
+3. **barnabas.coach + morsecommand.com outside my control** (rsync + third-party DNS). Migrate DNS into Cloudflare? Requested 2026-09-08.
 
 ---
 
@@ -93,6 +119,8 @@ _Significant decisions with rationale. Prevents re-litigating._
 | Item | Status | Owner |
 |---|---|---|
 | App Store Connect API setup | Not started | Aaron / Dru to initiate |
+| merkleandbloom.com zone activation + DNS | Blocked — registrar unknown, needs Aaron | Vera |
+| barnabas.coach + morsecommand.com DNS migration to Cloudflare | Needs Aaron decision | Vera to execute |
 | Barnabas Coaching — first paid client | Pending pipeline build | Aaron |
 | Morse Command App Store submission | Pending | Aaron |
 | DUNS number via Apple | Pending (requested Feb 2026) | Aaron |

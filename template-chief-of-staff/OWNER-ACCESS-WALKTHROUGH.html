@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Granting Jeff/Rambo gateway access — installer runbook</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color:#1a1f2e; background:#fafbfc; max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; line-height: 1.55; }
+  h1 { font-size: 1.6rem; border-bottom: 3px solid #2f6fdb; padding-bottom: .5rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.2rem; color:#123; border-bottom: 1px solid #d8dee9; padding-bottom: .3rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.4rem; }
+  code { background:#eef1f6; border:1px solid #dde3ec; border-radius:4px; padding:.1em .35em; font-size:.9em; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  pre { background:#1e2430; color:#e8ecf3; border-radius:8px; padding:.9rem 1rem; overflow-x:auto; font-size:.85rem; }
+  pre code { background:none; border:none; color:inherit; padding:0; }
+  .note { background:#fff8e6; border-left:4px solid #e0a800; padding:.6rem .9rem; border-radius:0 6px 6px 0; margin:1rem 0; }
+  .callout { background:#eaf3ff; border-left:4px solid #2f6fdb; padding:.6rem .9rem; border-radius:0 6px 6px 0; margin:1rem 0; }
+  ul.check { list-style:none; padding-left:0; }
+  ul.check li { padding-left:1.6em; position:relative; margin:.35rem 0; }
+  ul.check li::before { content:"☐"; position:absolute; left:0; color:#2f6fdb; }
+  ol li { margin:.3rem 0; }
+  .who { display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; border-radius:4px; padding:.15em .5em; margin-right:.4em; vertical-align:middle; }
+  .you { background:#2f6fdb; color:#fff; }
+  .jeff { background:#1f9d55; color:#fff; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; }
+  th,td { border:1px solid #d8dee9; padding:.45rem .6rem; text-align:left; vertical-align:top; }
+  th { background:#eef1f6; }
+</style>
+</head>
+<body>
+
+<h1>Granting Jeff/Rambo gateway access — installer runbook</h1>
+<p><em>For the installer (Aaron/Dru). Customer in this run: <strong>Jeff</strong>; agent name: <strong>Rambo</strong> (per-customer — template docs stay generic, e.g. "Chief"). Target: bare Ubuntu 24.04 droplet, gateway as <code>openclaw</code> user on <code>127.0.0.1:18789</code>.</em></p>
+
+<div class="callout"><strong>Process split (agreed):</strong> the installer runs setup to a defined checkpoint first. Then the customer 1:1 call covers (a) OpenRouter account + credits + API key, and (b) granting Jeff access to the Control UI. Model-provider credentials are collected <strong>only</strong> on this call — never by email or chat. The Management Key stays in the operator's password manager; it never goes on the droplet.</div>
+
+<h2>1. Pre-flight (installer, before the call)</h2>
+<p>All commands on the droplet as root unless noted. Gateway CLI always runs as the <code>openclaw</code> user — running as root gives <code>unauthorized: gateway token mismatch</code> because root's config lacks the token.</p>
+<ul class="check">
+  <li>Gateway active: <code>systemctl is-active openclaw.service</code> → <code>active</code></li>
+  <li>Port listening: <code>ss -tlnp | grep 18789</code></li>
+  <li>Persisted auth token present (pairing survives restarts): <code>sudo -u openclaw openclaw config get gateway.auth.token</code> returns a token, not empty</li>
+  <li>Model provider wired and proven: <code>add-provider-keys.sh</code> has been run and printed <code>PROVIDER-PROOF-OK</code></li>
+  <li>Default model set to a model on the configured provider — a fresh install ships a placeholder that fails every turn. Example:
+    <pre><code>sudo -u openclaw openclaw config set agents.defaults.model.primary openrouter/z-ai/glm-5.3-flash</code></pre>
+    (Use the provider-qualified ID — display names don't resolve in <code>/model</code> swaps either.)</li>
+  <li>Agent answers a turn: <code>sudo -u openclaw openclaw agent --message "Reply with exactly: ALIVE-OK"</code></li>
+  <li>Workspace seeded: <code>ls /home/openclaw/.openclaw/workspace/FULLINSTRUCTIONS.md</code> exists; agent trigger message already sent</li>
+</ul>
+
+<h2>2. What the installer does (access grant)</h2>
+<p><span class="who you">Installer</span> Goal: hand Jeff everything he needs to sign in from his own browser on the call.</p>
+<ol>
+  <li><strong>Verify gateway + workspace</strong> (pre-flight items above all green).</li>
+  <li><strong>Confirm the agent's owner status.</strong> Jeff is the owner: the onboarding conversation (FULLINSTRUCTIONS first boot) records him in <code>USER.md</code>. On the call, tell the agent: <em>"This is Jeff, your new owner."</em></li>
+  <li><strong>Locate/generate the access info.</strong> The Control UI is served by the gateway itself at <code>http://&lt;host&gt;:18789/</code> (docs: <code>docs/web/control-ui.md</code>). With a reverse proxy/TLS in front (see <code>docs/gateway/stable-https-url.md</code>), use that public URL instead.
+    <pre><code># gateway token Jeff will paste into the Control UI sign-in
+sudo -u openclaw openclaw config get gateway.auth.token</code></pre></li>
+  <li><strong>Prepare pairing approval.</strong> A new browser connects → auth with the token → first connection may show <code>disconnected (1008): pairing required</code>. The preferred owner path is a short-lived single-use pairing link:
+    <pre><code>sudo -u openclaw openclaw dashboard   # prints a one-time pairing URL</code></pre>
+    Alternatively, when Jeff's browser shows the pairing-required error, approve it on the host:
+    <pre><code>sudo -u openclaw openclaw devices list
+sudo -u openclaw openclaw devices approve &lt;requestId&gt;</code></pre>
+    Open any pairing link in <strong>Jeff's own browser</strong> so the durable admin credential lands there (a different browser profile can't inherit it).</li>
+  <li><strong>Confirm reachability.</strong> If Jeff accesses over SSH only, you'll open a tunnel together on the call: <code>ssh -N -L 18789:127.0.0.1:18789 root@&lt;DROPLET_IP&gt;</code>, then he browses <code>http://127.0.0.1:18789/</code>. If a public URL exists, verify it loads for him before the call ends.</li>
+</ol>
+
+<h2>3. What Jeff does (the 1:1 call)</h2>
+<p><span class="who jeff">Jeff</span> with <span class="who you">Installer</span> assisting.</p>
+<h3>3a. OpenRouter key (screen-share, ~5 min)</h3>
+<ol>
+  <li>Jeff creates an OpenRouter account and adds credits (his card, his billing).</li>
+  <li>Jeff generates an API key and shows it on the shared screen.</li>
+  <li><span class="who you">Installer</span> pastes it directly via the script — never email/chat, never into a transcript:
+    <pre><code>bash /root/add-provider-keys.sh   # hidden prompt; stages 0600, wires SecretRef, proves route, cleans up</code></pre>
+    Wait for <code>PROVIDER-PROOF-OK</code>. If the default model isn't set yet, set it now (command in §1) and re-probe.</li>
+</ol>
+<h3>3b. First sign-in to the Control UI</h3>
+<ol>
+  <li>Jeff opens the gateway URL (public URL or SSH tunnel) in his own browser.</li>
+  <li>On sign-in he pastes the gateway token you retrieved in §2.</li>
+  <li>If pairing is required, you run the pairing command on the host and he opens the one-time link in the same browser.</li>
+</ol>
+<h3>3c. First message to Rambo</h3>
+<p>Jeff sends the trigger message:</p>
+<pre><code>Read FULLINSTRUCTIONS.md in your workspace and follow it.</code></pre>
+<p><strong>What to expect (first-boot protocol):</strong> the agent introduces itself and asks for name, business, timezone, priorities; then writes <code>USER.md</code>, creates today's daily note, and updates the <code>MEMORY-L0.md</code> "Right now" header. Let Jeff answer the questions himself. Give it one or two real current priorities so the header isn't empty on day one.</p>
+
+<h2>4. Verification checklist (before you hang up)</h2>
+<ul class="check">
+  <li>Agent introduced itself and directed questions at Jeff (not the installer)</li>
+  <li><code>USER.md</code> filled with Jeff's answers — no placeholders for known facts</li>
+  <li><code>memory/</code> exists with <code>MEMORY-L0.md</code> + today's daily note; "Right now" header populated</li>
+  <li>Agent correctly recalls one thing Jeff just told it (memory write works)</li>
+  <li>Control UI loads and connects from <strong>Jeff's own browser</strong> (not just yours)</li>
+  <li>Restart test (optional but recommended): <code>systemctl restart openclaw.service</code> → Jeff's browser reconnects without re-pairing (proves the persisted token)</li>
+</ul>
+
+<h2>5. Troubleshooting quick list</h2>
+<table>
+  <tr><th>Symptom</th><th>Cause / fix</th></tr>
+  <tr><td><code>unauthorized: gateway token mismatch</code> from CLI/TUI</td><td>Ran as root — root's config lacks the token. Always <code>sudo -u openclaw openclaw …</code> (e.g. <code>sudo -u openclaw openclaw tui</code>).</td></tr>
+  <tr><td><code>No route-compatible authentication source is configured for openai</code> on every turn</td><td>Fresh install has no provider key AND/OR the default model is still the placeholder <code>openai/gpt-5.6-sol</code>. Run <code>add-provider-keys.sh</code>, then set the default to a model on the configured provider: <code>sudo -u openclaw openclaw config set agents.defaults.model.primary openrouter/z-ai/glm-5.3-flash</code> (provider-qualified ID).</td></tr>
+  <tr><td>Browser: <code>disconnected (1008): pairing required</code></td><td>New device needs one-time approval: <code>sudo -u openclaw openclaw devices list</code> → <code>devices approve &lt;requestId&gt;</code>, or hand Jeff the <code>openclaw dashboard</code> one-time link opened in his browser.</td></tr>
+  <tr><td>Pairing breaks after gateway restart</td><td>No persisted <code>gateway.auth.token</code> — the gateway minted a runtime token that can't be recovered. Re-run <code>first-run.sh</code> (persists the token) or <code>openclaw doctor --generate-gateway-token</code> <em>before</em> the unit exists; restart.</td></tr>
+  <tr><td><code>openclaw doctor --fix</code> refuses: "service ownership could not be verified"</td><td>Expected once a systemd unit exists. Onboarding must precede unit creation. Verify health via <code>systemctl is-active</code> + <code>ss -tlnp | grep 18789</code> instead.</td></tr>
+  <tr><td>Setup script aborts with <code>systemctl is-active</code> = <code>activating</code></td><td>Gateway mid-boot during <code>set -e</code>. Use the retry loop (first-run.sh has it); don't re-add bare <code>is-active</code> checks.</td></tr>
+  <tr><td>Delivery warnings on cron jobs</td><td>Cron fires but channel/delivery isn't configured for the target — expected until channels are set up with the customer (Step 5 of SETUP-WALKTHROUGH). Note and move on.</td></tr>
+</table>
+
+<p style="margin-top:2.5rem; color:#5a6472; font-size:.85rem;">Source package: <code>template-chief-of-staff/</code> · See also: SETUP-WALKTHROUGH.md, LESSONS-LEARNED.md, FULLINSTRUCTIONS.md · Docs: <code>docs/web/control-ui.md</code>, <code>docs/gateway/pairing.md</code>, <code>docs/gateway/stable-https-url.md</code></p>
+
+</body>
+</html>

@@ -28,6 +28,16 @@ Direct. Informal. Technically specific. Aaron writes like he's talking to a peer
 
 **Give credit genuinely.** When others contributed, say so plainly. No corporate-speak about "our amazing community."
 
+**Use concrete analogies from everyday machines.** One per piece, used to explain, not decorate. The pattern: expensive-vs-adequate ("a V12 F1 engine sitting on a stand won't do the day-to-day work of a working Honda Civic"). If an analogy makes the thesis impossible to misread, use it.
+
+**Close with a curiosity hook, not a naked link.** A question that hands the reader into the linked content beats dropping a URL. Still no pitch: "Curious what it actually does? In the post below..."
+
+**Lead with what your starting assumptions got wrong.** Learning-in-public framing. "Be honest about limitations" applies to openers too: the wrong assumption you held is often the first paragraph.
+
+**Name the actual tool or product** even when writing personally. Don't anonymize things readers would want to search for.
+
+**Negation is allowed when it's a real concession.** The blocklist targets the rhetorical tic ("It's not just X, it's Y"). Honest concessions like "I'm not saying the models are comparable, but..." are fine.
+
 **Close with community or next steps, not a pitch.** No "act now," no urgency theater. End like a person, not a funnel.
 
 **Peer-to-peer, not brand-to-customer.** Even when writing for a business, the tone is person-to-person. He's talking to someone, not broadcasting at them.

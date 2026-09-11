@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Celebrating 200 days with my Chief of Staff OpenClaw Agent: Dru</title>
+<meta name="description" content="What 200 days of running one AI agent every day actually taught me: the architecture that made it work, the failures that shaped it, and what still doesn't.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1f3d; --panel:#172c4e; --ink:#f6f2ea; --muted:#a6b4cb;
+    --line:#2c4166; --accent:#e3b76f; --accent-soft:#1d3763;
+    --code-bg:#0c1c38; --code-fg:#e0c391;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#fafaf9; --panel:#ffffff; --ink:#111827; --muted:#4b5563;
+    --line:#e5e7eb; --accent:#b07f2e; --accent-soft:#eef2f9;
+    --code-bg:#eef1f6; --code-fg:#1a3a6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       -webkit-font-smoothing:antialiased;line-height:1.65}
+  .wrap{max-width:44rem;margin:0 auto;padding:4rem 1.5rem 6rem}
+  header.mast{border-bottom:1px solid var(--line);padding-bottom:1.6rem;margin-bottom:2.4rem}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--accent);margin:0 0 .9rem}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1.12;
+     letter-spacing:-.015em;margin:0 0 1rem}
+  h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.35rem,2.9vw,1.85rem);line-height:1.22;
+     margin:3rem 0 .6rem}
+  h3{font-size:1.02rem;font-weight:640;margin:1.9rem 0 .4rem;color:var(--ink)}
+  p{color:var(--muted);margin:0 0 1.1rem;font-size:1.04rem}
+  .lede{color:var(--ink);font-size:1.18rem;line-height:1.55}
+  strong{color:var(--ink);font-weight:640}
+  em{color:var(--ink)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+  ul{padding-left:1.2rem;margin:0 0 1.1rem}
+  li{color:var(--muted);margin-bottom:.55rem;font-size:1.02rem}
+  li strong{color:var(--ink)}
+  code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);color:var(--code-fg);
+       padding:.1rem .35rem;border-radius:4px}
+  blockquote{margin:1.4rem 0;padding:.2rem 0 .2rem 1.1rem;border-left:3px solid var(--accent);
+             color:var(--ink);font-size:1.05rem}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+       padding:1.15rem 1.3rem;margin:1.6rem 0}
+  .box.hi{border-color:var(--accent);background:var(--accent-soft)}
+  .box p:last-child{margin-bottom:0}
+  .box h3{margin-top:0}
+  hr{border:0;border-top:1px solid var(--line);margin:3.5rem 0 0}
+  footer{margin-top:2.2rem;color:var(--muted);font-size:.96rem}
+  footer p{font-size:.96rem}
+  .toggle{position:fixed;top:1rem;right:1rem;background:var(--panel);border:1px solid var(--line);
+          color:var(--muted);border-radius:6px;padding:.3rem .6rem;cursor:pointer;
+          font-family:var(--mono);font-size:.72rem}
+  .toggle:hover{color:var(--ink);border-color:var(--accent)}
+  @media(max-width:600px){.wrap{padding:2.5rem 1.2rem 4rem}}
+</style>
+</head>
+<body>
+<button class="toggle" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='light'?'dark':'light')">theme</button>
+
+<div class="wrap">
+<header class="mast">
+  <p class="eyebrow">Aaron Williams · Merkle &amp; Bloom / Barnabas Coaching</p>
+  <h1>Celebrating 200 days with my Chief of Staff OpenClaw Agent: Dru</h1>
+  <p class="lede">What actually made it work, what took months to figure out, and the parts that still don't.</p>
+</header>
+
+<p>Dru has been running for 200 days, and I want to be precise about what that means, because the precision is the most useful thing in this post.</p>
+
+<p><strong>Those 200 days belong to the agent, not to the session, which I reset constantly.</strong> Everything that survives a reset survives because it lives in a file on disk, and that distinction is the whole difference between an assistant you re-explain yourself to every morning and one that already knows.</p>
+
+<p>Most people who tell me their AI forgets everything are describing a conversation, not an agent. It's a fair description of what they've got.</p>
+
+<h2>What it actually does</h2>
+
+<p>Dru is a Chief of Staff. I talk to one agent; it holds the context and routes work to whichever domain owner it belongs to. Some jobs it delegates, some it hands to a subagent running a local model on my own hardware, and the ones that need real reasoning go out to a frontier model.</p>
+
+<p>The routing is worth explaining because it's where most of the cost savings live. GLM 5.3 Flash answers by default because it's fast and it costs almost nothing. Anything Dru has to run itself goes to a local Q8 model on the M5 Max, which I benchmarked at 90.4 tokens a second; for comparison, cloud-hosted Sonnet 5 and GLM Flash both land around 62 to 63 on published benchmarks. Local isn't the slow option any more, and most tasks need far less context than people assume.</p>
+
+<p>That mix means the expensive models only get pointed at expensive problems, which is the whole trick to running this without a surprise invoice.</p>
+
+<h2>What I got wrong at the start</h2>
+
+<p>I assumed the model was the important part. It isn't, and I'd guess that's the single most common mistake anyone makes here.</p>
+
+<p>Swap the model and you get a slightly better or slightly worse writer. Change what surrounds it (the memory, the rules it can't argue with, what it's allowed to touch) and you change what it's capable of doing at all. The industry spent two years talking about models getting smarter. Almost everything that changed what's possible in a business happened one layer up.</p>
+
+<p>I also assumed good instructions would be enough. They're advisory. The model weighs them against everything else competing for its attention, and as a session fills up, whatever you buried in paragraph nine quietly stops mattering.</p>
+
+<h2>Three things that made the difference</h2>
+
+<h3>Memory built as tiers, not as a pile</h3>
+
+<p>The always-loaded layer stays tiny: an index of about twenty lines, one per topic, with a "Right now" header of a few lines covering active projects and pending decisions. Detail lives in topic files that only load when the index says they're relevant.</p>
+
+<p>Underneath that sit the files that actually make it improve. <code>DECISIONS.md</code> records alternatives considered and trade-offs accepted, so settled questions don't get relitigated. <code>ERRORS.md</code> carries a root cause and a prevention rule for every mistake. <code>instincts.md</code> holds behavioural patterns with a confidence score, and promotion is gated: a pattern needs to show up in two separate sessions with citable evidence before it becomes a rule, and never on the night it's first seen.</p>
+
+<p>Search runs on a small embedding model on my own machine, indexing roughly 120 files. Nothing leaves the building for Dru to remember something about me.</p>
+
+<div class="box hi">
+<h3>The addition I'd recommend to anyone</h3>
+<p>When something replaces an existing memory, the old entry gets edited rather than deleted. A line goes on top of it: <code>&gt; superseded 2026-09-08 by: &lt;new fact&gt;</code></p>
+<p>The old fact stays visible with its replacement named. Stale and current never sit side by side looking equally true, which closes the classic failure where an agent recalls something outdated with total confidence and no flag.</p>
+</div>
+
+<h3>Rules the agent can't reason its way around</h3>
+
+<p>There's no rules file that works. People go looking for one. Hard constraints don't live in markdown, and understanding why is the difference between an agent you trust and one you hope will behave.</p>
+
+<p>Instruction files set preferences. The harness enforces limits. A gate is a small piece of code that runs before an action does, sees what the agent is about to do, and can cancel it; the model never gets the chance to talk itself into anything. In one published test, the same agent given the same three rules broke two of them when the rules lived in the instruction file, and none when the identical rules ran as gates.</p>
+
+<h3>One front door instead of ten agents</h3>
+
+<p>Standing domain owners beat helpers conjured on demand, for reasons that took me a while to appreciate. A spawned helper does the job and evaporates, taking everything it worked out with it. A standing agent gets better at its area every week, keeps its own credentials scoped to that area, and lets you debug it by opening its history and reading what it did.</p>
+
+<p>Delegation still earns its place; it just needs a ceiling. Two or three helpers at a time, one level deep, and helpers can't create helpers.</p>
+
+<div class="box">
+<h3>Fern</h3>
+<p>This isn't a one-household experiment any more. My partner runs her own agent, Fern, on a fully local Qwen model (<code>ollama/quinn-q8:ctx128k</code>), reachable through iMessage and the web UI. Fern is wired into Notion and handles trip planning, interior design and fashion calls, research, financial planning, and budget tracking. Her workspace is hers; she has never seen a line of my context and never will. Same architecture, smaller perimeter, and it took about an afternoon to set up.</p>
+</div>
+
+<h2>The failures are more interesting than the wins</h2>
+
+<p>Two of these still aren't solved, and I'd rather say so than pretend otherwise.</p>
+
+<p>Checking memory is a habit rather than a mechanism. There's a written rule saying Dru must search before answering questions about past work, and that rule is enforced by the same agent that might skip it. In one incident it searched, the right answer appeared in the results, and it asked me the question anyway. When the discipline slips it feels exactly like forgetting, because to me it is.</p>
+
+<p>The architectural fix is the one that works: anything living in always-loaded context can't be forgotten, so the answer to a recurring miss is to move that fact up a tier instead of asking the agent to try harder.</p>
+
+<p>The other open problem is conflict. Once you have more than one place an answer could come from, two of them can disagree, and out of the box whichever one the search ranks highest wins. Ranking is about phrasing, so the stalest thing in the pile can win by using your exact words. Scoring sources by trust helps and doesn't settle it.</p>
+
+<p>My favourite design decision came out of a security choice and turned into something better. My main session runs elevated in the web interface; iMessage is a separate channel with reduced permissions, so nobody holding my phone can do damage. The two share nothing except what got written to disk. If I tell Main something and iMessage hasn't heard about it, my memory system has failed in front of me, in a reply that's missing something it should have known. I hit those failures early, often, and loudly, which beats discovering them in three months when a decision has quietly gone missing.</p>
+
+<h2>If you're thinking about it</h2>
+
+<p>Start with one agent, one channel, and one job you can check on in a week. Something low stakes, and something you'd notice if it went wrong.</p>
+
+<p>The trap at this stage is designing a nine-agent system before running one. Run one badly first; you'll learn more in a week of that than from any amount of reading, including this.</p>
+
+<p>And if you take one thing from 200 days of doing this: the agent isn't the thing you fix. The rules are.</p>
+
+<hr>
+
+<footer>
+<p>I'm Aaron Williams, Principal Consultant at <a href="https://www.merkleandbloom.com">Merkle &amp; Bloom</a>, where I do embedded IT ownership for laboratories and regulated organisations. That includes fully local LLM infrastructure with tight guardrails and a complete audit trail of what every agent did, for teams whose data can't leave the building.</p>
+<p>Under <a href="https://barnabas.coach">Barnabas Coaching</a> I help individuals and small businesses get more out of their agents, from better prompts through to a full agent and harness running the tedious parts of a business.</p>
+<p>Curious what this would look like for your work? <a href="mailto:aaron@barnabas.coach">aaron@barnabas.coach</a> for the small-business side, <a href="mailto:aaron@merkleandbloom.com">aaron@merkleandbloom.com</a> for the regulated-industry side. Free call either way, no pitch.</p>
+</footer>
+</div>
+</body>
+</html>

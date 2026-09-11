@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 CONTEXT_THRESHOLD = 150_000
-IDLE_SECONDS = 6 * 3600
+IDLE_SECONDS = 45 * 60
 SKIP_AGENTS = {"forge", "spark", "barrett"}
 CONFIG = Path.home() / ".openclaw" / "openclaw.json"
 DRY_RUN = "--apply" not in sys.argv
@@ -63,7 +63,7 @@ def main():
             res = gw("sessions.compact", {"key": key})
             if res.get("ok", False):
                 after = (res.get("result") or {}).get("contextTokens", (res.get("result") or {}).get("estimatedPromptTokens", "?"))
-                done.append(f"{key}: {ctx:,}→{after}")
+                done.append(f"{key}: {usage:,}→{after}")
             else:
                 err = (res.get("error") or {}).get("message", "unknown")
                 done.append(f"{key} FAILED: {err}")

@@ -21,3 +21,12 @@ Register scheduled script jobs on the gateway with `openclaw cron`, and verify t
 
 - Job run summary lands in the runs entry's `summary` field; keep the script's stdout to a single JSON object so it reads as one line.
 - `openclaw cron list --json` returns job IDs needed for run/edit/rm.
+
+## Diagnosing a failing stream job ("stream source exited (exit, code N)")
+
+1. Get the job's stream argv with `openclaw cron get <id>` (the automations tool returns status metadata only; `cron get` is what shows `schedule.command` and `schedule.match`).
+2. Check the argv's premise against reality: does the watched file/process still exist, and is it the one the producer actually writes? For a LaunchAgent producer, read its plist (`StandardOutPath`/`StandardErrorPath`) — the real log path lives there, not in an old `launchctl` name or a stale `tail -f` target.
+3. Fix by repointing the command (`openclaw cron edit <id> --schedule-command ...`) and, before considering it fixed, verify the match pattern actually appears in the current log format — producers get rewritten and their line formats change with them.
+4. Failure storms that repeat with identical errors are often duplicate jobs spawned on top of each other; grep `openclaw cron list` for the same name and delete the extras.
+5. Decide repair vs deletion by tracing the full current pipeline, not the job's premise. Read the producer's actual source (`src/*.ts` or equivalent) to find how it emits output today — formats and delivery paths get rewritten (e.g. a monitor that once emitted marker lines for a relay agent may now DM via its own bot token and generate summaries with a local LLM inline). If the job's purpose is already served natively by the producer, delete the job with `openclaw cron remove <id>`; deleting is a fix when the plumbing is vestigial, not a failure.
+6. Don't trust memory or job payloads for who does what in a pipeline ("relayed by X" in a message template is not evidence X runs). Verify the actual code path before recommending fixes.

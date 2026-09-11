@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Behind the scenes: When bits hit the fan</title>
+<meta name="description" content="A real 48-hour incident on my OpenClaw agent setup: what broke, what the logs actually said, and why the file-on-disk architecture is what saved it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1f3d; --panel:#172c4e; --ink:#f6f2ea; --muted:#a6b4cb;
+    --line:#2c4166; --accent:#e3b76f; --accent-soft:#1d3763;
+    --code-bg:#0c1c38; --code-fg:#e0c391;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#fafaf9; --panel:#ffffff; --ink:#111827; --muted:#4b5563;
+    --line:#e5e7eb; --accent:#b07f2e; --accent-soft:#eef2f9;
+    --code-bg:#eef1f6; --code-fg:#1a3a6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       -webkit-font-smoothing:antialiased;line-height:1.65}
+  .wrap{max-width:44rem;margin:0 auto;padding:4rem 1.5rem 6rem}
+  header.mast{border-bottom:1px solid var(--line);padding-bottom:1.6rem;margin-bottom:2.4rem}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--accent);margin:0 0 .9rem}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1.12;
+     letter-spacing:-.015em;margin:0 0 1rem}
+  h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.35rem,2.9vw,1.85rem);line-height:1.22;
+     margin:3rem 0 .6rem}
+  h3{font-size:1.02rem;font-weight:640;margin:1.9rem 0 .4rem;color:var(--ink)}
+  p{color:var(--muted);margin:0 0 1.1rem;font-size:1.04rem}
+  .lede{color:var(--ink);font-size:1.18rem;line-height:1.55}
+  strong{color:var(--ink);font-weight:640}
+  em{color:var(--ink)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+  ul{padding-left:1.2rem;margin:0 0 1.1rem}
+  li{color:var(--muted);margin-bottom:.55rem;font-size:1.02rem}
+  li strong{color:var(--ink)}
+  code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);color:var(--code-fg);
+       padding:.1rem .35rem;border-radius:4px}
+  blockquote{margin:1.4rem 0;padding:.2rem 0 .2rem 1.1rem;border-left:3px solid var(--accent);
+             color:var(--ink);font-size:1.05rem}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+       padding:1.15rem 1.3rem;margin:1.6rem 0}
+  .box.hi{border-color:var(--accent);background:var(--accent-soft)}
+  .box p:last-child{margin-bottom:0}
+  .box h3{margin-top:0}
+  hr{border:0;border-top:1px solid var(--line);margin:3.5rem 0 0}
+  footer{margin-top:2.2rem;color:var(--muted);font-size:.96rem}
+  footer p{font-size:.96rem}
+  .toggle{position:fixed;top:1rem;right:1rem;background:var(--panel);border:1px solid var(--line);
+          color:var(--muted);border-radius:6px;padding:.3rem .6rem;cursor:pointer;
+          font-family:var(--mono);font-size:.72rem}
+  .toggle:hover{color:var(--ink);border-color:var(--accent)}
+  @media(max-width:600px){.wrap{padding:2.5rem 1.2rem 4rem}}
+</style>
+</head>
+<body>
+<button class="toggle" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='light'?'dark':'light')">theme</button>
+
+<div class="wrap">
+<header class="mast">
+  <p class="eyebrow">Aaron Williams · Merkle &amp; Bloom / Barnabas Coaching</p>
+  <h1>Behind the scenes: When bits hit the fan</h1>
+  <p class="lede">A real 48-hour incident on my agent setup. What broke, what the logs actually said, and why the boring file-on-disk decision from my 200-day post is what saved it.</p>
+</header>
+
+<p>This past Tuesday at 7:14pm I sent my agent a message and then watched a spinner for twenty minutes. By the time it stopped, the gateway behind it had restarted twice, four subagents had refused to spawn, and the main session was gone. Everything that mattered survived. This is the post-mortem, with the error strings left exactly as I found them.</p>
+
+<h2>What the spinner actually was</h2>
+
+<p>The short version: my agent asked me for a credential, and I never got the question.</p>
+
+<p>A background task called the <code>secrets</code> tool, which prompts the human to type a value into a masked entry. The prompt never arrived. Over iMessage the delivery fails outright; in the web UI it just stays quiet. The gateway held the request open, timed out at 120 seconds, twice, then logged <code>requester settle wake failed</code> every 60 seconds for the next twenty minutes. That loop was the spinner. Nothing was thinking. The machine was waiting on an input nobody could see.</p>
+
+<p>At 19:18:45 the system reset the main session on its own. It fired 49 milliseconds after I sent a fresh message, logged the reason as <code>reset</code>, and recorded no actor. I didn't do it. The agent didn't do it.</p>
+
+<h2>Then it got worse</h2>
+
+<p>A session reset is supposed to be the recovery. This one started the messiest stretch of the two days.</p>
+
+<p>The model came back up and began emitting malformed tool calls, over forty in a row, each rejected with <code>message required raw_params</code>. The transcript layer threw <code>transcript projection rebuilding</code> errors while it tried to make sense of its own state. And every attempt to spawn a subagent came back with the same refusal:</p>
+
+<blockquote><code>embedded tool authority registration does not match its attempt</code></blockquote>
+
+<p>That last string is the interesting one. After a restart, the gateway's record of which tools each agent may use no longer matched what the spawn attempt presented, so it failed closed. It did that four times: two on Sonnet, one on Opus, one more during the incident itself. I can't fully explain it yet and the fault sits upstream in the harness, so it lives on the watch list, not the fixed list.</p>
+
+<p>Restarts bookended the evening. One hit mid-turn around 19:39 and killed three review subagents and a tool batch in flight. A real one landed at 19:50:12, SIGTERM, back up at 19:50:38, twenty-six seconds down, with the status page reading <code>OpenClaw update in progress: requested</code>. Meanwhile the UI had shown me <code>[System] gateway restart interrupted your turn</code> at 19:37, thirteen minutes before any restart happened. The error message lied. Worth remembering the next time one sounds confident.</p>
+
+<h2>What survived, and why</h2>
+
+<p>The casualty list is short because almost nothing lived in the blast radius.</p>
+
+<p>The main session died heavy: 193,528 tokens, too big for its own guardrails, unsalvageable mid-incident. I don't mourn it. Two hundred days into this project I wrote that <a href="https://barnabas.coach/agent-notes-200-days.html">the days belong to the agent, not the session</a>, because everything durable lives in files on disk and the session is disposable. Tuesday night was the thesis test I hadn't asked for.</p>
+
+<p>Recovery was reading, not archaeology. The agent's daily log held the timeline. Context-offload notes in <code>memory/context-offloads/</code> captured every compaction as it happened; the two days before the crash had already been noisy, nine of them on Monday alone. Transcript corpora from earlier sessions sat on disk too. Rebuilt from those files, the session went through a proper compaction, 54,064 tokens down to 8,672, and picked up where the logs said it left off. The subagent work that was in flight when things broke, a draft of the 200-day post and a spend tracker, landed later the same evening, because its inputs and outputs were files.</p>
+
+<p>One more routing note: the local Q8 model on the M5 Max, the one benchmarked at 90.4 tokens a second in that post, doesn't touch OpenRouter, so the model mix-up below couldn't have happened to it. Different failure modes. That's the point of having both.</p>
+
+<h2>The aftershocks</h2>
+
+<p>Cleanup turned up two more problems. Both quiet, both real.</p>
+
+<p>First, the secret store. API keys live in SQLite, and live rows carry a <code>deleted_at_ms</code> of NULL. One of the key-lookup queries expected 0 for "not deleted", and NULL is not 0 in SQL, so a live key read as deleted. One value, NULL instead of 0, and a stored credential goes invisible while sitting exactly where it should be. The fix was one query. The unease is bigger: this store only gets read during outages, so a latent NULL bug survives until the worst possible night to find it.</p>
+
+<p>Second, the money. Checking spend during cleanup, that day came in at $4.81 against a $1.56 daily average. A 308% spike. The cause was a model misconfiguration: the default model had been flipped to GLM Flash V4 Turbo instead of GLM 5.3 Flash, and nothing complained. Wrong model, same shape of answers, three times the cost, discovered by accident during cleanup.</p>
+
+<div class="box hi">
+<h3>The tripwire</h3>
+<p>The credits tracker built that same evening is what made the spike visible: a daily OpenRouter balance line on a 7am cron. It now doubles as a silent-model-swap alarm, because spend is the one channel a misconfiguration reliably speaks through. (Four dollars eighty-one isn't a crisis. A default model that changes without telling me is.)</p>
+</div>
+
+<h2>What got hardened</h2>
+
+<p>Secrets requests no longer wedge the main session. The rule is now: confirm the credential exists in the store before any agent asks for it, and never let the interactive session sit on a masked-entry prompt. That wedge cost twenty minutes and triggered the whole cascade.</p>
+
+<p>The credits cron stays. One line every morning, and a model swap or a runaway loop shows up as a number instead of a surprise weeks later.</p>
+
+<p>And the key that leaked got rotated. Full honesty here: while debugging the secret store, a fragment of a management key ended up in a session transcript. That's a logging mistake on my side, it went into <code>ERRORS.md</code> like every other entry, and the key was rotated the same night.</p>
+
+<h2>Still fragile</h2>
+
+<p>The tool-authority mismatch is unexplained and upstream; if it recurs after the update, it gets reported, not guessed at. Sessions can still reset with no actor recorded. UI boilerplate can assert a restart that didn't happen. A restart mid-turn still kills anything a subagent is holding. And memory recall is a habit enforced by the same agent that can skip it, which I flagged in the 200-day post and flag again here.</p>
+
+<p>I'd rather list these than edit the post until it sounds finished.</p>
+
+<h2>The part that held</h2>
+
+<p>The 200-day post ended with a line: the agent isn't the thing you fix, the rules are. Tuesday added a corollary. The files are the disaster recovery plan.</p>
+
+<p>The crash took the session, the spinner, and most of an evening. It couldn't touch a directory of markdown files that knew exactly what had happened, and those files were enough to put everything back. The next crash is a matter of when. The setup is ready for it in exactly one way: whatever matters gets written down while it's happening.</p>
+
+<hr>
+
+<footer>
+<p>I'm Aaron Williams, Principal Consultant at <a href="https://www.merkleandbloom.com">Merkle &amp; Bloom</a>, where I do embedded IT ownership for laboratories and regulated organisations. That includes fully local LLM infrastructure with tight guardrails and a complete audit trail of what every agent did, for teams whose data can't leave the building.</p>
+<p>Under <a href="https://barnabas.coach">Barnabas Coaching</a> I help individuals and small businesses get more out of their agents, from better prompts through to a full agent and harness running the tedious parts of a business.</p>
+<p>Curious what this would look like for your work? <a href="mailto:aaron@barnabas.coach">aaron@barnabas.coach</a> for the small-business side, <a href="mailto:aaron@merkleandbloom.com">aaron@merkleandbloom.com</a> for the regulated-industry side. Free call either way, no pitch.</p>
+</footer>
+</div>
+</body>
+</html>

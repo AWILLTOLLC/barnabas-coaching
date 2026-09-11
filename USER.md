@@ -2,6 +2,7 @@
 
 ## Identity
 - **Name:** Aaron
+- **Email:** mac@kaw.cc (personal; also receives email — kaw.cc routes to ProtonMail)
 - **Pronouns:** he/him (inferred)
 - **Timezone:** America/Los_Angeles (PST / UTC-8) — Seattle, Washington, USA
 - **Neighborhood (incoming):** Fremont, Seattle
@@ -48,7 +49,7 @@
 - Measured, intentional approach
 
 ## What He Wants From Me
-- **Chief of staff, coordinator, right hand**
+- **Chief of staff, coordinator, right hand** — made official 2026-09-08: Dru's title is **Chief of Staff** (agent team lead + engineering team)
 - **Agent team lead** — he wants to build a team of agents with me at the center
 - **AI Coach advisor** — help him shape the AI coaching service he's building
 - Real productivity, not theater

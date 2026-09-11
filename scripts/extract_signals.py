@@ -12,6 +12,8 @@ Usage:
 The session transcript is JSONL with fields: role, content, timestamp.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import re
@@ -55,20 +57,29 @@ APPROVAL_PHRASES = [
 # ── Workspace paths ────────────────────────────────────────────────────────────
 WORKSPACE = Path(__file__).parent.parent
 SIGNALS_FILE = WORKSPACE / "memory" / "signals.jsonl"
-SESSIONS_DIR = Path("/root/.openclaw/agents/main/sessions")
+SESSIONS_DIR = Path("/Users/apollo/.openclaw/agents/main/sessions")
+AGENT_DB = Path("/Users/apollo/.openclaw/agents/main/agent/openclaw-agent.sqlite")
 
 
 def load_transcript(session_arg: str) -> list[dict]:
-    """Load a session transcript from a path or session ID."""
+    """Load a session transcript from a path, session ID (file), or the SQLite store."""
     candidate = Path(session_arg)
-    if not candidate.exists():
-        candidate = SESSIONS_DIR / f"{session_arg}.jsonl"
-    if not candidate.exists():
-        print(f"ERROR: Transcript not found: {session_arg}", file=sys.stderr)
-        sys.exit(1)
+    if candidate.exists():
+        return _load_jsonl(candidate)
+    candidate = SESSIONS_DIR / f"{session_arg}.jsonl"
+    if candidate.exists():
+        return _load_jsonl(candidate)
+    # Fallback: OpenClaw agent SQLite store (copy to tmp; live DB is locked/blocked)
+    db = AGENT_DB
+    if db.exists():
+        return _load_from_sqlite(db, session_arg)
+    print(f"ERROR: Transcript not found: {session_arg}", file=sys.stderr)
+    sys.exit(1)
 
+
+def _load_jsonl(candidate: Path) -> list[dict]:
     messages = []
-    with candidate.open() as f:
+    with candidate.open(encoding="utf-8", errors="replace") as f:
         for lineno, line in enumerate(f, 1):
             line = line.strip()
             if not line:
@@ -77,6 +88,41 @@ def load_transcript(session_arg: str) -> list[dict]:
                 messages.append(json.loads(line))
             except json.JSONDecodeError as e:
                 print(f"  WARN: Skipping malformed line {lineno}: {e}", file=sys.stderr)
+    return messages
+
+
+def _load_from_sqlite(db: Path, session_id: str) -> list[dict]:
+    """Read transcript_events from a copy of the agent store."""
+    import shutil, sqlite3, tempfile
+    with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as tf:
+        tmp_path = Path(tf.name)
+    shutil.copy2(db, tmp_path)
+    try:
+        conn = sqlite3.connect(tmp_path)
+        rows = conn.execute(
+            "SELECT event_json FROM transcript_events WHERE session_id = ? ORDER BY seq",
+            (session_id,),
+        ).fetchall()
+        conn.close()
+    finally:
+        tmp_path.unlink(missing_ok=True)
+    messages = []
+    for (event_json,) in rows:
+        try:
+            ev = json.loads(event_json)
+        except json.JSONDecodeError:
+            continue
+        etype = ev.get("type")
+        if etype == "message" and isinstance(ev.get("message"), dict):
+            msg = ev["message"]
+            role = msg.get("role")
+            content = msg.get("content") or ""
+            if isinstance(content, list):  # content blocks
+                content = " ".join(
+                    b.get("text", "") for b in content if isinstance(b, dict) and b.get("type") == "text"
+                )
+            if role in ("user", "assistant") and content:
+                messages.append({"role": role, "content": content})
     return messages
 
 
@@ -101,7 +147,7 @@ def extract_topics(messages: list[dict]) -> list[str]:
         "tools": ["tool", "script", "install", "setup"],
     }
     user_text = " ".join(
-        m.get("content", "") for m in messages if m.get("role") == "user"
+        m.get("content", "") for m in messages if isinstance(m, dict) and m.get("role") == "user"
     ).lower()
     for tag, keywords in topic_keywords.items():
         if any(kw in user_text for kw in keywords):
