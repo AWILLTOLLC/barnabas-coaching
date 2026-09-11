@@ -36,3 +36,4 @@
 ## [2026-09-11] ingest | 2026-09-04-memescout-criteria.json | Robinhood Meme Scout criteria.json — thresholds, Ollama config, DexScreener/Blockscout/Dune settings
 ## [2026-09-11] ingest | 2026-09-10-memescout-lessons.md | Robinhood Meme Scout lessons — LLM thesis quality corrections (Sep 10 user feedback)
 ## [2026-09-11] ingest | 2026-09-04-memescout-thesis-prompt.ts | Robinhood Meme Scout thesis prompt — Ollama prompt source spec for alert summaries
+## [2026-09-11] ingest | 2026-09-10-wulfie-prompting-article.md | Wulfie Bain prompting article — MECE/structured prompts, prompt-as-product-as-code, Background/Behaviour/Output template
