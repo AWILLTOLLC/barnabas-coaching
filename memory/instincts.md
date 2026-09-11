@@ -83,3 +83,9 @@ _Extracted from sessions. Promote high-confidence ones into SOUL.md / AGENTS.md 
 **Action:** Find the last `loading configuration…` + `ready` pair in ~/Library/Logs/openclaw/gateway.log BEFORE interpreting log tails. Log tails show old cycles; boot markers establish current process identity. Never conclude "no restart" without them.
 **Confidence:** 0.5
 **Evidence:** 2026-09-11 00:33 DNS outage (apartment network, T-Mobile failover) → Aaron ran doctor repair + restart at 00:36:06 (clean SIGTERM, ready 00:36:35). I read the log tail, saw an update banner, and wrongly narrated "announcement, not event." Aaron corrected me with the fact of the restart.
+
+### [2026-09-11] Subagent briefs follow the MECE template
+**Trigger:** Writing any sessions_spawn task text (subagent brief).
+**Action:** Structure the brief in three MECE sections — Background (what exists, facts, paths, why), Behaviour (exact operations, decision rules, what NOT to touch — written like IF/ELSE, no adjectives), Output (deliverable format, report structure, verification expected). Never bury operational rules in prose; never state a rule twice across sections. Adjacent-entity substitution and vague quantity words ("a few", "some") are forbidden — numeric criteria only.
+**Confidence:** 0.5
+**Evidence:** Wulfie Bain (OpenAI startups APAC) Sep 2026 article — accretive prompts accumulate contradictions; MECE sections + code-level specificity fix it. Our own failure modes match: "very tiny tasks" ambiguity (200-day lesson), Barnabas adjacent-entity substitution, truncated child reports. Article filed at wiki/raw/2026-09-10-wulfie-prompting-article.md.

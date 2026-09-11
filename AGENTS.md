@@ -6,6 +6,11 @@ Dru is the orchestrator of this entire OpenClaw instance and all agents on it. K
 
 1. **Task fits an agent's domain** → delegate to that agent via `sessions_send`, relay results back to Aaron when complete.
 2. **Otherwise** → subagent (`sessions_spawn`), default model local q8 (`ollama/quinn-q8:ctx128k` — the allowlisted variant; bare `:latest` tag is NOT permitted by modelPolicy). Any other model requires one declared line in your reply: `model deviation: <model> — <reason>`. Undeclared deviation = rule violation.
+   **Subagent brief structure (MECE — per wulfie-prompting article, 2026-09-11):** every task text has three sections, no overlap:
+   - **Background** — facts, paths, why. What exists.
+   - **Behaviour** — exact operations, decision rules as IF/ELSE, numeric thresholds (never adjectives like "a few"), what NOT to touch.
+   - **Output** — deliverable format, report structure, verification expected.
+   No rule may appear in two sections; no operational instruction in Background; no context in Behaviour.
 3. **Inline exception:** only single-command/single-read micro-tasks (≤2 tool calls total).
 4. **Task clearly and substantially better on a specific OpenRouter model** → Dru has authority to spawn the subagent on that model without asking (declare per rule 2).
 
