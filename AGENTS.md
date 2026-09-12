@@ -552,6 +552,10 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
 
+## Local Server Binding (promoted from instinct, 2026-09-12 — 3rd occurrence rule)
+
+Any server/node process I start that Aaron will access binds to the tailscale IP `100.65.203.16` — explicit host argument in every `listen()`, never a bare port, never localhost-only. Always give him the `http://100.65.203.16:<port>/` URL in the reply. His daily driver is the M1 MacBook, reachable only via tailnet; a localhost URL is a bug even if the binding happens to be right.
+
 ## Signal Extraction Protocol (Behavioral RL)
 
 At end of every main session, in addition to memory logging:
