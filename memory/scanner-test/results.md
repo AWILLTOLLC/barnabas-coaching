@@ -130,3 +130,12 @@ Next iteration could add:
 - Paragraph-level context windows
 - Named entity recognition (for persons, projects, tools)
 - Cross-line correlation (e.g., "Deleted X" + "Kept Y" = decision)
+
+## Human Label Pass (2026-09-12, Aaron) — FINAL
+- Corrections applied: #56 → skip, #118 → match (mis-clicks)
+- Human verdicts: 38 match / 38 skip / 59 junk (135 total)
+- Scanner yield (deterministic v1): 38/135 = 28% of candidates genuinely useful; 44% junk
+- Judge agreement with human: Kimi K2.5 93% (126/135), GLM 56% (76/135)
+- Judge match-precision vs human: Kimi 84% (38/45), GLM 77% (10/13)
+- Kimi disagreements (9): 7 of 9 are Kimi calling "match" what human called "skip" — Kimi over-flags related-only as useful; only 1 real miss each direction
+- Verdict: Kimi K2.5 is production-grade judge for this task (93% agreement); rubric v2 should adopt Kimi's strictness with a dedupe rule for related-only content
