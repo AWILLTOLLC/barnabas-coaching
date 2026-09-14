@@ -9,6 +9,8 @@ export interface BandStat {
   median_return_pct: number;
   best_return_pct: number;
   worst_return_pct: number;
+  pnl_usd: number;
+  portfolio_return_pct: number;
 }
 
 export interface ReportStats {
@@ -21,7 +23,7 @@ export interface ReportStats {
   regime: {
     current: string;
     distribution_24h: Record<string, number>;
-    passed_returns_24h_by_regime: { regime: string; n: number; median_return_pct: number }[];
+    passed_returns_24h_by_regime: { regime: string; n: number; median_return_pct: number; portfolio_return_pct: number }[];
   };
 }
 
@@ -55,6 +57,8 @@ export function computeReport(db: DatabaseSync, now: number): ReportStats {
         median_return_pct: rets[Math.floor(rets.length / 2)],
         best_return_pct: rets[rets.length - 1],
         worst_return_pct: rets[0],
+        pnl_usd: rets.reduce((a, r) => a + r, 0),
+        portfolio_return_pct: rets.reduce((a, r) => a + r, 0) / rets.length,
       });
     }
   }
@@ -77,7 +81,7 @@ export function computeReport(db: DatabaseSync, now: number): ReportStats {
     FROM outcomes o JOIN coins c ON c.address = o.address
     WHERE o.status = 'captured' AND o.horizon_h = 24 AND c.passed = 1 AND c.price_at_eval > 0
     GROUP BY c.regime`).all() as any[])
-    .map(r => ({ regime: r.regime as string, n: r.n as number, median_return_pct: medianReturnForRegime(db, r.regime) }));
+    .map(r => ({ regime: r.regime as string, n: r.n as number, median_return_pct: medianReturnForRegime(db, r.regime), portfolio_return_pct: portfolioReturnForRegime(db, r.regime) }));
 
   return {
     last24h,
@@ -88,6 +92,15 @@ export function computeReport(db: DatabaseSync, now: number): ReportStats {
     total_coins: count(db, 'SELECT COUNT(*) n FROM coins'),
     regime: { current: currentRegime, distribution_24h, passed_returns_24h_by_regime },
   };
+}
+
+function portfolioReturnForRegime(db: DatabaseSync, regime: string): number {
+  const rets = (db.prepare(`
+    SELECT (o.price - c.price_at_eval) / c.price_at_eval * 100 AS ret
+    FROM outcomes o JOIN coins c ON c.address = o.address
+    WHERE o.status = 'captured' AND o.horizon_h = 24 AND c.passed = 1 AND c.price_at_eval > 0 AND c.regime = ?
+    ORDER BY ret`).all(regime) as any[]).map(r => r.ret as number);
+  return rets.length ? rets.reduce((a, r) => a + r, 0) / rets.length : 0;
 }
 
 function medianReturnForRegime(db: DatabaseSync, regime: string): number {
@@ -108,7 +121,7 @@ export function formatReport(r: ReportStats): string {
   for (const band of order) {
     const rows = r.bands.filter(b => b.band === band);
     if (!rows.length) continue;
-    const cells = rows.map(b => `${b.horizon_h}h: ${fmtPct(b.median_return_pct)} (n=${b.n}, ${fmtPct(b.worst_return_pct)}…${fmtPct(b.best_return_pct)})`);
+    const cells = rows.map(b => `${b.horizon_h}h: ${fmtPct(b.median_return_pct)} (n=${b.n}, ${fmtPct(b.worst_return_pct)}…${fmtPct(b.best_return_pct)}) | $100/coin: ${b.pnl_usd >= 0 ? '+' : ''}$${b.pnl_usd.toFixed(0)} (port ${fmtPct(b.portfolio_return_pct)})`);
     lines.push(`${band}: ${cells.join(' | ')}`);
   }
   if (r.top_rejected.length) {
@@ -120,7 +133,7 @@ export function formatReport(r: ReportStats): string {
   const dist = Object.entries(r.regime.distribution_24h).map(([l, n]) => `${l} ${n}`).join(', ');
   lines.push(`Regime: ${r.regime.current} now${dist ? ` (24h scans: ${dist})` : ''}`);
   if (r.regime.passed_returns_24h_by_regime.length) {
-    lines.push(`Gate-passer 24h returns by regime: ${r.regime.passed_returns_24h_by_regime.map(x => `${x.regime}: ${fmtPct(x.median_return_pct)} (n=${x.n})`).join(' | ')}`);
+    lines.push(`Gate-passer 24h returns by regime: ${r.regime.passed_returns_24h_by_regime.map(x => `${x.regime}: ${fmtPct(x.median_return_pct)} (n=${x.n}, port ${fmtPct(x.portfolio_return_pct)})`).join(' | ')}`);
   }
   return lines.join('\n');
 }

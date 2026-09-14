@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { execFile } from 'node:child_process';
 import { loadCriteria, loadEnv, PROJECT_ROOT, type Criteria } from './config.js';
 import { fetchAllCoins, fetchTokenStats, type Coin, type TokenStats } from './gmgn.js';
 import { evaluate } from './filters.js';
@@ -7,7 +8,7 @@ import { generateThesis } from './thesis.js';
 import { liquidityBaseline } from './peers.js';
 import { formatAlert, formatHeartbeat, sendDM, logEvent, type HeartbeatStats } from './alerts.js';
 import { dueSlot, loadHeartbeatState, saveHeartbeatState } from './heartbeat.js';
-import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime, recordDivergence } from './db.js';
+import { openDb, recordCoin, hasCoin, markAlerted, recordRegimeSnapshot, lastConfirmedRegime, recordDivergence, recordPriceTick } from './db.js';
 import { DEX_DEFAULTS, fetchDexStatsBatch, checkDivergence, type DexConfig, type DexStats } from './dexscreener.js';
 import { BLOCKSCOUT_DEFAULTS, fetchHolderCheck, type BlockscoutConfig, type HolderCheck } from './blockscout.js';
 import { computeBreadth, labelRegime, RegimeTracker, type RegimeLabel } from './regime.js';
@@ -140,8 +141,11 @@ export class Monitor {
           }
         }
         const thesis = await this.thesis(c, ev);
-        const dm = await sendDM(formatAlert(c, ev, thesis, this.regime.current), { dryRun: this.dryRun });
-        logEvent({ event: 'alert', ticker: c.ticker, address: c.address, score: ev.score, success: dm.success, error: dm.error });
+        // forward to paper trader FIRST, then send one DM per gate pass that
+        // includes the completed trade outcome (fills, rejects, and failures alike)
+        const trade = await this.forwardToPaperTrader(c, ev);
+        const dm = await sendDM(formatAlert(c, ev, thesis, this.regime.current) + this.formatTradeResult(trade), { dryRun: this.dryRun });
+        logEvent({ event: 'alert', ticker: c.ticker, address: c.address, score: ev.score, success: dm.success, error: dm.error, paper_trade: trade?.ok ?? null });
         if (dm.success) {
           alerted = true;
           result.alerted.push(c.ticker);
@@ -158,6 +162,14 @@ export class Monitor {
     // outcome tracking piggybacks on the poll loop: one DexScreener batch
     // covers the whole due set, GMGN fills misses (budget-capped in outcomes.ts)
     await captureDueOutcomes(this.db, this.fetchStats, Date.now(), this.fetchDex ? this.dexCfg.batch_size : 5, this.fetchDex);
+
+    // price ticks: capture price/liquidity for all active coins each poll
+    const now = Date.now();
+    for (const c of coins) {
+      if (c.price_usd !== null && c.liquidity_usd !== null) {
+        recordPriceTick(this.db, c.address, now, c.price_usd, c.liquidity_usd, 'gmgn');
+      }
+    }
 
     this.stats.scanned += result.scanned;
     this.stats.passed_gates += result.passed_gates;
@@ -224,6 +236,54 @@ export class Monitor {
       + (narrative ? `\n🧠 ${narrative}` : '');
     const dm = await sendDM(msg, { dryRun: dryRun || this.dryRun });
     logEvent({ event: 'daily_report', success: dm.success, error: dm.error });
+  }
+
+  /**
+   * Live forward-test hook: forward every sent alert to the paper trader's
+   * buy CLI (builtin executor, simulation only — no chain calls). Fire with a
+   * short timeout; a paper-trader failure never affects scouting. Returns the
+   * parsed buy result so the alert DM can include the full trade outcome.
+   */
+  private async forwardToPaperTrader(c: Coin, ev: ReturnType<typeof evaluate>): Promise<Record<string, unknown> | null> {
+    if (process.env.PAPER_TRADER_URL === 'off') return null; // kill switch
+    const dir = process.env.PAPER_TRADER_DIR ?? '/Users/apollo/.openclaw/workspace/projects/robinhood-paper-trader';
+    const ticket = JSON.stringify({
+      address: c.address, ticker: c.ticker, name: c.name,
+      price_usd: c.price_usd, liquidity_usd: c.liquidity_usd,
+      score: ev.score, alerted_at: new Date().toISOString(),
+    });
+    const result = await new Promise<Record<string, unknown> | null>((resolve) => {
+      const child = execFile('npx', ['tsx', 'src/cli.ts', 'buy'], { cwd: dir, timeout: 30_000 },
+        (err, stdout) => {
+          const out = String(stdout || '').trim();
+          try {
+            const parsed = JSON.parse(out) as Record<string, unknown>;
+            logEvent({ event: 'paper_buy', ticker: c.ticker, address: c.address, ok: parsed.ok === true, result: parsed });
+            resolve(parsed);
+          } catch {
+            logEvent({ event: 'paper_buy', ticker: c.ticker, address: c.address, ok: false, error: String(err?.message || out || 'no output').slice(0, 300) });
+            resolve(null);
+          }
+        });
+      child.stdin?.write(ticket);
+      child.stdin?.end();
+    });
+    return result;
+  }
+
+  /** One DM per gate pass: the alert plus the completed paper-trade outcome. */
+  private formatTradeResult(r: Record<string, unknown> | null): string {
+    if (!r) return '\n📄 Paper trade: FAILED to execute (paper trader unreachable or timed out)';
+    if (r.ok) {
+      const fill = (r.fill ?? {}) as Record<string, unknown>;
+      const usd = (v: unknown) => (typeof v === 'number' ? `$${v.toFixed(4)}` : '?');
+      const num = (v: unknown) => (typeof v === 'number' ? v.toLocaleString(undefined, { maximumFractionDigits: 4 }) : '?');
+      return `\n📄 Paper trade: FILLED`
+        + `\n  Stake: ${usd(r.stake_usd)} | Fill price: ${usd(fill.fill_price_usd)} | Tokens: ${num(fill.token_amount)}`
+        + `\n  Value: ${usd(fill.usd_value)} | Fee: ${usd(fill.fee_usd)} | Slippage cap: ${num(fill.slippage_pct ?? '?')}%`
+        + `\n  Executor: ${typeof fill.source === 'string' ? fill.source : '?'}`;
+    }
+    return `\n📄 Paper trade: REJECTED — ${String(r.reason ?? 'unknown reason')} (stake would have been ${typeof r.stake_usd === 'number' ? '$' + r.stake_usd.toFixed(2) : '?'})`;
   }
 
   private freshStats() {

@@ -40,6 +40,16 @@ export function openDb(file: string): DatabaseSync {
       total_volume_24h REAL, new_launches_1h INTEGER,
       raw_label TEXT, confirmed_label TEXT
     );
+    CREATE TABLE IF NOT EXISTS price_ticks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      address TEXT NOT NULL,
+      ts_ms INTEGER NOT NULL,
+      price REAL,
+      liquidity REAL,
+      source TEXT,
+      UNIQUE(address, ts_ms)
+    );
+    CREATE INDEX IF NOT EXISTS idx_price_ticks_ts ON price_ticks(ts_ms);
   `);
   try {
     db.exec(`ALTER TABLE coins ADD COLUMN regime TEXT DEFAULT 'neutral'`);
@@ -54,6 +64,7 @@ export function openDb(file: string): DatabaseSync {
   db.exec(`CREATE TABLE IF NOT EXISTS divergences (
     ts INTEGER, address TEXT, field TEXT, dex_value REAL, gmgn_value REAL
   )`);
+  pruneOldTicks(db, 30);
   return db;
 }
 
@@ -115,4 +126,18 @@ export function markAlerted(db: DatabaseSync, address: string, score: number): v
 
 export function markDead(db: DatabaseSync, id: number, now: number): void {
   db.prepare(`UPDATE outcomes SET status = 'dead', captured_ms = ? WHERE id = ?`).run(now, id);
+}
+
+export function recordPriceTick(db: DatabaseSync, address: string, tsMs: number, price: number | null, liquidity: number | null, source: string = 'monitor'):
+void {
+  const existing = db.prepare('SELECT 1 FROM price_ticks WHERE address = ? AND ts_ms = ?').get(address, tsMs);
+  if (existing) return;
+  db.prepare('INSERT OR REPLACE INTO price_ticks (address, ts_ms, price, liquidity, source) VALUES (?, ?, ?, ?, ?)')
+    .run(address, tsMs, price, liquidity, source);
+}
+
+export function pruneOldTicks(db: DatabaseSync, days: number = 30): number {
+  const cutoff = Date.now() - days * 24 * 3600 * 1000;
+  const result = db.prepare('DELETE FROM price_ticks WHERE ts_ms < ?').run(cutoff);
+  return Number(result.changes);
 }
