@@ -99,6 +99,16 @@ export class Engine {
     return { ok: false, reason };
   }
 
+  /** Owner-initiated sell of pct% of the remaining position at the current mark. */
+  async manualSell(address: string, pct: number): Promise<Fill | { error: string }> {
+    const p = getOpenPositions(this.d.db).find(x => x.address.toLowerCase() === address.toLowerCase());
+    if (!p) return { error: 'no open position for that address' };
+    const ts = this.now();
+    const mark = (await this.d.fetchMarks([address])).get(address.toLowerCase()) ?? lastMark(this.d.db, address);
+    if (!mark) return { error: 'no price available' };
+    return this.sell(p, p.tokens_remaining * (pct / 100), { price_usd: mark.price_usd, liquidity_usd: mark.liquidity_usd }, ts, 'manual');
+  }
+
   /** One mark cycle over all open positions. */
   async tick(): Promise<void> {
     const s = this.d.strategy;
