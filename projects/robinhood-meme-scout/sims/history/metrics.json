@@ -1,0 +1,16 @@
+[
+ {
+  "file": "2026-09-14.md",
+  "metrics": {
+   "ladder15_final": 34383.0,
+   "ladder15_maxdd": 31.5,
+   "baseline_total": 9285.0,
+   "s1_7d_delta": 76.0,
+   "s2_7d_delta": -150.0,
+   "b24_uncapped": 11381.0,
+   "b12_uncapped": 8894.0,
+   "alerts": "{\"neutral\":59,\"cold\":3,\"hot\":1}",
+   "nonneutral_alerts": 4
+  }
+ }
+]
