@@ -1,0 +1,20 @@
+{
+  "name": "robinhood-paper-trader",
+  "version": "1.0.0",
+  "description": "Paper-trade execution layer for Meme Scout signals — simulation only; on-chain execution lives outside this codebase",
+  "type": "module",
+  "scripts": {
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "run": "tsx src/cli.ts run"
+  },
+  "author": "Aaron",
+  "license": "MIT",
+  "dependencies": {
+    "tsx": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "starting_capital_usd": 1000,
+  "base_stake_usd": 10,
+  "ladder_step_usd": 1000,
+  "max_stake_usd": 100,
+  "max_entry_lp_ratio": 0.01,
+  "max_orders_per_day": 25,
+  "max_daily_deployment_usd": 250,
+  "max_open_positions": 40,
+  "moonbag": { "trigger_pct": 1000, "sell_fraction": 0.25 },
+  "exit": {
+    "boundary_hours": 24,
+    "oneshot_max_lp_ratio": 0.005,
+    "tranche_schedule_hours": [23, 23.333, 23.667, 24],
+    "tranche_max_lp_ratio": 0.02,
+    "big_sell_usd": 10000
+  },
+  "slippage": { "default_pct": 5, "escalate_pct": 2, "max_pct": 20 },
+  "fee_pct": 0.3,
+  "mark_interval_seconds": 60,
+  "executor": { "type": "builtin" },
+  "discord": { "enabled": true }
+}
