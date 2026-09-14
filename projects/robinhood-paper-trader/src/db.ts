@@ -148,3 +148,46 @@ export function lastMark(db: DatabaseSync, address: string): { price_usd: number
 export function pruneMarks(db: DatabaseSync, olderThanMs: number): void {
   db.prepare('DELETE FROM marks WHERE ts < ?').run(olderThanMs);
 }
+
+export interface PortfolioStats {
+  total_value_usd: number;      // realized capital + open positions at last mark
+  open_count: number;
+  closed: number;               // wins + losses (rugs count as losses)
+  wins: number;
+  losses: number;
+  win_rate_pct: number;
+  avg_win_usd: number;
+  avg_loss_usd: number;
+}
+
+export function portfolioStats(db: DatabaseSync, startingUsd: number): PortfolioStats {
+  const cap = realizedCapital(db, startingUsd);
+  const open = getOpenPositions(db);
+  let openValue = 0;
+  for (const p of open) {
+    const m = lastMark(db, p.address);
+    if (m) openValue += p.tokens_remaining * m.price_usd;
+  }
+  const rows = db.prepare(`SELECT realized_usd, stake_usd FROM positions WHERE status != 'open'`).all() as any[];
+  const pnls = rows.map(r => r.realized_usd - r.stake_usd);
+  const wins = pnls.filter(x => x > 0);
+  const losses = pnls.filter(x => x <= 0);
+  const sum = (a: number[]) => a.reduce((x, y) => x + y, 0);
+  return {
+    total_value_usd: cap + openValue,
+    open_count: open.length,
+    closed: pnls.length,
+    wins: wins.length,
+    losses: losses.length,
+    win_rate_pct: pnls.length ? (100 * wins.length / pnls.length) : 0,
+    avg_win_usd: wins.length ? sum(wins) / wins.length : 0,
+    avg_loss_usd: losses.length ? sum(losses) / losses.length : 0,
+  };
+}
+
+/** One-line lifetime summary appended to every DM. */
+export function portfolioSummaryLine(db: DatabaseSync, startingUsd: number): string {
+  const s = portfolioStats(db, startingUsd);
+  return `📊 Portfolio $${s.total_value_usd.toFixed(2)} (${s.open_count} open) | Trades: ${s.wins}W/${s.losses}L` +
+    (s.closed ? ` (${s.win_rate_pct.toFixed(0)}% win) | Avg win +$${s.avg_win_usd.toFixed(2)}, avg loss −$${Math.abs(s.avg_loss_usd).toFixed(2)}` : ' | no closed trades yet');
+}

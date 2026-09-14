@@ -33,5 +33,5 @@ test('cli status runs and reports capital + ladder', () => {
 
 test('cli help lists commands', () => {
   const r = spawnSync('tsx', ['src/cli.ts'], { cwd: ROOT, encoding: 'utf8', timeout: 30_000 });
-  assert.match(r.stdout, /buy\|sell\|status\|run\|contract/);
+  assert.match(r.stdout, /buy\|sell\|status\|tax\|run\|contract/);
 });

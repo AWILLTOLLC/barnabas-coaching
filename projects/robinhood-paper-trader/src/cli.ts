@@ -14,12 +14,13 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { loadStrategy, loadEnv, PROJECT_ROOT } from './config.js';
-import { openDb, getOpenPositions, realizedCapital, ordersToday, deployedTodayUsd, ptDate, lastMark } from './db.js';
+import { openDb, getOpenPositions, realizedCapital, ordersToday, deployedTodayUsd, ptDate, lastMark, portfolioSummaryLine } from './db.js';
 import { makeExecutor } from './executor.js';
 import { fetchMarks, PRICES_DEFAULTS } from './prices.js';
 import { Engine } from './engine.js';
 import { sendDM, logEvent } from './notify.js';
 import { stakeFor } from './limits.js';
+import { collectTaxLines, summarize, toCsv, yearLines } from './tax.js';
 
 function buildEngine(dryRun: boolean) {
   const strategy = loadStrategy();
@@ -29,7 +30,9 @@ function buildEngine(dryRun: boolean) {
     db, strategy,
     executor: makeExecutor(strategy),
     fetchMarks: (addrs) => fetchMarks(addrs, env, PRICES_DEFAULTS),
-    notify: (msg) => strategy.discord.enabled ? sendDM(msg, { dryRun }) : Promise.resolve({ success: true }),
+    notify: (msg) => strategy.discord.enabled
+      ? sendDM(msg + '\n' + portfolioSummaryLine(db, strategy.starting_capital_usd), { dryRun })
+      : Promise.resolve({ success: true }),
     logEvent,
   });
   return { engine, db, strategy, env };
@@ -104,12 +107,24 @@ async function main() {
         await new Promise(r => setTimeout(r, strategy.mark_interval_seconds * 1000));
       }
     }
+    case 'tax': {
+      const year = Number(flag('year') ?? new Date().getFullYear());
+      const { db } = buildEngine(true);
+      const s = summarize(collectTaxLines(db));
+      const csv = toCsv(s, year);
+      const out = path.join(PROJECT_ROOT, 'data', `irs-8949-${year}.csv`);
+      fs.writeFileSync(out, csv);
+      console.log(`Wrote ${out}`);
+      console.log(`Form 8949 Part II Box C, tax year ${year}: ${yearLines(s, year).length} disposals`);
+      console.log(`Proceeds $${s.total_proceeds_usd.toFixed(2)} | basis $${s.total_basis_usd.toFixed(2)} | gain $${s.total_gain_usd.toFixed(2)} (short-term ${s.short_term_count}, long-term ${s.long_term_count})`);
+      break;
+    }
     case 'contract': {
       console.log(fs.readFileSync(path.join(PROJECT_ROOT, 'docs', 'EXECUTOR-CONTRACT.md'), 'utf8'));
       break;
     }
     default:
-      console.log('Usage: tsx src/cli.ts <buy|sell|status|run|contract> [--dry-run] [--address 0x..] [--pct N]');
+      console.log('Usage: tsx src/cli.ts <buy|sell|status|tax|run|contract> [--dry-run] [--address 0x..] [--pct N] [--year YYYY]');
   }
 }
 

@@ -57,6 +57,21 @@ export class Engine {
     const live = (await this.d.fetchMarks([t.address])).get(t.address.toLowerCase()) ?? null;
     if (!live) return this.rejectEntry(t, ts, 'no live price for token');
 
+    // staleness gate: the alert must still resemble the signal the gates validated.
+    // Divergence between ticket ref and live price means the alert decayed before
+    // execution; an aged ticket is a different trade than the one that scored.
+    const staleness = s.staleness ?? { max_divergence_pct: 50, max_age_minutes: 15 };
+    const divPct = Math.abs(live.price_usd - t.price_usd) / t.price_usd * 100;
+    if (divPct > staleness.max_divergence_pct) {
+      return this.rejectEntry(t, ts, `stale-ticket (live ${divPct.toFixed(0)}% from ref $${t.price_usd} > ${staleness.max_divergence_pct}%)`);
+    }
+    if (t.alerted_at) {
+      const ageMin = (ts - Date.parse(t.alerted_at)) / 60_000;
+      if (isFinite(ageMin) && ageMin > staleness.max_age_minutes) {
+        return this.rejectEntry(t, ts, `stale-ticket (alert ${ageMin.toFixed(0)}min old > ${staleness.max_age_minutes}min)`);
+      }
+    }
+
     const stake = stakeFor(realizedCapital(this.d.db, s.starting_capital_usd), s);
     const gate = checkEntry({
       address: t.address,

@@ -13,6 +13,7 @@ export interface Strategy {
   max_orders_per_day: number;
   max_daily_deployment_usd: number;
   max_open_positions: number;
+  staleness: { max_divergence_pct: number; max_age_minutes: number };
   moonbag: { trigger_pct: number; sell_fraction: number };
   exit: {
     boundary_hours: number;
