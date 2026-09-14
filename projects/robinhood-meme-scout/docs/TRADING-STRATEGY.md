@@ -58,6 +58,12 @@ Robinhood Chain memecoins are a fat-right-tail market: most coins die, a few go 
 - ⬜ Re-evaluate: gate thresholds, monster frequency stability across regimes (hot/cold), stake ceiling raise.
 - ⬜ If stakes ever exceed $100: revisit scale-out strategy for large sells (the +$10k sell list from the dynamic-sizing sim is the trigger set).
 
+## Chain Sequencing Decision (2026-09-14)
+
+- **Stay on Robinhood Chain until the paper run proves out.** Solana and ETH L1 evaluated and passed on: Solana = MEV/sniper competition eats the edge; ETH L1 = no curve-launch infrastructure, gas kills small stakes.
+- **Base is the designated #2 candidate** (Clanker/flaunch curve launches, Uniswap V3/V4, gas-friendly, our stack ports directly). Do NOT start Base work before the RH paper run completes its gate (2 weeks of ticks + exit sims).
+- When that gate clears: run the zero-infra Base spike first — GeckoTerminal Clanker launch history + price paths through our sims with an execution tax. Numbers decide whether a port gets built.
+
 ## Known Limitations of the Evidence
 
 - One 8.5-day window, one regime (mostly neutral). Monster frequency (26% of alerts ≥10x) is almost certainly window-flattered.
