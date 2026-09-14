@@ -96,7 +96,8 @@ test('tranche path scales out, transitions to oneshot once remaining < 0.5% LP, 
   // after 2 tranches remaining value < 0.5% of LP → strategy switches to oneshot dump at boundary
   assert.equal(p.exit_tranches_done, 2);
   const kinds = (db.prepare(`SELECT kind, COUNT(*) n FROM orders WHERE side='sell' AND status='filled' GROUP BY kind`).all() as any[]);
-  assert.deepEqual(Object.fromEntries(kinds.map(k => [k.kind, k.n])), { tranche: 2, oneshot: 1 });
+  // 100x pump also trips the moon-bag trim at the first tick before boundary tranches
+  assert.deepEqual(Object.fromEntries(kinds.map(k => [k.kind, k.n])), { moonbag: 1, tranche: 2, oneshot: 1 });
   assert.ok(p.realized_usd > 900); // ~$1000 minus impact+fees
 });
 
