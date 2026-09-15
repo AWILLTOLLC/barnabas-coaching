@@ -49,6 +49,8 @@ Robinhood Chain memecoins are a fat-right-tail market: most coins die, a few go 
 - Hard limits live in code, not in prompts: max stake, max daily deployment, max position/LP ratio, 24h boundary.
 - Anomaly alert: if LLM recommendations diverge from mechanical gate behavior, alert the owner; do not auto-act.
 - Swap params: max-slippage 5% default (retry with +2% escalation, max 20%, then abandon tranche for this cycle); fees: **0.3% DEX fee on graduated V4 pools, but Bags-launchpad tokens charge 2% on the ETH/WETH leg** (verified live 2026-09-14) — sim P&L for launchpad-phase tokens must use 2%.
+- **Routing rule (live):** route through a reputable aggregator with **quote-vs-settlement verification** — check the executed fill against the quoted price and flag/abort on divergence. Never route raw best-quote. Rationale: malicious Uniswap V4 hooks can quote one price and execute a worse one (0x writeup); on RH chain the Bags hook is trusted-today but this rule is chain-agnostic and mandatory for any V4 pool we don't control (graduated pools, future chains).
+- **Known upward bias in sim/paper results:** paper trader fills are based on quoted/interpolated prices, not settled fills — no failed txs, no MEV, no queue position, idealized slippage. Expect live execution to underperform paper; treat the paper-vs-live gap as a measured quantity once live fills exist, not an assumed zero.
 
 ## Instrumentation (in place / pending)
 
